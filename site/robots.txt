@@ -1,0 +1,3 @@
+# Not ready!!!! >:(
+User-agent: *
+Disallow: /
