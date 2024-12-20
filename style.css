@@ -1,0 +1,16 @@
+@charset "UTF-8";
+/* thanks penelope, i think i know how css words :) */
+
+/* let's uh.... protect my eyes */
+html {
+  color-scheme: dark light;
+  font-size: 12pt;
+}
+/* fixed width cuz why not lol */
+body {
+  font-family: Verdana, sans-serif;
+  max-width: 80ch;
+  padding: 3.0rem;
+  margin: 0 auto;
+  text-wrap: balance;
+}

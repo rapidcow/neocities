@@ -1,0 +1,4 @@
+# good bots now welcome!
+# ... except for you, AI bot <:(
+User-agent: GPTBot
+Disallow: /
