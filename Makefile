@@ -1,3 +1,6 @@
+BASE_URL ?= https://neocities.rapidcow.org
+export BASE_URL
+
 SITE_FILES = index.html
 MORE_FILES = \
       base.css \
