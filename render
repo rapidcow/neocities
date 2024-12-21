@@ -6,7 +6,13 @@ use Template;
 use File::Spec::Unix;
 use v5.10;
 
-sub or_else_factory {
+my $BASE_URL = $ENV{BASE_URL}; die "please export BASE_URL\n" unless defined $BASE_URL;
+my $SITE_URL = $ENV{SITE_URL}; die "please export SITE_URL\n" unless defined $SITE_URL;
+
+# unused - but when DEFAULT becomes too funky with
+# falsy strings, this should do a better job
+# example: variable | or_else("default")
+sub or_else {
 	my ($ctx, $default) = @_;
 	return sub {
 		my $text = shift;
@@ -14,6 +20,8 @@ sub or_else_factory {
 	}
 }
 
+# to_root(dir): return relative path of how to get to dir
+# (defaults to root) example: location | to_root
 sub to_root {
 	my ($ctx, $root) = @_;
 	$root //= "/";
@@ -30,17 +38,28 @@ sub to_root {
 	}
 }
 
+# as_link(is_abs): return full path, relative (0) or absolute (1)
+# completely equivalent to joining BASE_URL / SITE_URL, except i am
+# seeing if i can avoid passing those variables explicitly now...
+# (to get those two, i guess "" | to_link(0) or (1) works?)
+sub as_link {
+	my ($ctx, $abs) = @_;
+	$abs //= 1;
+	return $abs
+		? sub { return $SITE_URL . $_[0]; }
+		: sub { return $BASE_URL . $_[0]; };
+}
+
 my $file = shift;
 die "usage: $0 <file>\n" unless defined $file;
 
 my $template = Template->new({
 	INCLUDE_PATH => ['site', 'temple'],
 	FILTERS => {
-		or_else => [ \&or_else_factory, 1 ],
+		or_else => [ \&or_else, 1 ],
 		to_root => [ \&to_root, 1 ],
+		as_link => [ \&as_link, 1 ],
 	},
 }) || die $Template::ERROR, "\n";
 
-$template->process($file, {
-	BASE_URL => $ENV{BASE_URL} // 'https://rapidcow.neocities.org'
-}) || die $template->error(), "\n";
+$template->process($file) || die $template->error(), "\n";

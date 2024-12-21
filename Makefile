@@ -1,5 +1,6 @@
-BASE_URL ?= https://neocities.rapidcow.org
-export BASE_URL
+BASE_URL ?= # the empty string, i.e. "/" is root
+SITE_URL ?= https://neocities.rapidcow.org
+export BASE_URL SITE_URL
 
 SITE_FILES = index.html
 MORE_FILES = \

@@ -10,7 +10,7 @@
   <title>[% title | html %]</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="[% author | xml %]">
-  <link rel="canonical" type="text/html" href="[% BASE_URL %][% location %]">
-  <link rel="stylesheet" type="text/css" href="[% location | to_root %]base.css">
+  <link rel="canonical" type="text/html" href="[% location | as_link | xml %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root | xml %]base.css">
 [%- content -%]
 </head>
