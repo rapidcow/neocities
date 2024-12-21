@@ -1,13 +1,13 @@
-SRC = \
-      robots.txt \
-      index.html \
+SITE_FILES = index.html
+MORE_FILES = \
       base.css \
-      main.css
+      robots.txt \
+      neocities.png \
 
-site: $(SRC:%=public/%)
-public/%.html: site/%.html
-	@mkdir -p $(dir $@)
-	carmel exec ./render $*.html > $@
+site: $(SITE_FILES:%=public/%) $(MORE_FILES:%=public/%)
 public/%: site/%
+	@mkdir -p $(dir $@)
+	carmel exec ./render $* > $@
+public/%: more/%
 	@mkdir -p $(dir $@)
 	cp $< $@
