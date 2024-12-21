@@ -6,7 +6,8 @@ html {
   color-scheme: dark light;
   font-size: 12pt;
 }
-/* fixed width cuz why not lol */
+/* fixed width cuz why not lol (as a matter
+ * of fact ethan did not use fixed width) */
 body {
   font-family: Verdana, sans-serif;
   max-width: 80ch;
