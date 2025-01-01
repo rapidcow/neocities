@@ -1,0 +1,51 @@
+@charset "UTF-8";
+/* emulate colors of linux virtual console
+ * (based on: drivers/tty/vt/vt.c). */
+:root {
+  --back: #000; /* background */
+  --bold: #fff;
+  --link: #ffb;
+  --rgb-0: #000; /* ... black */
+  --rgb-1: #a00; /* R.. red */
+  --rgb-2: #0a0; /* .G. green */
+  --rgb-3: #aa0; /* RG. yellow */
+  --rgb-4: #00a; /* ..B blue */
+  --rgb-5: #a0a; /* R.B magenta */
+  --rgb-6: #0aa; /* .GB cyan */
+  --rgb-7: #aaa; /* RGB white */
+  --rgb-hi-0: #555;
+  --rgb-hi-1: #f55;
+  --rgb-hi-2: #5f5;
+  --rgb-hi-3: #ff5;
+  --rgb-hi-4: #55f;
+  --rgb-hi-5: #f5f;
+  --rgb-hi-6: #5ff;
+  --rgb-hi-7: #fff;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --back: #aaa;
+    --bold: #000;
+    --rgb-0: #aaa;
+    --rgb-7: #333;
+    --rgb-hi-0: #555;
+    --rgb-hi-7: #000;
+    --rgb-3: #fc0; /* dirty fix */
+  }
+}
+.setaf-0  { color: var(--rgb-0); }
+.setaf-1  { color: var(--rgb-1); }
+.setaf-2  { color: var(--rgb-2); }
+.setaf-3  { color: var(--rgb-3); }
+.setaf-4  { color: var(--rgb-4); }
+.setaf-5  { color: var(--rgb-5); }
+.setaf-6  { color: var(--rgb-6); }
+.setaf-7  { color: var(--rgb-7); }
+.setaf-8  { color: var(--rgb-hi-0); }
+.setaf-9  { color: var(--rgb-hi-1); }
+.setaf-10 { color: var(--rgb-hi-2); }
+.setaf-11 { color: var(--rgb-hi-3); }
+.setaf-12 { color: var(--rgb-hi-4); }
+.setaf-13 { color: var(--rgb-hi-5); }
+.setaf-14 { color: var(--rgb-hi-6); }
+.setaf-15 { color: var(--rgb-hi-7); }

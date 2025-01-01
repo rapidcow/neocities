@@ -1,17 +1,31 @@
 @charset "UTF-8";
-/* thanks penelope, i think i know how css words :) */
-
-/* let's uh.... protect my eyes */
+/* misc stuff */
 html {
   color-scheme: dark light;
-  font-size: 12pt;
+  font-size: 15pt;
+  line-height: 1.2;
 }
-/* fixed width cuz why not lol (as a matter
- * of fact ethan did not use fixed width) */
 body {
-  font-family: Verdana, sans-serif;
   max-width: 80ch;
   padding: 3.0rem;
   margin: 0 auto;
-  text-wrap: balance;
+}
+h1, h2 { font-weight: inherit; font-size: inherit; }
+strong { font-weight: inherit; font-size: inherit; }
+em { font-style: inherit; }
+/* cool colors */
+body { background-color: var(--back); color: var(--rgb-7); }
+strong { color: var(--bold); }
+a[href] { color: var(--link); }
+/* cursor */
+blink {
+  animation-name: blink;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+}
+@keyframes blink {
+  0% { opacity: 100%; }
+  50% { opacity: 100%; }
+  50.001% { opacity: 0%; }
+  100% { opacity: 0%; }
 }

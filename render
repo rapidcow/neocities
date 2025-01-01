@@ -54,7 +54,7 @@ my $file = shift;
 die "usage: $0 <file>\n" unless defined $file;
 
 my $template = Template->new({
-	INCLUDE_PATH => ['site', 'temple'],
+	INCLUDE_PATH => ['site', 'temple', 'include'],
 	FILTERS => {
 		or_else => [ \&or_else, 1 ],
 		to_root => [ \&to_root, 1 ],

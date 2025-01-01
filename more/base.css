@@ -1,2 +1,6 @@
 @charset "UTF-8";
-/* TODO */
+/* reset html defaults */
+h1, h2 { font-weight: inherit; font-size: inherit; }
+strong { font-weight: inherit; font-size: inherit; }
+body { font-family: "Px437 IBM VGA 8x14", monospace; }
+pre { font-family: inherit; }

@@ -2,10 +2,11 @@ BASE_URL ?= # the empty string, i.e. "/" is root
 SITE_URL ?= https://neocities.rapidcow.org
 export BASE_URL SITE_URL
 
-SITE_FILES = index.html
+SITE_FILES = index.html links.html
 MORE_FILES = \
       base.css \
       main.css \
+      ansi.css \
       robots.txt \
       neocities.png \
 

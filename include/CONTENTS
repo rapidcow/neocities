@@ -1,0 +1,8 @@
+<!-- Note: The actual command used for producing this output is:
+ls -Alpog --time-style=long-iso site | awk '{$2=""; print $0}' | grep -Ev '(index|not_found)[.]html'
+Namely the second column displaying the number of hard links is removed,
+and a relative path is used instead of the non-existent home directory
+used purely for the sake of... creating fondness in the site.
+(Of course, i guess setting HOME=$(git rev-parse --show-toplevel) also works :)
+-->[% MACRO entry(file) BLOCK %]<a href="[% file | uri %]">[% file %]</a>[% END -%]
+-rw-r--r-- 3115 2024-12-20 12:32    [% entry("links.html") %]
