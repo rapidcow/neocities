@@ -24,13 +24,15 @@
 }
 @media (prefers-color-scheme: light) {
   :root {
-    --back: #aaa;
-    --bold: #000;
-    --rgb-0: #aaa;
-    --rgb-7: #333;
-    --rgb-hi-0: #555;
+    /* this saturation is hard to get without 256bit, sorry :( */
+    --back: #b7c1cc;
+    --bold: #567;
+    --link: #fe0;
+    --rgb-0: #555;
+    --rgb-7: #222;
+    --rgb-hi-0: #aaa;
     --rgb-hi-7: #000;
-    --rgb-3: #fc0; /* dirty fix */
+    --rgb-3: #c60; --rgb-6: #1aa; /* dirty fix */
   }
 }
 .setaf-0  { color: var(--rgb-0); }
