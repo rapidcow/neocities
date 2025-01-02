@@ -18,3 +18,10 @@ public/%: site/%
 public/%: more/%
 	@mkdir -p $(dir $@)
 	cp $< $@
+# i don't know how "appending" prerequisite works...
+# i hope this does it?
+# https://www.gnu.org/software/make/manual/make.html#Match_002dAnything-Rules
+public/index.html: $(patsubst %,include/%.txt,WELCOME SITEMAP EPILOG TAGLINE)
+public/about.html: $(patsubst %,include/%.txt,README TAGLINE)
+
+.PHONY: site
