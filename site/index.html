@@ -1,26 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
 [% SET title = "rapidcow @ neocities" -%]
 [% SET location = "/index.html" -%]
+<html lang="en">
 [% WRAPPER base/head.html %]
   <link rel="stylesheet" href="[% location | to_root %]ansi.css">
   <link rel="stylesheet" href="[% location | to_root %]main.css">
 [% END -%]
 <body>
 <main>
-<pre><a id="welcome" href="#welcome">$</a> cat WELCOME
-[% INCLUDE WELCOME -%]
+<pre>
+$ cat WELCOME.txt
+[% INCLUDE WELCOME.txt -%]
 
-<a id="navigation" href="#navigation">$</a> ls -Alpog ~/site | grep -Ev '(index|not_found)[.]html'
-[% INCLUDE CONTENTS -%]
+$ cat README.txt
+[% INCLUDE README.txt -%]
 
-<a id="readme" href="#readme">$</a> cat README
-[% INCLUDE README -%]
+$ cat EPILOG.txt
+[% INCLUDE EPILOG.txt -%]
 
-<a id="readme" href="#readme">$</a> cat EPILOG
-[% INCLUDE EPILOG -%]
-
-<a id="readme" href="#readme">$</a> ^D
+$ bye
 logout
 </pre>
 </main>
