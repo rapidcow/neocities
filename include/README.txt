@@ -1,4 +1,4 @@
----[ Why this site? ]---
+--&gt; Why this site?
 
 [% SET Xcom = "https://arstechnica.com/tech-policy/2024/03/elon-musks-improbable-path-to-making-x-an-everything-app/" -%]
 This is a little something to experiment with creating a Web I like
@@ -56,4 +56,65 @@ and re-branded to likings of their business model...
    It seems that 200 TWh is not too far off from reality....)
 %]-->[%#-%]
 
-... but none of this describes what I like.
+But none of this describes what I like.  At the end of the day,
+when the noises die down.... you'd see that none of this matters;
+yet all there is left within is just bitter indignation, directed
+solely at the frivolous debates over the decisions made by people
+at the top.  ``So this,'' you say, ``this is it for us then... if
+it didn't matter how much I try to tell them I am different, we
+are after all puppets to what they think of us, and speak of us?''
+
+Well that was what I pondered and came to the sad conclusion of...
+until I thought of this: you can't change how they think by giving
+angst rants -- heck, being angst is not what I like either -- but
+you change by <strong>showing</strong> them what you mean.  You show it by <strong>making</strong>
+the things you DO love and the things you DO care about.  Listing
+things you hate and the kinds of people you aren't will never be
+enough, because there will always be more to disagree with...
+[%# let's pick this up tomorrow #-%]
+
+--&gt; Alright... What is this site <u>about</u> then?
+
+In anticipation of a reboot of www.rapidcow.org I want to collect
+all I can find from around the Internet about the art of creating
+things for the sake of the craft (with an overwhelming share from
+the World Wide Web -- well, I'm biased, you know. ;)
+
+Sometimes they fall right under categories with a cool name like
+the Web Revival and Low Tech movement, as well as an advocacy for
+UNIX philosophies and open exchange formats (specifically, UTF-8
+encoded plain text files, though I have a heavy bias for ASCII text
+wrapped at 64/72/76 chars for reasons I don't fully understand X)
+Others, not so much... I like cool things when I see them.  And I
+want to blather to a friend when I see one until I realize I don't
+have one and even if I do they could never bear the length of the
+paragraphs worth of text I write (... nah. I don't really care....
+*sniff* =M=)
+
+But you might find it cool too! So I'm putting those here too. :)
+
+(Ooh, ooh! This might be more exciting though: ``Things they don't
+teach you at school, or the industry, or anywhere really'' -- 'cause
+that's precisely what this is about!  Like- Did you know that Git is
+really just an information management system with a content-address-
+able database with an open and well-documented API,<!--
+Note: emphasis on API.  Plumbing (e.g. git-ls-tree) is as far as you
+can go, before needing to dive directly into the source code for a
+single source of truth (... besides Stack Overflow, which is an
+admirable effort to make up for that truth. :) --> so you can tech-
+nically use it to track any files (not just code NOT JUST BORING-ASS
+CODE you write once and never look at again!) Did you know that Git
+unlike GitHub is free -- free as in free to modify free to inspect
+free to extend, free, free uh..... free to use to track <em>anything</em> you
+want to keep a history of!  And you get to keep it <em>ALL</em> to yourself
+without <em>EVER</em> needing to send it to GitHub, for Microsoft and the
+whole world to see!!!  Heck you can write diaries and tell Git to
+track them -- Git won't judge you.... :')
+
+And I'm not finished! UNIX commands, file systems, I/O, sockets,
+protocols -- there is <em>so much more</em> I want to talk about (all of
+these I think are so much more interesting than CS classes!)
+I'm also learning these things as I speak, I don't know everything
+and I don't claim to know them inside out...  After all, I'm just a
+stupid boy who likes to rave about cool things -- cool things they
+never taught me and will NEVER teach at school! XD

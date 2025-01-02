@@ -19,6 +19,7 @@ strong { color: var(--rgb-hi-7); }
 em { color: var(--rgb-6); }
 a { color: var(--rgb-1); }
 a[href] { color: var(--rgb-hi-3); }
+u { color: var(--rgb-hi-7); }
 /* cursor */
 blink {
   animation-name: blink;
