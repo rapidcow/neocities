@@ -15,10 +15,10 @@ strong { font-weight: inherit; font-size: inherit; }
 em { font-style: inherit; }
 /* cool colors */
 body { background-color: var(--back); color: var(--rgb-7); }
-strong { color: var(--bold); }
+strong { color: var(--rgb-hi-7); }
 em { color: var(--rgb-6); }
 a { color: var(--rgb-1); }
-a[href] { color: var(--link); }
+a[href] { color: var(--rgb-hi-3); }
 /* cursor */
 blink {
   animation-name: blink;

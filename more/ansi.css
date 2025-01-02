@@ -3,8 +3,6 @@
  * (based on: drivers/tty/vt/vt.c). */
 :root {
   --back: #000; /* background */
-  --bold: #fff;
-  --link: #ff5;
   --rgb-0: #000; /* ... black */
   --rgb-1: #a00; /* R.. red */
   --rgb-2: #0a0; /* .G. green */
@@ -26,15 +24,13 @@
   :root {
     /* this saturation is hard to get without 256bit, sorry :( */
     --back: #b7c1cc;
-    --bold: #567;
-    --link: #fe2;
     --rgb-0: #555;
-    --rgb-7: #222;
-    --rgb-hi-0: #aaa;
-    --rgb-hi-7: #000;
-    /* dirty fixes */
     --rgb-3: /* #f59c32 */ #d73;
+    --rgb-7: #222;
     --rgb-6: #1aa;
+    --rgb-hi-0: #aaa;
+    --rgb-hi-3: #fe2;
+    --rgb-hi-7: #567;
   }
 }
 .setaf-0  { color: var(--rgb-0); }
