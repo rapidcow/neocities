@@ -27,12 +27,14 @@
     /* this saturation is hard to get without 256bit, sorry :( */
     --back: #b7c1cc;
     --bold: #567;
-    --link: #fe0;
+    --link: #fe2;
     --rgb-0: #555;
     --rgb-7: #222;
     --rgb-hi-0: #aaa;
     --rgb-hi-7: #000;
-    --rgb-3: #c60; --rgb-6: #1aa; /* dirty fix */
+    /* dirty fixes */
+    --rgb-3: /* #f59c32 */ #d73;
+    --rgb-6: #1aa;
   }
 }
 .setaf-0  { color: var(--rgb-0); }
