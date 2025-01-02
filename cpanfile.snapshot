@@ -14,6 +14,12 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 0
       Test::More 0
       perl 5.008008
+  HTML-Tiny-1.08
+    pathname: A/AR/ARISTOTLE/HTML-Tiny-1.08.tar.gz
+    provides:
+      HTML::Tiny 1.08
+    requirements:
+      perl 5.006
   Template-Toolkit-3.102
     pathname: T/TO/TODDR/Template-Toolkit-3.102.tar.gz
     provides:
