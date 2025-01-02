@@ -15,7 +15,7 @@ $ <strong>cat</strong> WELCOME.txt
 $ <strong>cat</strong> SITEMAP.txt
 [% INCLUDE SITEMAP.txt -%]
 
-$ <strong>cat</strong> EPILOG.txt TAGLINE.txt &amp;&amp; <strong>fortune</strong> &amp;&amp; <strong>logout</strong>
+$ <strong>cat</strong> EPILOG.txt TAGLINE.txt &amp;&amp; <strong>fortune</strong>
 [% INCLUDE EPILOG.txt -%]
 [% INCLUDE TAGLINE.txt -%]
 [% FILTER html -%]
@@ -24,7 +24,6 @@ $ <strong>cat</strong> EPILOG.txt TAGLINE.txt &amp;&amp; <strong>fortune</strong
            << There's something out there far from my home >>
            <<       A longing that I've never known        >>
 [% END -%]
-[process exited with code 0]
 </pre>
 </main>
 </body>
