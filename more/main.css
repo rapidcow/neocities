@@ -16,6 +16,7 @@ em { font-style: inherit; }
 /* cool colors */
 body { background-color: var(--back); color: var(--rgb-7); }
 strong { color: var(--bold); }
+em { color: var(--rgb-6); }
 a[href] { color: var(--link); }
 /* cursor */
 blink {

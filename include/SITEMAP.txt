@@ -1,0 +1,10 @@
+      <strong>o</strong> <a href="about.html">Why this site</a>?                    # What's cooking?
+[% FILTER html -%]
+        (What people normally               (Change log &
+         call an ``about'' page)             time machine)
+[% END -%]
+      # Some goodies I like               # Notes and Manuals
+[% FILTER html -%]
+        (Link dump & inspirations)          (Neat references)
+[% END -%]
+<em>Note</em>: Pages prefixed with a `#' sign are a work in progress.

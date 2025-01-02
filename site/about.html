@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+[% SET title = "About rapidcow@neocities" -%]
+[% SET location = "/about.html" -%]
+<html lang="en">
+[% WRAPPER base/head.html %]
+  <link rel="stylesheet" href="[% location | to_root %]ansi.css">
+  <link rel="stylesheet" href="[% location | to_root %]main.css">
+[% END -%]
+<body>
+<main>
+<pre>
+]--[<a href="[% location | to_root %]">Home</a>]---[About]-----------------------------------------------[
+
+[% INCLUDE README.txt %]
+</pre>
+</main>
+</body>
+</html>
