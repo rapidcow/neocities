@@ -6,7 +6,7 @@ html {
   /* wait this is actually so tight??? i can't believe
    * i've never noticed it when setting this to 1.2...
    * am i tripping?  or do i just have to look away... */
-  line-height: 16pt;
+  line-height: 1.1;
 }
 body {
   max-width: 72ch;
