@@ -1,4 +1,4 @@
---&gt; Why this site?
+--<a href="#why" id="why">&gt;</a> Why this site?
 
 [% SET Xcom = "https://arstechnica.com/tech-policy/2024/03/elon-musks-improbable-path-to-making-x-an-everything-app/" -%]
 This is a little something to experiment with creating a Web I like
@@ -81,7 +81,7 @@ that it <em>CAN be</em> -- and with time, thinking, love... (and of course
 financial stability because life isn't a fairy tale =n=) I would
 even dare to say that it <em>WILL be</em> beautiful and meaningful.
 
---&gt; Alright... What is this site <u>about</u> then?
+--<a href="#what" id="what">&gt;</a> Alright... What is this site <u>about</u> then?
 
 In anticipation of a reboot of www.rapidcow.org I want to collect
 all I can find from around the Internet about the art of creating
