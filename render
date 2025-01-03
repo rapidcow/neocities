@@ -31,9 +31,14 @@ sub or_else {
 sub to_root {
 	my ($ctx, $root) = @_;
 	$root //= "/";
+	unless (substr ($root, 0, 1) eq "/") {
+		die "root missing a leading slash: $root\n";
+	}
 	return sub {
 		my $path = shift;
-		die "bad URL location: $path\n" unless substr ($path, 0, 1) eq "/";
+		unless (substr ($path, 0, 1) eq "/") {
+			die "URL location missing a leading slash: $path\n";
+		}
 		my ($volume, $directory, $file) = File::Spec::Unix->splitpath ($path);
 		my $relative = File::Spec::Unix->abs2rel ($root, $directory);
 		if (substr ($relative, 0, 1) eq "/") {
