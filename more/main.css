@@ -21,7 +21,7 @@ a { color: var(--rgb-1); }
 a[href] { color: var(--rgb-hi-3); }
 u { color: var(--rgb-hi-7); }
 @media (prefers-color-scheme: light) {
-  em { color: var(--rgb-4); }
+  em { color: var(--rgb-hi-4); }
 }
 /* cursor */
 blink {
