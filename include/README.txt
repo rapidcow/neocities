@@ -126,3 +126,5 @@ I'm also learning these things as I speak, I don't know everything
 and I don't claim to know them inside out...  After all, I'm just a
 stupid boy who likes to rave about cool things -- cool things they
 never taught me and will NEVER teach at school! XD
+
+So yeah... I hope you will like it too. :)
