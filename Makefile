@@ -4,7 +4,8 @@ export BASE_URL SITE_URL
 
 SITE_FILES = \
 	index.html \
-	about.html
+	about.html \
+	not_found.html
 MORE_FILES = \
 	base.css \
 	main.css \
@@ -25,6 +26,8 @@ public/index.html: $(patsubst %,include/%.txt,WELCOME SITEMAP EPILOG TAGLINE)
 public/about.html: $(patsubst %,include/%.txt,README TAGLINE)
 
 # all HTMLs inherit from the base template so far...
-$(patsubst %,public/%.html,index about): temple/base/head.html
+$(patsubst %,public/%.html,index about not_found): temple/base/head.html
+# cache invalidation demands that the links be rebuilt
+$(patsubst %,public/%.html,index about not_found): $(patsubst %,more/%.css,base ansi main)
 
 .PHONY: site
