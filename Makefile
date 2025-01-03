@@ -49,7 +49,7 @@ public/share/index.html: temple/minimal/head.html
 
 public/share/int10h.org/index.html \
 public/share/int10h.org/oldschool-pc-fonts/index.html \
-public/share/int10h.org/oldschool-pc-fonts/v2.2/index.html: temple/redirect.html
+public/share/int10h.org/oldschool-pc-fonts/v2.2/index.html: temple/redirect/index.html
 # XXX: does this work? (hook dependencies of redirect
 # to also depend on head...)
 temple/redirect.html: temple/minimal/head.html
