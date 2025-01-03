@@ -11,6 +11,9 @@ MORE_FILES = \
 	main.css \
 	ansi.css \
 	robots.txt
+# note: some contrib files are generated dynamically
+# (placed within site/), they are to be excluded from
+# git log and the like stuff
 CONTRIB_FILES = \
 	share/index.html \
 	share/int10h.org/oldschool-pc-fonts/v2.2/README.TXT \
@@ -37,5 +40,8 @@ public/about.html: $(patsubst %,include/%.txt,README TAGLINE)
 $(patsubst %,public/%.html,index about not_found): temple/base/head.html
 # cache invalidation demands that the links be rebuilt
 $(patsubst %,public/%.html,index about not_found): $(patsubst %,more/%.css,base ansi main)
+
+# standalone HTML dependencies
+public/share/index.html: temple/minimal/head.html
 
 .PHONY: site

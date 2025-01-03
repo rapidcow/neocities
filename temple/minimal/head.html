@@ -1,0 +1,13 @@
+[%# minimal standalone html <head> -%]
+[% DEFAULT content = "\n" -%]
+<head>
+  <meta charset="UTF-8">
+[% IF title %]  <title>[% title %]</title>[% END %]
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- embed CSS to be self-contained -->
+  <style>
+    html { color-scheme: light dark; font-size: 16pt; line-width: 1.2; }
+    body { margin: 2rem; }
+  </style>
+[%- content -%]
+</head>
