@@ -16,6 +16,9 @@ MORE_FILES = \
 # git log and the like stuff
 CONTRIB_FILES = \
 	share/index.html \
+	share/int10h.org/index.html \
+	share/int10h.org/oldschool-pc-fonts/index.html \
+	share/int10h.org/oldschool-pc-fonts/v2.2/index.html \
 	share/int10h.org/oldschool-pc-fonts/v2.2/README.TXT \
 	share/int10h.org/oldschool-pc-fonts/v2.2/LICENSE.TXT \
 	share/int10h.org/oldschool-pc-fonts/v2.2/Web437_IBM_VGA_8x16.woff
@@ -43,5 +46,12 @@ $(patsubst %,public/%.html,index about not_found): $(patsubst %,more/%.css,base 
 
 # standalone HTML dependencies
 public/share/index.html: temple/minimal/head.html
+
+public/share/int10h.org/index.html \
+public/share/int10h.org/oldschool-pc-fonts/index.html \
+public/share/int10h.org/oldschool-pc-fonts/v2.2/index.html: temple/redirect.html
+# XXX: does this work? (hook dependencies of redirect
+# to also depend on head...)
+temple/redirect.html: temple/minimal/head.html
 
 .PHONY: site
