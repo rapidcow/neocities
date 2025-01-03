@@ -28,6 +28,12 @@ sub or_else {
 
 # to_root(dir): return relative path of how to get to dir
 # (defaults to root) example: location | to_root
+# tip: there isn't much magic going on with this function.
+# if you have a fixed input, you already know its output.
+# e.g. '/' | to_root is always going to be '.', because...
+# well, you are the root.  and '/' | to_root('/share') is
+# simply 'share'.  so avoid using to_root in those simple
+# circumstances ^^
 sub to_root {
 	my ($ctx, $root) = @_;
 	$root //= "/";

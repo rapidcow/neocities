@@ -1,4 +1,4 @@
-       ASCII cow inspired by <a href="https://web.archive.org/web/20120225123719/http://www.nog.net/~tony/warez/cowsay.shtml">cowsay</a>, ASCII cat of unclear origin :(
+      ASCII cow inspired by <a href="https://web.archive.org/web/20120225123719/http://www.nog.net/~tony/warez/cowsay.shtml">cowsay</a>, ASCII cat of unclear origin :(
 <!-- the best i can find (with google) is this commercial link:
 https://www.spreadshirt.co.uk/shop/design/cute+ascii+cat+cute+ascii+cat+mouse+pad-D61fe830587cfd2497d1d922c?sellable=gnYqDvYlBbTkeRG2xqRk-993-43
 (I have no idea what the sellable query does, and the page seems
@@ -13,3 +13,4 @@ Replace asterisks (*) with hyphens (-).
 (I'm afraid I can't do that here because double hyphen
 is, strictly speaking (e.g. as XHTML)... wrong)
 -->[%#-%]
+          using <a href="https://int10h.org/oldschool-pc-fonts/fontlist/font?ibm_vga_8x16">VGA 8x16</a> from <a href="https://int10h.org/oldschool-pc-fonts/">Oldschool PC Fonts</a> (see <a href="share/">/share/</a>)
