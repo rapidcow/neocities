@@ -21,9 +21,6 @@ site: $(SITE_FILES:%=public/%) $(MORE_FILES:%=public/%) $(CONTRIB_FILES:%=public
 public/%: site/% render
 	@mkdir -p $(dir $@)
 	carmel exec ./render $* > $@
-public/%.css: more/%.css
-	@mkdir -p $(dir $@)
-	carmel exec ./render $*.css > $@
 public/%: more/%
 	@mkdir -p $(dir $@)
 	cp $< $@
