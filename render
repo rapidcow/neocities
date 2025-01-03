@@ -47,7 +47,7 @@ sub to_root {
 # as_link(is_abs): return full path, relative (0) or absolute (1)
 # completely equivalent to joining BASE_URL / SITE_URL, except i am
 # seeing if i can avoid passing those variables explicitly now...
-# (to get those two, i guess "" | to_link(0) or (1) works?)
+# (to get those two, i guess "/" | to_link(0) or (1) works?)
 sub as_link {
 	my ($ctx, $abs) = @_;
 	$abs //= 1;

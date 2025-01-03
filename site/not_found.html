@@ -1,26 +1,43 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Not Found</title>
-    <link href="/style.css" rel="stylesheet" type="text/css" media="all">
-  </head>
-  <body>
-    <h1>page not found :(</h1>
-    <p>oh&hellip; you lost something? I know how it feels&hellip;</p>
-    <p>You try to recall what it was like, but nothing but a tingling
-    sense of sadness comes up. You try to muster a few words, in hopes
-    of describing it to yourself, but mere words fall out.
-    was it all but a dream?</p>
-    <p>You stare into oblivion&hellip; you swear it should have been there.
-    if not, what have you been searching for? was it all for nothing,
-    or do you just have to keep on searching&hellip;</p>
-    <p>&ldquo;<em>may it be found among the twinkling stars in
-      the dying sky&hellip;&hellip;</em>&rdquo;</p>
-    <p>.<br>
-       .<br>
-       .</p>
-    <p>(or perhaps you want to <a href="/">go back</a>?)</p>
-  </body>
+<html lang="en">
+[% SET title = '404 Not Found' -%]
+[% WRAPPER base/head.html %]
+  <link rel="stylesheet" type="text/css" href="[% '/' | as_link(0) | xml %]ansi.css?v=[% digest ('ansi.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% '/' | as_link(0) | xml %]main.css?v=[% digest ('main.css') %]">
+[% END -%]
+<body>
+<main>
+<h1>404 Not Found</h1>
+<pre>[%#-%]
+NOTE: If you are here for the links that used to be at <strong>links.html</strong>, you
+might have to wait for a bit for me to put up a new <strong>links/index.html</strong>.
+if not, <span class="setaf-3">get lost</span>!  This has NEVER been a valid URL, blegh! :P
+
+(I could have <em>technically</em> written the message there instead, but...
+I'm too lazy to re-create an HTML file to cover that up....)
+
+The original 404 page is retained below (with minor typographical
+adjustments to accommodate the new CSS)<!-- actually, it kind of
+sucked, so I reworded it too - but don't tell anyone... :] -->:
+
+                               *   *   *
+
+oh... you lost something? I know how it feels...
+
+You try to recall what it was like, but nothing but a tingling sense of
+sadness comes up.  You try to muster a few words, in hopes of describing
+it to yourself, but nothing comes out -- was it all just a dream?
+
+You stare into oblivion... you swear it should have been there.
+if not, what have you been searching for? was it all for nothing, or
+do you just have to keep on searching...
+
+``<em>may it be found among the twinkling stars in the dying sky....</em>''
+.
+.
+.
+(or perhaps you want to <a href="[% '/' | as_link(0) %]">go back</a>?)
+</pre>
+</main>
+</body>
 </html>

@@ -2,7 +2,7 @@
 [% DEFAULT
   title = "rapidcow in neocities"
   author = "rapidcow"
-  location = "/"
+  location = "" # XXX: explicitly nullable? prolly a bad idea...
   content = "\n"
 -%]
 <head>
@@ -10,7 +10,9 @@
   <title>[% title | html %]</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="[% author | xml %]">
+[% IF location -%]
   <link rel="canonical" type="text/html" href="[% location | as_link | xml %]">
+[% END -%]
 [% IF location == "/index.html" -%]
 <!--
   Hey! If you see this ?v=(27 bytes of gibberish), don't be alarmed!
@@ -68,6 +70,13 @@
   the HTML comment in /index.html.  But basically - it's not magically
   returning different versions of a file; it's for cache invalidation. -->
 [% END -%]
+[%# to_root() will be a problem if we don't have a location #-%]
+[%# in that case we just don't even bother figure out how to #-%]
+[%# climb up - we'll just fall straight back to the root. #-%]
+[% IF location -%]
   <link rel="stylesheet" type="text/css" href="[% location | to_root | xml %]base.css?v=[% digest ('base.css') %]">
-[%- content -%]
+[%- ELSE -%]
+  <link rel="stylesheet" type="text/css" href="[% '/' | as_link(0) | xml %]base.css?v=[% digest ('base.css') %]">
+[%- END -%]
+[% content -%]
 </head>

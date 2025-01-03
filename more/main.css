@@ -6,7 +6,7 @@ html {
   line-height: 1.2;
 }
 body {
-  max-width: 80ch;
+  max-width: 72ch;
   padding: 3.0rem;
   margin: 0 auto;
 }
@@ -15,7 +15,7 @@ strong { font-weight: inherit; font-size: inherit; }
 em { font-style: inherit; }
 /* cool colors */
 body { background-color: var(--back); color: var(--rgb-7); }
-strong { color: var(--rgb-hi-7); }
+strong, h1, h2 { color: var(--rgb-hi-7); }
 em { color: var(--rgb-6); }
 a { color: var(--rgb-1); }
 a[href] { color: var(--rgb-hi-3); }
@@ -35,3 +35,5 @@ blink {
   50.001% { opacity: 0%; }
   100% { opacity: 0%; }
 }
+/* to emulate lynx.... */
+h1, h2 { text-align: center; }
