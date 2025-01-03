@@ -3,8 +3,8 @@
 [% SET location = "/index.html" -%]
 <html lang="en">
 [% WRAPPER base/head.html %]
-  <link rel="stylesheet" href="[% location | to_root %]ansi.css">
-  <link rel="stylesheet" href="[% location | to_root %]main.css">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]ansi.css?v=[% digest ('ansi.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]main.css?v=[% digest ('main.css') %]">
 [% END -%]
 <body>
 <main>

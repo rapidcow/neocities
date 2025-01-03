@@ -4,13 +4,16 @@ use 5.010;
 use strict;
 use warnings;
 use Template;
+use File::Spec;
 use File::Spec::Unix;
+use Digest::SHA;
 # handy guys for templating
 use HTML::Tiny;
 use Time::Piece;
 
 my $BASE_URL = $ENV{BASE_URL}; die "please export BASE_URL\n" unless defined $BASE_URL;
 my $SITE_URL = $ENV{SITE_URL}; die "please export SITE_URL\n" unless defined $SITE_URL;
+my @include = qw( site temple include more );
 
 # unused - but when DEFAULT becomes too funky with
 # falsy strings, this should do a better job
@@ -53,11 +56,45 @@ sub as_link {
 		: sub { return $BASE_URL . $_[0]; };
 }
 
+# versioning trick (i don't care about dates,
+# hashing is so much better :)
+sub _digest {
+	my ($file) = @_;
+	my $dgst = Digest::SHA->new(1);
+	for my $cat (@include) {
+		my $test = File::Spec->catfile ($cat, $file);
+		if (-r $test) {
+			$file = $test;
+			last;
+		}
+	}
+	my $size = -s $file or die "$!: $file";
+	$dgst->add("blob $size\0");
+	$dgst->addfile($file, 'b');
+	$dgst;
+}
+
+sub digest {
+	my $dgst = _digest (@_);
+	my $hash = $dgst->b64digest;
+	# PHP seems to have strtr for this.... (whereas
+	# in python i recall having str.translate):
+	# https://stackoverflow.com/a/5835352
+	# in perl we have something better ;)
+	$hash =~ tr'+/='-_.';
+	$hash; # hash! what an impactful statement :)
+}
+
+sub hexdigest {
+	my $dgst = _digest (@_);
+	$dgst->hexdigest;
+}
+
 my $file = shift;
 die "usage: $0 <file>\n" unless defined $file;
 
-my $template = Template->new({
-	INCLUDE_PATH => ['site', 'temple', 'include'],
+my $temple = Template->new({
+	INCLUDE_PATH => \@include,
 	EVAL_PERL => 1,
 	FILTERS => {
 		or_else => [ \&or_else, 1 ],
@@ -66,4 +103,7 @@ my $template = Template->new({
 	},
 }) || die $Template::ERROR, "\n";
 
-$template->process($file) || die $template->error(), "\n";
+$temple->process($file, {
+	digest => \&digest,
+	hexdigest => \&hexdigest,
+}) || die $temple->error(), "\n";

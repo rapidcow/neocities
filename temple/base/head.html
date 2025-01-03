@@ -11,6 +11,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="[% author | xml %]">
   <link rel="canonical" type="text/html" href="[% location | as_link | xml %]">
-  <link rel="stylesheet" type="text/css" href="[% location | to_root | xml %]base.css">
+[% IF location == "/index.html" -%]
+<!--
+  Hey! If you see this ?v=(27 bytes of gibberish), don't be alarmed!
+  That part is known as the query of a URL; a HTTP server that serving
+  static content (Apache, nginx, etc.) will only look at the PATH component
+  (that is, "[% location | to_root %]base.css").  Doing this does not magically make the server
+  return a file any different than ?v=(some other 27 bytes of gibberish)
+  and ?v=unicorn does.  The *point* of including it, however, is because
+  a web browser caches the CSS by its URL and doesn't bother to re-fetch
+  it unless you do a hard refresh - and you can imagine how asking every
+  person who has ever visited your site to do a hard refresh whenever
+  you update...  But if you are a human and not a site generator, you'd
+  likely prefer to keep the stylesheets readable, so renaming the file
+  every time you update is also pretty annoying...  And thus the solution?
+  Use the query to differentiate the CSS files - so I get to keep the CSS
+  file name, while the cache gets invalidated whenever that query changes!
+
+  As to what this (27 bytes of gibberish) is, it's actually a SHA-1
+  hash of the file itself, minus the one byte of padding:
+  ($ and > are not a part of the command)
+      $ echo "[% digest('base.css') %]" | sed 'y!-_!+/!' |
+      > base64 --decode | xxd -plain
+      [% hexdigest('base.css') %]
+  Well - almost the file itself.  In reality it's actually hashing the file
+  prepended with the ASCII word "blob" (all lowercase), plus a space, plus
+  the size of the file written in base-10 ASCII digits, plus the null byte.
+  If you have the file physically with you (which you should, by the time
+  I set up the changelog), you may reproduce it like this (note for BSD stat
+  (e.g. the one shipped with MacOS), replace -c%s with -f%z):
+      $ printf 'blob %d\0' $(stat -c%s base.css) | cat - base.css |
+      > # look up what the SHA1 digest command on your machine is called:
+      > # GNU provides sha1sum, BSD provides sha1, though they have wildly
+      > # different outputs - For saner cross platform commands, look to
+      > # perl's shasum, or openssl's sha1.  I'll use openssl because that
+      > # gives the most consistent output:
+      > openssl sha1 -binary | xxd -plain
+      [% hexdigest('base.css') %]
+      $ # and you can swap xxd for base64 to get base64 instead too...
+  though all of this is trivial if you have git installed:
+      $ git hash-object base.css
+      [hopefully, assuming Git hasn't switched to sha256... :]
+  (For those vigilant about security: yes.  This means that this random
+   string is actually proof that the CSS is untampered.  Whether you
+   trust that proof is a different matter (SHA1 is considered rather
+   insecure, but is anyone realistically going to come here and forge
+   a malicious CSS with the same SHA1 checksum with a supercomputer,
+   and replace the one I wrote?  That is orders of magnitude HARDER
+   than if they just.... hijack the website entirely.  So in terms of
+   practicality, SHA1 is safe, at least, safer than your weakest point
+   (see this classic: https://xkcd.com/538/)).  But for file integrity in
+   case your devices are faulty... I'd say this is something nice to have :)
+-->
+[% ELSE -%]
+  <!-- for an explanation of what this "?v=..." part is for, refer to
+  the HTML comment in /index.html.  But basically - it's not magically
+  returning different versions of a file; it's for cache invalidation. -->
+[% END -%]
+  <link rel="stylesheet" type="text/css" href="[% location | to_root | xml %]base.css?v=[% digest ('base.css') %]">
 [%- content -%]
 </head>

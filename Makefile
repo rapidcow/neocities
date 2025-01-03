@@ -1,5 +1,5 @@
 BASE_URL ?= # the empty string, i.e. "/" is root
-SITE_URL ?= https://neocities.rapidcow.org
+SITE_URL ?= https://rapidcow.neocities.org
 export BASE_URL SITE_URL
 
 SITE_FILES = \
@@ -12,7 +12,7 @@ MORE_FILES = \
 	robots.txt
 
 site: $(SITE_FILES:%=public/%) $(MORE_FILES:%=public/%)
-public/%: site/%
+public/%: site/% render
 	@mkdir -p $(dir $@)
 	carmel exec ./render $* > $@
 public/%: more/%
@@ -23,5 +23,8 @@ public/%: more/%
 # https://www.gnu.org/software/make/manual/make.html#Match_002dAnything-Rules
 public/index.html: $(patsubst %,include/%.txt,WELCOME SITEMAP EPILOG TAGLINE)
 public/about.html: $(patsubst %,include/%.txt,README TAGLINE)
+
+# all HTMLs inherit from the base template so far...
+$(patsubst %,public/%.html,index about): temple/base/head.html
 
 .PHONY: site
