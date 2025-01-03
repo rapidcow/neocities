@@ -14,12 +14,105 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 0
       Test::More 0
       perl 5.008008
+  Error-0.17029
+    pathname: S/SH/SHLOMIF/Error-0.17029.tar.gz
+    provides:
+      Error 0.17029
+      Error::Simple 0.17029
+      Error::WarnDie 0.17029
+      Error::subs 0.17029
+    requirements:
+      Carp 0
+      Exporter 0
+      ExtUtils::MakeMaker 0
+      Module::Build 0.28
+      Scalar::Util 0
+      overload 0
+      perl 5.006
+      strict 0
+      vars 0
+      warnings 0
+  Git-0.42
+    pathname: M/MS/MSOUTH/Git-0.42.tar.gz
+    provides:
+      Error 0.15009
+      Error::Simple 0.15009
+      Error::subs 0.15009
+      Git 0.42
+      Git::Error::Command 0.42
+      Git::I18N undef
+      Git::IndexInfo undef
+      Git::SVN undef
+      Git::SVN::Editor undef
+      Git::SVN::Fetcher undef
+      Git::SVN::GlobSpec undef
+      Git::SVN::Log undef
+      Git::SVN::Memoize::YAML undef
+      Git::SVN::Migration undef
+      Git::SVN::Prompt undef
+      Git::SVN::Ra undef
+      Git::SVN::Utils undef
+      Git::activestate_pipe 0.42
+    requirements:
+      Carp 0
+      Cwd 0
+      Error 0
+      ExtUtils::MakeMaker 0
+      Fcntl 0
+      IPC::Open2 0
+      Time::Local 0
+      perl 5.008
   HTML-Tiny-1.08
     pathname: A/AR/ARISTOTLE/HTML-Tiny-1.08.tar.gz
     provides:
       HTML::Tiny 1.08
     requirements:
       perl 5.006
+  Module-Build-0.4234
+    pathname: L/LE/LEONT/Module-Build-0.4234.tar.gz
+    provides:
+      Module::Build 0.4234
+      Module::Build::Base 0.4234
+      Module::Build::Compat 0.4234
+      Module::Build::Config 0.4234
+      Module::Build::Cookbook 0.4234
+      Module::Build::Dumper 0.4234
+      Module::Build::Notes 0.4234
+      Module::Build::PPMMaker 0.4234
+      Module::Build::Platform::Default 0.4234
+      Module::Build::Platform::MacOS 0.4234
+      Module::Build::Platform::Unix 0.4234
+      Module::Build::Platform::VMS 0.4234
+      Module::Build::Platform::VOS 0.4234
+      Module::Build::Platform::Windows 0.4234
+      Module::Build::Platform::aix 0.4234
+      Module::Build::Platform::cygwin 0.4234
+      Module::Build::Platform::darwin 0.4234
+      Module::Build::Platform::os2 0.4234
+      Module::Build::PodParser 0.4234
+    requirements:
+      CPAN::Meta 2.142060
+      Cwd 0
+      Data::Dumper 0
+      ExtUtils::CBuilder 0.27
+      ExtUtils::Install 0
+      ExtUtils::Manifest 0
+      ExtUtils::Mkbootstrap 0
+      ExtUtils::ParseXS 2.21
+      File::Basename 0
+      File::Compare 0
+      File::Copy 0
+      File::Find 0
+      File::Path 0
+      File::Spec 0.82
+      Getopt::Long 0
+      Module::Metadata 1.000002
+      Perl::OSType 1
+      TAP::Harness 3.29
+      Text::Abbrev 0
+      Text::ParseWords 0
+      perl 5.006001
+      version 0.87
   Template-Toolkit-3.102
     pathname: T/TO/TODDR/Template-Toolkit-3.102.tar.gz
     provides:
