@@ -60,9 +60,13 @@ But none of this describes what I like.  At the end of the day,
 when the noises die down.... you'd see that none of this matters;
 yet all there is left within is just bitter indignation, directed
 solely at the frivolous debates over the decisions made by people
-at the top.  ``So this,'' you say, ``this is it for us then... if
-it didn't matter how much I try to tell them I am different, we
-are after all puppets to what they think of us, and speak of us?''
+at the top.  ``So this,'' you say, ``this is it for us then... it
+doesn't matter how much I try to tell them I am different.  I am
+just another ordinary person, an insignificant grain of sand in
+the annals of time, a dull boring face like any other... destined
+to sit in the same seats in those colorless classrooms, and work
+my life away in those same gray cubicles, do as what they tell me
+and be who they describe me to be....''
 
 Well that was what I pondered and came to the sad conclusion of...
 until I thought of this: you can't change how they think by giving
@@ -70,8 +74,12 @@ angst rants -- heck, being angst is not what I like either -- but
 you change by <strong>showing</strong> them what you mean.  You show it by <strong>making</strong>
 the things you DO love and the things you DO care about.  Listing
 things you hate and the kinds of people you aren't will never be
-enough, because there will always be more to disagree with...
-[%# let's pick this up tomorrow #-%]
+enough, because there will always be more to disagree with.  But
+making things is powerful, and creation can be beautiful -- not
+that it is a guarantee that everything we make is beautiful, but
+that it <em>CAN be</em> -- and with time, thinking, love... (and of course
+financial stability because life isn't a fairy tale =n=) I would
+even dare to say that it <em>WILL be</em> beautiful and meaningful.
 
 --&gt; Alright... What is this site <u>about</u> then?
 
