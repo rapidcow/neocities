@@ -2,8 +2,11 @@
 /* misc stuff */
 html {
   color-scheme: dark light;
-  font-size: 15pt;
-  line-height: 1.2;
+  font-size: 16pt;
+  /* wait this is actually so tight??? i can't believe
+   * i've never noticed it when setting this to 1.2...
+   * am i tripping?  or do i just have to look away... */
+  line-height: 16pt;
 }
 body {
   max-width: 72ch;

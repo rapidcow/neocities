@@ -11,12 +11,23 @@ MORE_FILES = \
 	main.css \
 	ansi.css \
 	robots.txt
+CONTRIB_FILES = \
+	share/index.html \
+	share/int10h.org/oldschool-pc-fonts/v2.2/README.TXT \
+	share/int10h.org/oldschool-pc-fonts/v2.2/LICENSE.TXT \
+	share/int10h.org/oldschool-pc-fonts/v2.2/Web437_IBM_VGA_8x16.woff
 
-site: $(SITE_FILES:%=public/%) $(MORE_FILES:%=public/%)
+site: $(SITE_FILES:%=public/%) $(MORE_FILES:%=public/%) $(CONTRIB_FILES:%=public/%)
 public/%: site/% render
 	@mkdir -p $(dir $@)
 	carmel exec ./render $* > $@
+public/%.css: more/%.css
+	@mkdir -p $(dir $@)
+	carmel exec ./render $*.css > $@
 public/%: more/%
+	@mkdir -p $(dir $@)
+	cp $< $@
+public/share/%: share/%
 	@mkdir -p $(dir $@)
 	cp $< $@
 # i don't know how "appending" prerequisite works...

@@ -1,6 +1,26 @@
 @charset "UTF-8";
+/* load the VGA font (the neocities-approved way?)
+ * https://goblin-heart.net/sadgrl/learn/articles/custom-fonts
+ * Okay i just realized this too....
+ * https://int10h.org/oldschool-pc-fonts/readme/#web_usage */
+@font-face {
+  font-family: "IBM VGA 8x16";
+  /*
+   * by the way, for source and LICENSE of this font,
+   * read the share/ directory:
+   *
+   *     [% '/' | as_link(1) %]share/index.html
+   *
+   * i might tell people about this too....
+   */
+  src: url("[% '/' | to_root('/share') | xml %]int10h.org/oldschool-pc-fonts/v2.2/Web437_IBM_VGA_8x16.woff") format("woff");
+  font-weight: 400;
+  font-size: normal;
+  font-size: 16px;
+  line-height: 16px;
+}
 /* reset html defaults */
 h1, h2 { font-weight: inherit; font-size: inherit; }
 strong { font-weight: inherit; font-size: inherit; }
-body { font-family: "Px437 IBM VGA 8x14", monospace; }
+body { font-family: "IBM VGA 8x16", monospace; }
 pre { font-family: inherit; }
