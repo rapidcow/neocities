@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+[% SET title = "git rev-list HEAD~n.. | decorate --with-magic" -%]
+[% SET location = "/news/index.html" -%]
+<html lang="en">
+[% WRAPPER base/head.html %]
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]ansi.css?v=[% digest ('ansi.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]main.css?v=[% digest ('main.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]news.css?v=[% digest ('news.css') %]">
+[% END -%]
+<body>
+<main>
+  <h1>What's cooking?</h1>
+<pre>[%#-%]
+[% # unhide for now! this is... getting annoying to re-open >:( -%]
+[% #<details># -%]
+$ <strong>git</strong> rev-list 2024-11-10..2025-01-03 |
+&gt; while <strong>read</strong> -r rev; do
+&gt;   <strong>git</strong> show -s --format='%ai  %s%d' $rev &amp;&amp;
+&gt;   <strong>git</strong> diff --shortstat $rev^1 $rev;
+&gt; done
+[% PERL %]
+use Poly::Ansi2Html;
+use Term::ANSIColor qw( colorstrip );
+use Hack::TextWrap; # unconditional name pollution
+use Git;
+
+my $h = HTML::Tiny->new (mode => 'html');
+my $htmlify = Poly::Ansi2Html->new(no_plain_tag => 1);
+# C escapes don't work T_T thanks Jesper...
+# https://stackoverflow.com/a/1441062
+# (note: the second argument is a impl-defined context
+# object, just pass it along and we'll be good)
+my ($revh, $revc) = Git::command_output_pipe (
+	'log', '--color=always',
+	'--format=%h%x09%ai%x09%s%x09%C(auto)%d',
+	'2024-11-10..2025-01-03'
+);
+while (<$revh>) {
+	chomp; my ($oid, $ai, $s, $d) = split "\t", $_, 4;
+
+	# for some reason, git-diff-tree(1) uses the word
+	# "recurse" instead of "recursive" or "recursion"
+	# ... which makes searching with less pager a little
+	# unsatisfying but oh well :<
+	my ($diffh, $diffc) = Git::command_output_pipe (
+		# only consider (A)dded (C)opies (D)eleted (M)odified and (R)enamed
+		'diff-tree', '-r', '--diff-filter=ACDMR', $oid . '^1', $oid,
+	);
+	my $interesting = 0;
+	while (<$diffh>) {
+		# sanitization
+		chomp; s/^://;
+		# split objects & status from the rest first
+		my ($obs, $src, $dst) = split /\t/;
+		# now split again...
+		my ($srcmod, $dstmod, $srcoid, $dstoid, $status) = split / /, $obs;
+		next unless $srcmod eq 100644;
+		next unless $src =~ /(site|more|temple|include|share)\// ||
+			$status =~ /[CR]/ &&
+			$dst =~ /(site|more|temple|include|share)\//;
+		$interesting = 1; last;
+	}
+	Git::command_close_pipe ($diffh, $diffc);
+
+	#next unless $interesting;
+	print for (
+		# nobody really needs to see this
+		# $h->tag ('span', { class => 'oid' }, $oid),
+		# ' ',
+		$h->tag ('span', { class => 'date' }, $ai),
+		"  ",
+		$h->tag ('span', { class => 'subject' },
+			text_wrap (72, 27, length (colorstrip $d),
+			$h->entity_encode ($s))),
+		$htmlify->html ($d),
+		"\n",
+		# this is a nasty trick to suppress the "undefined ..."
+		# warning when there is no diffstat that we can remove
+		# once we're done testing and focus on just the
+		# interesting commits :)
+		Git::command_oneline('diff', '--shortstat', $oid . '^1', $oid,
+			'--', qw( site more temple include share )) // '',
+		"\n",
+	);
+}
+Git::command_close_pipe ($revh, $revc);
+
+[% END -%]
+[% #</details># -%]
+</pre>
+</main>
+</body>
+</html>

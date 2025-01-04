@@ -5,11 +5,13 @@ export BASE_URL SITE_URL
 SITE_FILES = \
 	index.html \
 	about.html \
-	not_found.html
+	not_found.html \
+	news/index.html
 MORE_FILES = \
 	base.css \
 	main.css \
 	ansi.css \
+	news.css \
 	robots.txt
 # note: some contrib files are generated dynamically
 # (placed within site/), they are to be excluded from
@@ -26,7 +28,7 @@ CONTRIB_FILES = \
 site: $(SITE_FILES:%=public/%) $(MORE_FILES:%=public/%) $(CONTRIB_FILES:%=public/%)
 public/%: site/% render
 	@mkdir -p $(dir $@)
-	carmel exec ./render $* > $@
+	carmel exec perl -Ilib render $* > $@
 public/%: more/%
 	@mkdir -p $(dir $@)
 	cp $< $@
@@ -40,9 +42,10 @@ public/index.html: $(patsubst %,include/%.txt,WELCOME SITEMAP EPILOG TAGLINE)
 public/about.html: $(patsubst %,include/%.txt,README TAGLINE)
 
 # all HTMLs inherit from the base template so far...
-$(patsubst %,public/%.html,index about not_found): temple/base/head.html
+$(patsubst %,public/%.html,index about not_found news/index.html): temple/base/head.html
 # cache invalidation demands that the links be rebuilt
-$(patsubst %,public/%.html,index about not_found): $(patsubst %,more/%.css,base ansi main)
+$(patsubst %,public/%.html,index about not_found news/index.html): $(patsubst %,more/%.css,base ansi main)
+public/news/index.html: more/news.css
 
 # standalone HTML dependencies
 public/share/index.html: temple/minimal/head.html

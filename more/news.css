@@ -1,0 +1,5 @@
+@charset "UTF-8";
+/* highlighting for git */
+.oid { color: var(--rgb-3); } /* note: this is the same %C(auto) color for %h */
+.date { color: var(--rgb-hi-4); } /* blue - though #00a looks too dark :( */
+.subject { color: inherit; }
