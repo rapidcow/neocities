@@ -21,11 +21,12 @@ sub bisect (&$$) {
 	#  lo     _     hi
 	#         ^
 	while ($lo < $hi) {
-		$_ = $lo + (($hi - $lo) >> 1);
+		my $mid = $lo + (($hi - $lo) >> 1);
+		local *_ = \$mid;
 		if (&$ok) {
-			$hi = $_;
+			$hi = $mid;
 		} else {
-			$lo = $_ + 1;
+			$lo = $mid + 1;
 		}
 	}
 	return $lo;
