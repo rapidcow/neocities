@@ -82,6 +82,65 @@ sub text_wrap {
 		push @sizes, $offset;
 	}
 
+	# ***HEURISTICS***
+	# balance the last two lines out (i.e. minimize the absolute
+	# difference between the last line and the first line)
+	# admittedly, this *will* look horrendous for 3+ lines,
+	# but think git commit messages.... they're not that long
+	# ethan -- don't overthink it :)
+	if (@points - 1 >= 2) {
+		# here is a simple example of moving one word from line 1 to line 2:
+		# if ($points[1] > 0) {
+		# 	$points[1] -= 1;
+		# 	$sizes[1] += $total[$points[1] - 1] - $total[$points[1]];
+		# }
+		# (note the intentional decrement before retrieving the length of
+		# the word at $points[1], due to the exclusive nature of bounds)
+		# to do this multiple times, we'll generalize this in a way that
+		# the ABSOLUTE difference between
+		#
+		#     ($sizes[2] - $sizes[1])   and   ($sizes[1] - $sizes[0])
+		#
+		# is minimized, after adjustment, by moving $points[1] to, say,
+		# "$points[1] - best".  then the above code becomes:
+		# my $best = 6;
+		# if ($best > $points[1]) {
+		# 	print STDERR "WARNING: you are shifting too much.\n"
+		# } elsif ($best > 0) {
+		# 	$points[1] -= 1;
+		# 	$sizes[1] += ($points[1] <= $best
+		# 		? $total[$points[1] - $best] : 0)
+		# 		- $total[$points[1]];
+		# 	$points[1] -= $best - 1;
+		# }
+		# observe that we step down by one first, as before, but we move
+		# as many as we need INCLUDING OURSELVES, then we seal the case
+		# in the end.  (huh.  maybe this should be a function.  who knows.
+		# anyways....)
+		my $best = 0;
+		my $best_score = ($sizes[1] - $sizes[0]) - ($sizes[2] - $sizes[1]);
+		for (my $i = 1; $i < $points[1]; ++$i) {
+			my $refpt = $points[1] - 1;
+			my $delta = ($refpt <= $i ? $total[$refpt - $best] : 0) - $total[$refpt];
+			my $score = ($sizes[1] - $sizes[0] + $delta) - ($sizes[2] - $sizes[1] - $delta);
+			if (abs ($score) < abs ($best_score)) {
+				$best = $i;
+				$best_score = $score;
+			}
+		}
+		# if ($best > $points[1]) {
+		# 	print STDERR "WARNING: you are shifting too much.\n"
+		die if $best > $points[1];
+		print "I figured that $best is best for you ...\n";
+		if ($best > 0) {
+			$points[1] -= 1;
+			$sizes[1] += ($points[1] <= $best
+				? $total[$points[1] - $best] : 0)
+				- $total[$points[1]];
+			$points[1] -= $best - 1;
+		}
+	}
+
 	# here's a little something to visualize what we've got.
 	# (this actually sneaks the output into HTML, wink wink ;)
 	print "\n"; # you likely want this

@@ -69,9 +69,8 @@ while (<$revh>) {
 		# ' ',
 		$h->tag ('span', { class => 'date' }, $ai),
 		"  ",
-		$h->tag ('span', { class => 'subject' },
-			text_wrap (72, 27, length (colorstrip $d),
-			$h->entity_encode ($s))),
+		$h->tag ('span', { class => 'subject' }, $h->entity_encode
+			( text_wrap 72, 27, length (colorstrip $d), $s )),
 		$htmlify->html ($d),
 		"\n",
 		# this is a nasty trick to suppress the "undefined ..."
