@@ -46,9 +46,11 @@ sub text_wrap {
 
 	# save the initial limit
 	my $limit0 = $limit;
+	# indent for line > 0: this is a hard-coded constant
+	my $indent = 3;
 	# limit from line 1 and on (the first line is line 0 :)
 	# minus one (see how $offset is computed)
-	my $limit1 = $limit - 2;
+	my $limit1 = $limit - $indent;
 	my $needle = 0;       # which word are we looking at?
 	my $offset = -$pre;   # where was that word?  (for the first
 	# line, i am artificially flushing $pre against the 0 marker
@@ -104,7 +106,10 @@ sub text_wrap {
 		# to do this multiple times, we'll generalize this in a way that
 		# the ABSOLUTE difference between
 		#
-		#     ($sizes[2] - $sizes[1])   and   ($sizes[1] - $sizes[0])
+		#     ($sizes[2] - $sizes[1] + $indent)
+		#                and           ^^^^^^^ (adjustment for 3-space indent)
+		#     ($sizes[1] - $sizes[0] + 2)
+		#                              ^ (adjustment for space + backslash)
 		#
 		# is minimized, after adjustment, by moving $points[1] to, say,
 		# "$points[1] - best".  then the above code becomes:
@@ -127,11 +132,14 @@ sub text_wrap {
 		# (huh.  maybe this should be a function.  who knows.
 		# anyways....)
 		my $best = 0;
-		my $best_score = ($sizes[1] - $sizes[0]) - ($sizes[2] - $sizes[1]);
-		for (my $i = 1; $i < $points[1]; ++$i) {
+		my $best_score = ($sizes[1] - $sizes[0] + 2) - ($sizes[2] - $sizes[1] + $indent);
+		# prefer short-LONG layout to LONG-short
+		for (my $i = $points[1]; $i > 0; --$i) {
 			my $refpt = $points[1] - 1;
-			my $delta = ($refpt <= $i ? $total[$refpt - $best] : 0) - $total[$refpt];
-			my $score = ($sizes[1] - $sizes[0] + $delta) - ($sizes[2] - $sizes[1] - $delta);
+			# they're all supposed to be NEGATIVE !!!
+			my $delta = ($refpt >= $i ? $total[$refpt - $i] : 0) - $total[$refpt];
+			die "$delta\n" unless $delta < 0;
+			my $score = ($sizes[1] - $sizes[0] + 2 + $delta) - ($sizes[2] - $sizes[1] + $indent - $delta);
 			if (abs ($score) < abs ($best_score)) {
 				$best = $i;
 				$best_score = $score;
@@ -159,6 +167,7 @@ sub text_wrap {
 		# plus two for space and backslash
 		# or plus $post on final line...
 		my $extra = $_ == $#points ? $post : 2;
+		$extra += $indent if $_ > 1;
 		# printf behaves weirdly (TT2 doesn't like it?);
 		# so do this..... as a workaround (:
 		print sprintf ("  %d..%d (%d word%s, %d%s%d = %d%s char%s)\n",
