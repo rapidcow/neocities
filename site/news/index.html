@@ -24,6 +24,8 @@ use Term::ANSIColor qw( colorstrip );
 use Hack::TextWrap; # unconditional name pollution
 use Git;
 
+$Hack::TextWrap::debug = 1;
+
 my $h = HTML::Tiny->new (mode => 'html');
 my $htmlify = Poly::Ansi2Html->new(no_plain_tag => 1);
 # C escapes don't work T_T thanks Jesper...

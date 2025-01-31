@@ -9,6 +9,9 @@ our @EXPORT = qw(text_wrap);
 
 use List::BisectSearch qw/bisect/;
 
+# set this to 1 to debug
+our $debug = 0;
+
 # okay, this is a rather ambitious attempt that failed
 # miserably.... but here's how it's supposed to work:
 #
@@ -148,7 +151,9 @@ sub text_wrap {
 		# if ($best > $points[1]) {
 		# 	print STDERR "WARNING: you are shifting too much.\n"
 		die if $best > $points[1];
+if ($debug) {
 		print "I figured that $best is best for you ...\n";
+}
 		if ($best > 0) {
 			$points[1] -= 1;
 			$sizes[1] += ($points[1] <= $best
@@ -160,6 +165,7 @@ sub text_wrap {
 
 	# here's a little something to visualize what we've got.
 	# (this actually sneaks the output into HTML, wink wink ;)
+if ($debug) {
 	print "\n"; # you likely want this
 	print "-" x 72, "\n";
 	print "visual size:\n";
@@ -181,6 +187,7 @@ sub text_wrap {
 		);
 	}
 	print "-" x 72, "\n";
+}
 
 	my $linenum = 0;
 	my $wordnum = 0;
