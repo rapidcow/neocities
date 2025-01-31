@@ -57,22 +57,27 @@ sub text_wrap {
 	# IMPORTANT IMPORTANT! if there is any worth in this
 	# code at all, it would be these two arrays.
 	#
-	# crucially both of these are ranges,
+	# crucially both of these represent ranges; e.g. char count
+	# is $sizes[$needle] - $sizes[$needle - 1] for $needle >= 1
+	# (for word count, swap @points in...)
 	my @points = (0);
 	my @sizes = (-$pre);
 
 	while ($needle < @words) {
-		# plus one to account for the space in most
-		# circumstances (except for the last - because
-		# this algorithm is stupid, and... aesthetics? :)
-		#
-		# (plus two because of backslash + space.....)
-		my $stride = bisect { !($total[$_] - $offset + 1 + 2 <= $limit ||
-			$_ == $#total && $total[$_] - $offset <= $total[$_]) }
-			$needle, scalar (@total);
+		# find upper bound for how much we can fit on this line
+		my $stride = bisect { !(
+			# rule for every word but last: plus one to
+			# account for the space in most circumstances
+			# (plus two because of backslash + space.....)
+			$total[$_] - $offset + 1 + 2 <= $limit ||
+			# rule for the last word because this algorithm
+			# is stupid, and... aesthetics? :)
+			$_ == $#total && $total[$_] - $offset <= $total[$_]
+		) } $needle, scalar (@total);
 		# eat at least one word
 		$needle += $stride - $needle || 1;
 		push @points, $needle;
+		# switch to new limit after first iteration
 		$limit = $limit1;
 		# take $offset in the stupidest possible way
 		# (this stupid doesn't even know the space
@@ -115,7 +120,11 @@ sub text_wrap {
 		# }
 		# observe that we step down by one first, as before, but we move
 		# as many as we need INCLUDING OURSELVES, then we seal the case
-		# in the end.  (huh.  maybe this should be a function.  who knows.
+		# in the end.  (the ternary operator is there in case this range
+		# is left-exclusive, and so if the first word is included, then
+		# we want to indicate that this range starts with 0 characters.)
+		#
+		# (huh.  maybe this should be a function.  who knows.
 		# anyways....)
 		my $best = 0;
 		my $best_score = ($sizes[1] - $sizes[0]) - ($sizes[2] - $sizes[1]);
