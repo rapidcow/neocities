@@ -57,4 +57,7 @@ public/share/int10h.org/oldschool-pc-fonts/v2.2/index.html: temple/redirect/inde
 # to also depend on head...)
 temple/redirect.html: temple/minimal/head.html
 
-.PHONY: site
+clean:
+	rm -rf public
+
+.PHONY: site clean
