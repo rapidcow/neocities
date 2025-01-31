@@ -1,3 +1,4 @@
 /.carmel
 /vendor/cache
 /public/
+/tmp/

@@ -24,8 +24,10 @@ CONTRIB_FILES = \
 	share/int10h.org/oldschool-pc-fonts/v2.2/README.TXT \
 	share/int10h.org/oldschool-pc-fonts/v2.2/LICENSE.TXT \
 	share/int10h.org/oldschool-pc-fonts/v2.2/Web437_IBM_VGA_8x16.woff
+WAYBACK_TIME = \
+	$(patsubst %,archive/site/%.tar.gz,$(shell git tag))
 
-site: $(SITE_FILES:%=public/%) $(MORE_FILES:%=public/%) $(CONTRIB_FILES:%=public/%)
+site: $(SITE_FILES:%=public/%) $(MORE_FILES:%=public/%) $(CONTRIB_FILES:%=public/%) $(WAYBACK_TIME:%=public/%)
 public/%: site/% render
 	@mkdir -p $(dir $@)
 	carmel exec perl -Ilib render $* > $@
@@ -56,6 +58,21 @@ public/share/int10h.org/oldschool-pc-fonts/v2.2/index.html: temple/redirect/inde
 # XXX: does this work? (hook dependencies of redirect
 # to also depend on head...)
 temple/redirect.html: temple/minimal/head.html
+
+public/archive/site/2024-11-%.tar.gz:
+	@mkdir -p $(dir $@)
+	git archive --format=tgz --prefix=public/ 2024-11-$*:site/ > $@
+
+public/archive/site/%.tar.gz:
+	@mkdir -p $(dir $@)
+	@rm -rf tmp
+	git clone $(shell git rev-parse --git-dir) tmp
+	git -c advice.detachedHead=false -C tmp checkout $*
+	cd tmp && carmel install
+	@# i will assume that you have my List::BinarySearch installed...
+	$(MAKE) -C tmp site
+	fakeroot tar czf $@ -C tmp public
+	@rm -rf tmp
 
 clean:
 	rm -rf public
