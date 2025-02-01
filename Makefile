@@ -26,7 +26,7 @@ CONTRIB_FILES = \
 	share/int10h.org/oldschool-pc-fonts/v2.2/LICENSE.TXT \
 	share/int10h.org/oldschool-pc-fonts/v2.2/Web437_IBM_VGA_8x16.woff
 WAYBACK_TIME = \
-	$(patsubst %,archive/site/%.tar.gz,$(shell git tag))
+	$(patsubst %,archive/site/%.tar.gz,2024-11-09 2024-11-10 2025-01-03)
 
 site: $(SITE_FILES:%=public/%) $(MORE_FILES:%=public/%) $(CONTRIB_FILES:%=public/%)
 public/%: site/% render
