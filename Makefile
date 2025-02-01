@@ -69,24 +69,12 @@ public/archive/site/2024-11-%.tar.gz:
 
 public/archive/site/%.tar.gz:
 	@mkdir -p $(dir $@)
-	@rm -rf tmp
-	git clone $(shell git rev-parse --git-dir) tmp
-	git -c advice.detachedHead=false -C tmp checkout $*
-	cd tmp && carmel install
-	@# i will assume that you have my List::BinarySearch installed...
-	$(MAKE) -C tmp site
-	@# https://reproducible-builds.org/docs/archives/
-	@# https://stackoverflow.com/a/58141664
-	@# gzip'd tarball is inherently undetermistic, but try
-	@# to make the content consistent anyways.
-	@#
-	@# also: use commit date intsead of annotated tag date,
-	@# because the latter can be (unnecessarily) off
-	tar czf $@ -C tmp \
-		--sort=name --mtime=@$$(git -C tmp show -s --pretty=format:%ct refs/tags/$*^0) \
-		--owner=root --group=root \
-		--format=ustar public
-	@rm -rf tmp
+	@# A caveat: since we are effectively using recursive make,
+	@# something like make -B will not work because it would
+	@# cause Makefiles of Perl package to always self-destruct
+	@# Good that we don't have to re-build archives all the time,
+	@# otherwise this would really drive me insane.... ^^;
+	build/$* $@
 
 clean:
 	rm -rf public

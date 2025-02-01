@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# package $1 $2 is basically tar czvf $2 $1
+# (the tag is an afterthought)
+package () {
+	tag="$1"
+	shift
+	dir="$1"
+	out="$2"
+	# comes from https://reproducible-builds.org/docs/archives/ again
+	oid=$(git rev-parse refs/tags/"$tag")
+	commitdate="$(git show -s --pretty=format:%ct $oid^0 --)"
+	echo packaging "$out" dated "$commitdate"
+	# comment migrated from Makefile:
+	# https://reproducible-builds.org/docs/archives/
+	# https://stackoverflow.com/a/58141664
+	# gzip'd tarball is inherently undetermistic, but try
+	# to make the content consistent anyways.
+	#
+	# also: use commit date intsead of annotated tag date,
+	# because the latter can be (unnecessarily) off
+	find "$dir" -print0 | LC_ALL=C sort -z |
+	tar cvf "$out" --no-recursion --null --files-from=- \
+		--mtime=@$commitdate --owner=root --group=root
+}
+
+# we should be in my/website/neocities/build
+TREE_ROOT="$(realpath "$(dirname ${BASH_SOURCE[0]})"/../../../..)/"
+
+# https://stackoverflow.com/a/687052
+tmp="$(mktemp -d)"
+trap 'rm -rf -- "$tmp"' EXIT
+
+target="$(realpath -- "$1")"
+
+git clone --shared "$(git rev-parse --git-dir)" "$tmp"
+
+# all good
+return 0

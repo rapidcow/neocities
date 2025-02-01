@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -euEo pipefail
+. build/common
+target="$(realpath -- "$1")"
+
+2>&1 echo "building site version 2025-01-03 at $tmp"
+cd "$tmp"
+git config --bool advice.detachedHead false
+git checkout 2025-01-03
+eval $(perl -Mlocal::lib=local)
+cpanm --verbose --installdeps .
+
+git clone --shared "${TREE_ROOT}my/project/dist/perl5/List-BisectSearch" opt/List-BisectSearch
+(
+	cd opt/List-BisectSearch
+	git config --bool advice.detachedHead false
+	git checkout v0.01-rc2
+	perl Makefile.PL
+	make
+	make test
+	make install
+)
+
+make site PERL5="\"$(which perl)\" -Ilib"
+
+package 2025-01-03 public "$target"
