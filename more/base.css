@@ -20,3 +20,6 @@ h1, h2 { font-weight: inherit; font-size: inherit; }
 strong { font-weight: inherit; font-size: inherit; }
 body { font-family: "IBM VGA 8x16", monospace; }
 pre { font-family: inherit; }
+/* make nav and main smoosh */
+nav pre { margin-bottom: 0; }
+main pre { margin-top: 0; }
