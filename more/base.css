@@ -7,11 +7,7 @@
   font-family: "IBM VGA 8x16";
   /*
    * by the way, for source and LICENSE of this font,
-   * read the share/ directory:
-   *
-   *     [% '/' | as_link(1) %]share/index.html
-   *
-   * i might tell people about this too....
+   * read the share/ directory (also in footer of index.html)
    */
   src: url("share/int10h.org/oldschool-pc-fonts/v2.2/Web437_IBM_VGA_8x16.woff") format("woff");
   font-weight: 400;
