@@ -27,7 +27,7 @@ CONTRIB_FILES = \
 WAYBACK_TIME = \
 	$(patsubst %,archive/site/%.tar.gz,$(shell git tag))
 
-site: $(SITE_FILES:%=public/%) $(MORE_FILES:%=public/%) $(CONTRIB_FILES:%=public/%) $(WAYBACK_TIME:%=public/%)
+site: $(SITE_FILES:%=public/%) $(MORE_FILES:%=public/%) $(CONTRIB_FILES:%=public/%)
 public/%: site/% render
 	@mkdir -p $(dir $@)
 	carmel exec perl -Ilib render $* > $@
@@ -59,6 +59,7 @@ public/share/int10h.org/oldschool-pc-fonts/v2.2/index.html: temple/redirect/inde
 # to also depend on head...)
 temple/redirect.html: temple/minimal/head.html
 
+archive: $(WAYBACK_TIME:%=public/%)
 public/archive/site/2024-11-%.tar.gz:
 	@mkdir -p $(dir $@)
 	git archive --format=tgz --prefix=public/ 2024-11-$*:site/ > $@
@@ -77,4 +78,4 @@ public/archive/site/%.tar.gz:
 clean:
 	rm -rf public
 
-.PHONY: site clean
+.PHONY: site archive clean
