@@ -2,6 +2,8 @@ BASE_URL ?= # the empty string, i.e. "/" is root
 SITE_URL ?= https://rapidcow.neocities.org
 export BASE_URL SITE_URL
 
+PERL5 ?= carmel exec
+
 SITE_FILES = \
 	index.html \
 	about.html \
@@ -29,7 +31,7 @@ site_ORIG: $(SITE_FILES:%=public/%) $(MORE_FILES:%=public/%) $(CONTRIB_FILES:%=p
 # PATCH PATCH >>>
 public/%: site/% render
 	@mkdir -p $(dir $@)
-	carmel exec ./render $* > $@
+	$(PERL5) ./render $* > $@
 public/%: more/%
 	@mkdir -p $(dir $@)
 	cp $< $@
