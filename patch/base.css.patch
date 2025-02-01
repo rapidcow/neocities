@@ -1,0 +1,25 @@
+#
+# This is a patch applied to the original base.css that has been
+# living on https://rapidcow.neocities.org/ since 2025-Jan-03.
+# I am not worried about showing people a slice of the internal
+# workings of my web site, but the thought that this passed has
+# always struck me as a display of negligence.  This patch is to
+# acknowledge that mistake, so I can do something about it to
+# better convey what I really meant to show here without feeling
+# like I'm covering it up as if nothing happened.
+#
+# Run `patch -R < base.css.patch' to get the original version.
+#
+--- public/base.css
++++ public/base.css
+@@ -8,9 +8,9 @@
+   /*
+    * by the way, for source and LICENSE of this font,
+    * read the share/ directory:
+    *
+-   *     [% '/' | as_link(1) %]share/index.html
++   *     https://rapidcow.neocities.org/share/index.html
+    *
+    * i might tell people about this too....
+    */
+   src: url("share/int10h.org/oldschool-pc-fonts/v2.2/Web437_IBM_VGA_8x16.woff") format("woff");

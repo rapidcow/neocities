@@ -23,7 +23,10 @@ CONTRIB_FILES = \
 	share/int10h.org/oldschool-pc-fonts/v2.2/LICENSE.TXT \
 	share/int10h.org/oldschool-pc-fonts/v2.2/Web437_IBM_VGA_8x16.woff
 
-site: $(SITE_FILES:%=public/%) $(MORE_FILES:%=public/%) $(CONTRIB_FILES:%=public/%)
+# PATCH PATCH <<<
+site: site_ORIG public/base.css.patch
+site_ORIG: $(SITE_FILES:%=public/%) $(MORE_FILES:%=public/%) $(CONTRIB_FILES:%=public/%)
+# PATCH PATCH >>>
 public/%: site/% render
 	@mkdir -p $(dir $@)
 	carmel exec ./render $* > $@
@@ -53,5 +56,16 @@ public/share/int10h.org/oldschool-pc-fonts/v2.2/index.html: temple/redirect/inde
 # XXX: does this work? (hook dependencies of redirect
 # to also depend on head...)
 temple/redirect.html: temple/minimal/head.html
+
+# PATCH PATCH <<<
+public/base.css: more/base.css patch/base.css.patch
+	@mkdir -p $(dir $@)
+	cp $< $@
+	@echo 'patch -d public < patch/base.css.patch'
+	@patch -d public < patch/base.css.patch | sed 's/^/# /'
+public/base.css.patch: patch/base.css.patch
+	@mkdir -p $(dir $@)
+	cp $< $@
+# PATCH PATCH >>>
 
 .PHONY: site
