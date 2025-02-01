@@ -8,20 +8,15 @@ target="$(realpath -- "$1")"
 cd "$tmp"
 git config --bool advice.detachedHead false
 git checkout 2025-01-03
+
 eval $(perl -Mlocal::lib=local)
-cpanm --verbose --installdeps .
+myperl="$(which perl)"
+mycpan="$(which cpanm)"
+echo "my perl is '$myperl'"
+echo "my cpanm is '$mycpan'"
+"$mycpan" --installdeps .
+"$mycpan" "${TREE_ROOT}my/project/dist/perl5/List-BisectSearch.git"@v0.01-rc2
 
-git clone --shared "${TREE_ROOT}my/project/dist/perl5/List-BisectSearch" opt/List-BisectSearch
-(
-	cd opt/List-BisectSearch
-	git config --bool advice.detachedHead false
-	git checkout v0.01-rc2
-	perl Makefile.PL
-	make
-	make test
-	make install
-)
-
-make site PERL5="\"$(which perl)\" -Ilib"
+make site PERL5="'$myperl' -Ilib"
 
 package 2025-01-03 public "$target"
