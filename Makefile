@@ -27,8 +27,11 @@ CONTRIB_FILES = \
 	share/int10h.org/oldschool-pc-fonts/v2.2/README.TXT \
 	share/int10h.org/oldschool-pc-fonts/v2.2/LICENSE.TXT \
 	share/int10h.org/oldschool-pc-fonts/v2.2/Web437_IBM_VGA_8x16.woff
+WAYPOINTS = \
+	2024-11-09 2024-11-10 2025-01-03
 WAYBACK_TIME = \
-	$(patsubst %,archive/site/%.tar.gz,2024-11-09 2024-11-10 2025-01-03)
+       $(patsubst %,archive/site/%.tar.gz,$(WAYPOINTS)) \
+       $(patsubst %,archive/site/%.sha256,$(WAYPOINTS))
 
 site: $(SITE_FILES:%=public/%) $(MORE_FILES:%=public/%) $(CONTRIB_FILES:%=public/%)
 public/%: site/% render
@@ -76,6 +79,16 @@ public/archive/site/%.tar.gz:
 	@# Good that we don't have to re-build archives all the time,
 	@# otherwise this would really drive me insane.... ^^;
 	build/$* $@
+
+public/%.sha256: public/%.tar.gz
+	@# computing shasum from tarball...
+	@# (.... GNU tar to the rescue! :D)
+	@# https://stackoverflow.com/a/42170163
+	@# for the format, use GNU format...
+	@# HASH HT FILE
+	@# https://superuser.com/q/1566136
+	@# DO NOT PASS -v!
+	tar xf $< --to-command './tarsum sha256' > $@
 
 clean:
 	rm -rf public

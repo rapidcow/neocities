@@ -1,0 +1,27 @@
+#!/usr/bin/env perl
+use v5.10;
+use strict;
+use warnings;
+
+my $algorithm = shift;
+die "error: missing algorithm\n" unless defined $algorithm;
+
+my $dig;
+if ($algorithm eq 'sha1') {
+	use Digest::SHA;
+	$dig = Digest::SHA->new(1);
+}
+elsif ($algorithm eq 'sha256') {
+	use Digest::SHA;
+	$dig = Digest::SHA->new(256);
+}
+else {
+	die "error: unknown algorithm: $algorithm\n";
+}
+
+return unless $ENV{TAR_FILETYPE} eq 'f';
+$dig->addfile(*STDIN);
+my $hash = $dig->hexdigest();
+my $file = $ENV{TAR_REALNAME};
+$file =~ s[^public/][];
+print sprintf "%s\t%s\n", $hash, $file;
