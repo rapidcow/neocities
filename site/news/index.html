@@ -18,6 +18,7 @@ $ <strong>git</strong> rev-list 2024-11-10..2025-01-03 |
 &gt;   <strong>git</strong> show -s --format='%ai  %s%d' $rev &amp;&amp;
 &gt;   <strong>git</strong> diff --shortstat $rev^1 $rev;
 &gt; done
+
 [% PERL %]
 use Poly::Ansi2Html;
 use Term::ANSIColor qw( colorstrip );
@@ -77,8 +78,10 @@ while (<$revh>) {
 		# warning when there is no diffstat that we can remove
 		# once we're done testing and focus on just the
 		# interesting commits :)
-		Git::command_oneline('diff', '--shortstat', $oid . '^1', $oid,
-			'--', qw( site more temple include share )) // '',
+		(Git::command_oneline('diff', '--shortstat', $oid . '^1', $oid,
+			'--', qw( site more temple include share )) // '')
+			=~ s/([+])/@{[$h->tag ('span', { class => 'add' }, $1)]}/r
+			=~ s/([-])/@{[$h->tag ('span', { class => 'del' }, $1)]}/r,
 		"\n",
 	);
 }
