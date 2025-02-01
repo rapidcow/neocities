@@ -33,7 +33,7 @@ WAYBACK_TIME = \
 site: $(SITE_FILES:%=public/%) $(MORE_FILES:%=public/%) $(CONTRIB_FILES:%=public/%)
 public/%: site/% render
 	@mkdir -p $(dir $@)
-	$(PERL5) render $* > $@
+	$(PERL5) ./render $* > $@
 public/%: more/%
 	@mkdir -p $(dir $@)
 	cp $< $@
