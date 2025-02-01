@@ -65,7 +65,7 @@ temple/redirect.html: temple/minimal/head.html
 archive: $(WAYBACK_TIME:%=public/%)
 public/archive/site/2024-11-%.tar.gz:
 	@mkdir -p $(dir $@)
-	git archive --format=tgz --prefix=public/ 2024-11-$*:site/ > $@
+	git archive --format=tgz --prefix=public/ 2024-11-$* -- site/ > $@
 
 public/archive/site/%.tar.gz:
 	@mkdir -p $(dir $@)
@@ -75,7 +75,17 @@ public/archive/site/%.tar.gz:
 	cd tmp && carmel install
 	@# i will assume that you have my List::BinarySearch installed...
 	$(MAKE) -C tmp site
-	fakeroot tar czf $@ -C tmp public
+	@# https://reproducible-builds.org/docs/archives/
+	@# https://stackoverflow.com/a/58141664
+	@# gzip'd tarball is inherently undetermistic, but try
+	@# to make the content consistent anyways.
+	@#
+	@# also: use commit date intsead of annotated tag date,
+	@# because the latter can be (unnecessarily) off
+	tar czf $@ -C tmp \
+		--sort=name --mtime=@$$(git -C tmp show -s --pretty=format:%ct refs/tags/$*^0) \
+		--owner=root --group=root \
+		--format=ustar public
 	@rm -rf tmp
 
 clean:
