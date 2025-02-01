@@ -15,15 +15,12 @@ $ <strong>cat</strong> WELCOME.txt
 $ <strong>cat</strong> SITEMAP.txt
 [% INCLUDE SITEMAP.txt -%]
 
-$ <strong>cat</strong> EPILOG.txt TAGLINE.txt &amp;&amp; <strong>fortune</strong>
+$ <strong>cat</strong> EPILOG.txt TAGLINE.txt[%# &amp;&amp; <strong>fortune</strong> %]
 [% INCLUDE EPILOG.txt -%]
 [% INCLUDE TAGLINE.txt -%]
-[% FILTER html -%]
+[%# No fortune for now... :( -%]
+[%#
                                 *  *  *
-           <<    Oh somewhere deep inside of these bones   >>
-           <<          An emptiness began to grow          >>
-           << There's something out there far from my home >>
-           <<       A longing that I've never known        >>
 [% END -%]
 </pre>
 </main>
