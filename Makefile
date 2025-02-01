@@ -6,7 +6,8 @@ SITE_FILES = \
 	index.html \
 	about.html \
 	not_found.html \
-	news/index.html
+	news/index.html \
+	news/2025-01-03.html
 MORE_FILES = \
 	base.css \
 	main.css \

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+[% SET title = "refs/tags/2025-01-03" -%]
+[% SET location = "/news/2025-01-03.html" -%]
+<html lang="en">
+[% WRAPPER base/head.html %]
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]ansi.css?v=[% digest ('ansi.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]main.css?v=[% digest ('main.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]news.css?v=[% digest ('news.css') %]">
+[% END -%]
+<body>
+<nav><pre>]----------------------------------------------------------------------[</pre></nav>
+<main>
+  <h1>Tag 2025-01-03</h1>
+[% INCLUDE "NEWS/2025-01-03.html" FILTER indent("    ") -%]
+</main>
+
+<pre>[%#-%]
+[%# This exists because Ethan is stupid and might make typos :< -%]
+[% BLOCK add %]<span class="add">[% content %]</span>[% END -%]
+[% BLOCK del %]<span class="del">[% content %]</span>[% END -%]
+$ <strong>./diffsite</strong> <a href="[% location | to_root %]archive/site/2024-11-10.tar.gz">2024-11-10.tar.gz</a> <a href="[% location | to_root %]archive/site/2025-01-03.tar.gz">2025-01-03.tar.gz</a>
+ about.html                                    | 126 [% WRAPPER add %]++++++[% END %]
+ ansi.css                                      |  52 [% WRAPPER add %]+++[% END %]
+ base.css                                      |  26 [% WRAPPER add %]++[% END %]
+ index.html                                    | 303 [% WRAPPER add %]+++++[% END %][% WRAPPER del %]--------[% END %]
+ links.html                                    |  63 [% WRAPPER del %]---[% END %]
+ main.css                                      |  44 [% WRAPPER add %]++[% END %]
+ neocities.png                                 | Bin [% WRAPPER del %]13232[% END %] -&gt; [% WRAPPER add %]0[% END %] bytes
+ not_found.html                                |  72 [% WRAPPER add %]++[% END %][% WRAPPER del %]-[% END %]
+ share/index.html                              |  33 [% WRAPPER add %]++[% END %]
+ share/int10h.org/index.html                   |  24 [% WRAPPER add %]+[% END %]
+ <abbr title="share/int10h.org/oldschool-pc-fonts/index.html">.../int10h.org/oldschool-pc-fonts/index.html</abbr>  |  24 [% WRAPPER add %]+[% END %]
+ <abbr title="share/int10h.org/oldschool-pc-fonts/v2.2/LICENSE.TXT">.../oldschool-pc-fonts/v2.2/LICENSE.TXT</abbr>       | 428 [% WRAPPER add %]++++++++++++++++++[% END %]
+ <abbr title="share/int10h.org/oldschool-pc-fonts/v2.2/README.TXT">.../oldschool-pc-fonts/v2.2/README.TXT</abbr>        |  46 [% WRAPPER add %]++[% END %]
+ <abbr title="share/int10h.org/oldschool-pc-fonts/v2.2/Web437_IBM_VGA_8x16.woff">.../v2.2/Web437_IBM_VGA_8x16.woff</abbr>             | Bin [% WRAPPER del %]0[% END %] -&gt; [% WRAPPER add %]9788[% END %] bytes
+ <abbr title="share/int10h.org/oldschool-pc-fonts/v2.2/index.html">.../oldschool-pc-fonts/v2.2/index.html</abbr>        |  24 [% WRAPPER add %]+[% END %]
+ style.css                                     |  16 [% WRAPPER del %]-[% END %]
+ 16 files changed, 989 insertions([% WRAPPER add %]+[% END %]), 292 deletions([% WRAPPER del %]-[% END %])
+
+$ <strong>git</strong> rev-list 2024-11-10..2025-01-03 |
+&gt; while <strong>read</strong> -r rev; do
+&gt;   <strong>git</strong> show -s --format='%ai  %s%d' $rev &amp;&amp;
+&gt;   <strong>git</strong> diff --shortstat $rev^1 $rev;
+&gt; done
+
+[% changelog("2024-11-10..2025-01-03") %]
+</pre>
+</main>
+</body>
+</html>

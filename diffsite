@@ -1,0 +1,56 @@
+#!/usr/bin/env perl
+use v5.10;
+use strict;
+use warnings;
+use autodie qw(system);
+
+my ($t0, $t1);
+my $USAGE = "usage: $0 [v0-tarball] [v1-tarball]\n";
+
+if (@ARGV == 2) {
+	$t0 = shift;
+	$t1 = shift;
+}
+elsif (@ARGV == 1) {
+	$t1 = shift;
+}
+else {
+	die "error: expected 1 or 2 files\n" . $USAGE;
+}
+die "error: falsy tarball name: $t0\n" unless !defined $t0 or $t0;
+die "error: falsy tarball name: $t1\n" unless !defined $t1 or $t1;
+
+$t0 //= 0;
+$t1 //= 0;
+if ($t0) {
+	print STDERR "Diffing $t1 against $t0\n";
+}
+else {
+	print STDERR "Diffing $t1 against empty tree\n";
+}
+
+system 'rm -rf differ';
+system 'git init differ > /dev/null';
+my $GIT = 'git -C differ';
+chomp (my $EMPTYTREE = `$GIT hash-object -t tree -w --stdin < /dev/null`);
+system "$GIT config user.name \"Ethan Meng\"";
+system "$GIT config user.email webmaster\@rapidcow.org";
+chomp (my $EMPTY_REV = `$GIT commit-tree -m "Empty revision" $EMPTYTREE`);
+my $v0 = $EMPTYTREE;
+my $v1 = $EMPTYTREE;
+if ($t0) {
+	system "tar zxf \"$t0\" -C differ --strip-components=1";
+	system "$GIT add .";
+	chomp ($v0 = `$GIT write-tree`);
+	system "$GIT reset --hard $EMPTY_REV > /dev/null";
+}
+if ($t1) {
+	system "tar zxf \"$t1\" -C differ --strip-components=1";
+	system "$GIT add .";
+	chomp ($v1 = `$GIT write-tree`);
+	system "$GIT reset --hard $EMPTY_REV > /dev/null";
+}
+print STDERR "git diff --stat $v0..$v1\n";
+my $COLS = $ENV{DIFFER_COLUMNS} // 72;
+system "COLUMNS=$COLS $GIT --no-pager diff --color=auto --stat $v0..$v1";
+system 'rm -rf differ';
