@@ -11,14 +11,15 @@
 <nav><pre>]--[ prev ]----------------------[ <a href=".">up</a> ]----------------------[ next ]--[</pre></nav>
 <main><pre>
 
-                             <strong>Tag 2025-01-03</strong>
+                             <strong class="setaf-3">Tag 2025-01-03</strong>
+                           [<a href="[% location | to_root %]archive/site/2025-01-03.tar.gz">tarball</a>] [<a href="[% location | to_root %]archive/site/2025-01-03.sha256">sha256</a>]
 
 [% INCLUDE "NEWS/2025-01-03.html" -%]
 
 [%# This exists because Ethan is stupid and might make typos :< -%]
 [% BLOCK add %]<span class="add">[% content %]</span>[% END -%]
 [% BLOCK del %]<span class="del">[% content %]</span>[% END -%]
-$ <strong>./diffsite</strong> <a href="[% location | to_root %]archive/site/2024-11-10.tar.gz">2024-11-10.tar.gz</a> <a href="[% location | to_root %]archive/site/2025-01-03.tar.gz">2025-01-03.tar.gz</a>
+$ <strong>./diffsite</strong> 2024-11-10.tar.gz 2025-01-03.tar.gz
  about.html                                    | 126 [% WRAPPER add %]++++++[% END %]
  ansi.css                                      |  52 [% WRAPPER add %]+++[% END %]
  base.css                                      |  26 [% WRAPPER add %]++[% END %]
