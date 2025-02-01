@@ -2,6 +2,6 @@
 /* highlighting for git */
 .oid { color: var(--rgb-3); } /* note: this is the same %C(auto) color for %h */
 .date { color: var(--rgb-hi-4); } /* blue - though #00a looks too dark :( */
-.subject { color: inherit; }
+.subject { color: var(--rgb-hi-7); }
 .add { color: var(--rgb-2); }
 .del { color: var(--rgb-1); }

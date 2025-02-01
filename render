@@ -119,7 +119,7 @@ use Hack::TextWrap; # unconditional name pollution
 use Git;
 
 my $h = HTML::Tiny->new (mode => 'html');
-my $htmlify = Poly::Ansi2Html->new(no_plain_tag => 1);
+my $htmlify = Poly::Ansi2Html->new(tag => 'strong', no_plain_tag => 1);
 # C escapes don't work T_T thanks Jesper...
 # https://stackoverflow.com/a/1441062
 # (note: the second argument is a impl-defined context
@@ -161,9 +161,9 @@ while (<$revh>) {
 		# nobody really needs to see this
 		# $h->tag ('span', { class => 'oid' }, $oid),
 		# ' ',
-		$h->tag ('span', { class => 'date' }, $ai),
+		$h->tag ('em', { class => 'date' }, $ai),
 		"  ",
-		$h->tag ('span', { class => 'subject' }, $h->entity_encode
+		$h->tag ('strong', { class => 'subject' }, $h->entity_encode
 			( text_wrap 72, 27, length (colorstrip $d), $s )),
 		$htmlify->html ($d),
 		"\n",
