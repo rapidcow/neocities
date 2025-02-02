@@ -1,4 +1,4 @@
-      <strong>*</strong> <a href="about.html">What is this place</a>?               # What's cooking?
+      <strong>*</strong> <a href="about.html">What is this place</a>?               # <a href="news/">What's cooking</a>?
 [% FILTER html -%]
         (What people normally               (Change log &
          call an ``about'' page)             time machine)
