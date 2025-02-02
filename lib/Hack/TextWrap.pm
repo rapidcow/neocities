@@ -17,7 +17,7 @@ our $debug = 0;
 #
 # $limit: line length
 # $pre: the indent we don't see
-# $post: the last word we don't see
+# $post: the last word we don't see (XXX: seems broken)
 # $text: text to wrap
 #
 # the goal is to have a                 as a purely greedy approach would

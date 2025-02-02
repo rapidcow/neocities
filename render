@@ -165,7 +165,7 @@ while (<$revh>) {
 		"  ",
 		$h->tag ('strong', { class => 'subject' }, $h->entity_encode
 			( text_wrap 72, 27, length (colorstrip $d), $s )),
-		$htmlify->html ($d),
+		# $htmlify->html ($d),
 		"\n",
 		# this is a nasty trick to suppress the "undefined ..."
 		# warning when there is no diffstat that we can remove
