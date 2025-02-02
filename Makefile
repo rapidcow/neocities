@@ -61,6 +61,7 @@ public/news/index.html: more/news.css
 $(addprefix public/news/,index.html 2024-11-09.html): include/NEWS/2024-11-09.txt
 $(addprefix public/news/,index.html 2024-11-10.html): include/NEWS/2024-11-10.txt
 $(addprefix public/news/,index.html 2025-01-03.html): include/NEWS/2025-01-03.txt
+$(addprefix public/news/,index.html 2025-02-02.html): include/NEWS/2025-02-02.txt
 
 # standalone HTML dependencies
 public/share/index.html: temple/minimal/head.html

@@ -1,0 +1,2 @@
+  &bull; Add /news/ directory for changelog
+  &bull; Add /archive/site/ directory for site archives
