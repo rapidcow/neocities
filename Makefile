@@ -54,7 +54,7 @@ $(patsubst %,public/%.html,index about not_found news/index.html): temple/base/h
 # cache invalidation demands that the links be rebuilt
 $(patsubst %,public/%.html,index about not_found news/index.html): $(patsubst %,more/%.css,base ansi main)
 public/news/index.html: more/news.css
-$(addprefix public/news/,index.html 2025-01-03.html): include/NEWS/2025-01-03.html
+$(addprefix public/news/,index.html 2025-01-03.html): include/NEWS/2025-01-03.txt
 
 # standalone HTML dependencies
 public/share/index.html: temple/minimal/head.html
