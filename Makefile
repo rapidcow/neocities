@@ -31,7 +31,7 @@ CONTRIB_FILES = \
 	share/int10h.org/oldschool-pc-fonts/v2.2/LICENSE.TXT \
 	share/int10h.org/oldschool-pc-fonts/v2.2/Web437_IBM_VGA_8x16.woff
 WAYPOINTS = \
-	2024-11-09 2024-11-10 2025-01-03
+	2024-11-09 2024-11-10 2025-01-03 2025-02-02
 WAYBACK_TIME = \
        $(patsubst %,archive/site/%.tar.gz,$(WAYPOINTS)) \
        $(patsubst %,archive/site/%.sha256,$(WAYPOINTS)) \
