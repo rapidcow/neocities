@@ -14,4 +14,6 @@
   &bull; Prefer relative links to root-relative links with the help of TT2,
     which is very much specific to HTTP.  As a neat consequence,
     documents no longer need to live at root.  (You can view the web
-    site from the files themselves!)
+    site from the files themselves!  And yeah this is largely made
+    possible by TT2 filters, I wouldn't be able to count the number
+    of ..'s half as good as Perl can XD)
