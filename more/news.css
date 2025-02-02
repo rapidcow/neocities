@@ -1,6 +1,7 @@
 @charset "UTF-8";
 /* highlighting for git */
-.oid { color: var(--rgb-3); } /* note: this is the same %C(auto) color for %h */
+/* note: this is the same %C(auto) color for %h */
+.oid, .release, .hunk { color: var(--rgb-3); }
 .date { color: var(--rgb-hi-4); } /* blue - though #00a looks too dark :( */
 .subject { color: var(--rgb-hi-7); }
 .add { color: var(--rgb-2); }

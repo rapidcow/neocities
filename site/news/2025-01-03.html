@@ -11,10 +11,20 @@
 <nav><pre>]--[ prev ]----------------------[ <a href=".">up</a> ]----------------------[ next ]--[</pre></nav>
 <main><pre>
 
-                             <strong class="setaf-3">Tag 2025-01-03</strong>
+                             <strong class="release">Tag 2025-01-03</strong>
                            [<a href="[% location | to_root %]archive/site/2025-01-03.tar.gz">tarball</a>] [<a href="[% location | to_root %]archive/site/2025-01-03.sha256">sha256</a>]
 
 [% INCLUDE "NEWS/2025-01-03.html" -%]
+
+      .----------------------------------------------------------.
+      | <strong>Disclaimer:</strong> The original version I uploaded to Neocities |
+      | has an erroneously unprocessed TT2 tag in <em>base.css</em> on    |
+      | <span class="hunk">line 12</span>.  This issue has been addressed in the archive.  |
+      | The patch is included with a fixed version of base.css,  |
+      | so you may restore the original file if you so choose... |
+      | (The patch is a file named <em>public/base.css.patch</em>.)       |
+      | There are no changes made to any file otherwise.         |
+      `----------------------------------------------------------'
 
 [%# This exists because Ethan is stupid and might make typos :< -%]
 [% BLOCK add %]<span class="add">[% content %]</span>[% END -%]
