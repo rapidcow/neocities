@@ -25,9 +25,6 @@ a[href] { color: var(--rgb-hi-3); }
 /* underlines are a visual noise in anchor links - remove it */
 a[href].anchor { text-decoration: none; }
 u { color: var(--rgb-hi-7); }
-@media (prefers-color-scheme: light) {
-  em { color: var(--rgb-hi-4); }
-}
 /* cursor */
 blink {
   animation-name: blink;

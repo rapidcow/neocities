@@ -2,3 +2,5 @@
   &bull; Add /archive/site/ directory for site archives
   &bull; Exclude all the above routes in robots.txt
     (we don't want archive of archives)
+  &bull; Disable light theme; the contrast is completely broken.
+    Don't pretend to cater to light-themed users if we can't.
