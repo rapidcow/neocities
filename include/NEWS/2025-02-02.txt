@@ -1,5 +1,9 @@
   &bull; Add /news/ directory for changelog
+    (hooking it up to Git was the hard part; thanks
+    TT2 for making dynamic Perl code so easy!)
   &bull; Add /archive/site/ directory for site archives
+    (again, simulating a build environment was no
+    trivial task... but it turned out fine in the end :)
   &bull; Exclude all the above routes in robots.txt
     (we don't want archive of archives)
   &bull; Disable light theme; the contrast is completely broken.
