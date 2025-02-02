@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+[% SET title = "refs/tags/2024-11-09" -%]
+[% SET location = "/news/2024-11-09.html" -%]
+<html lang="en">
+[% WRAPPER base/head.html %]
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]ansi.css?v=[% digest ('ansi.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]main.css?v=[% digest ('main.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]news.css?v=[% digest ('news.css') %]">
+[% END -%]
+<body>
+<nav><pre>]--[ prev ]----------------------[ <a href=".">up</a> ]----------------------[ <a href="2024-11-10.html">next</a> ]--[</pre></nav>
+<main><pre>
+
+                             <strong class="release">Tag 2024-11-09</strong>
+                           [<a href="[% location | to_root %]archive/site/2024-11-09.tar.gz">tarball</a>] [<a href="[% location | to_root %]archive/site/2024-11-09.sha256">sha256</a>]
+
+[% INCLUDE "NEWS/2024-11-09.txt" -%]
+<!-- aligning in 72 cols with 7 dots is impossible... -->
+                                 * * *
+<!-- ... please just pretend that this IS aligned. :) -->
+   Since this is just one commit, I might as well show you the
+   entire patch.  (If you feed this to <strong>git-apply</strong>(1), remember to
+   silence trailing whitespace complaint with <strong>--whitespace=nowarn</strong>.)
+</pre>
+<pre style="overflow-x:scroll;">[%#-%]
+$ <strong>git</strong> diff -p <strong class="setaf-11">NEOCITIES</strong>..2024-11-09 | <strong>tee</strong> <a href="[% location | to_root %]archive/site/2024-11-09.patch">2024-11-09.patch</a>
+diff --git a/site/index.html b/site/index.html
+index <abbr title="0d2b1d2ccdd5c3ef3ae47776eeb0f463e1fae5b5">0d2b1d2</abbr>..<abbr title="8e950be0c81997538dac1c4556a7e36e4e6ce7f0">8e950be</abbr> 100644
+<span class="del">---</span> a/site/index.html
+<span class="add">+++</span> b/site/index.html
+<span class="hunk">@@ -1,32 +1,20 @@</span>
+ &lt;!DOCTYPE html&gt;
+ &lt;html&gt;
+<span class="del">[%#-%]
+-  &lt;head&gt;
+-    &lt;meta charset="UTF-8"&gt;
+-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+-    &lt;title&gt;The web site of rapidcow&lt;/title&gt;
+-    &lt;!-- The style.css file allows you to change the look of your web pages.
+-         If you include the next line in all your web pages, they will all share the same look.
+-         This makes it easier to make new pages for your site. --&gt;
+-    &lt;link href="/style.css" rel="stylesheet" type="text/css" media="all"&gt;
+-  &lt;/head&gt;
+[%-#%]</span>
+   &lt;body&gt;
+<span class="del">[%#-%]
+-    &lt;h1&gt;Welcome to my Website!&lt;/h1&gt;
+-
+-    &lt;p&gt;This is a paragraph! Here's how you make a link: &lt;a href="https://neocities.org"&gt;Neocities&lt;/a&gt;.&lt;/p&gt;
+-
+-    &lt;p&gt;Here's how you can make &lt;strong&gt;bold&lt;/strong&gt; and &lt;em&gt;italic&lt;/em&gt; text.&lt;/p&gt;
+-
+-    &lt;p&gt;Here's how you can add an image:&lt;/p&gt;
+[%-#%]</span>
+<span class="add">[%#-%]
++
++
++    &lt;h1&gt;rapid's Website :)&lt;/h1&gt;
++    &lt;p&gt;welcome to my web site&lt;/p&gt;
++    &lt;p&gt;&lt;a href="http://neocities.org"&gt;Check out Neocities!&lt;/a&gt;&lt;/p&gt;
+[%-#%]</span>
+     &lt;img src="/neocities.png"&gt;
+<span class="del">[%#-%]
+-
+-    &lt;p&gt;Here's how to make a list:&lt;/p&gt;
+-
+[%-#%]</span>
+<span class="add">[%#-%]
++    <!-- intentional trailing whitespace -->
++    &lt;h2&gt;my Interests&lt;/h2&gt;
+[%-#%]</span>
+     &lt;ul&gt;
+<span class="del">[%#-%]
+-      &lt;li&gt;First thing&lt;/li&gt;
+-      &lt;li&gt;Second thing&lt;/li&gt;
+-      &lt;li&gt;Third thing&lt;/li&gt;
+[%-#%]</span>
+<span class="add">[%#-%]
++      &lt;li&gt;Eat&lt;/li&gt;
++      &lt;li&gt;Sleep&lt;/li&gt;
++      &lt;li&gt;your bank account&lt;/li&gt;
++      &lt;li&gt;&lt;a href="http://yarn.com"&gt;Yarn&lt;/a&gt;&lt;/li&gt;
+[%-#%]</span>
+     &lt;/ul&gt;
+ <!-- necessary space for diff -->
+<span class="del">[%#-%]
+-    &lt;p&gt;To learn more HTML/CSS, check out these &lt;a href="https://neocities.org/tutorials"&gt;tutorials&lt;/a&gt;!&lt;/p&gt;
+[%-#%]</span>
+   &lt;/body&gt;
+<span class="del">[%#-%]
+-&lt;/html&gt;
+[%-#%]</span>
+<span class="add">[%#-%]
++&lt;/html&gt;
+\ No newline at end of file
+[%-#%]</span>
+</pre>
+<pre>
+   Same deal as before<!-- by that i mean 2025-01-03 -->, you should be able to apply this patch in
+   reverse (<strong>git apply --whitespace=nowarn -R</strong> or <strong>patch -p1 -R</strong>) to
+   get the original template <strong class="setaf-3">Neocities</strong> created. :)
+</pre>
+</main></body>
+</html>

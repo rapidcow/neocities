@@ -9,6 +9,7 @@ SITE_FILES = \
 	about.html \
 	not_found.html \
 	news/index.html \
+	news/2024-11-09.html \
 	news/2024-11-10.html \
 	news/2025-01-03.html
 MORE_FILES = \
@@ -32,7 +33,8 @@ WAYPOINTS = \
 	2024-11-09 2024-11-10 2025-01-03
 WAYBACK_TIME = \
        $(patsubst %,archive/site/%.tar.gz,$(WAYPOINTS)) \
-       $(patsubst %,archive/site/%.sha256,$(WAYPOINTS))
+       $(patsubst %,archive/site/%.sha256,$(WAYPOINTS)) \
+       archive/site/2024-11-09.patch
 
 site: $(SITE_FILES:%=public/%) $(MORE_FILES:%=public/%) $(CONTRIB_FILES:%=public/%)
 public/%: site/% render
@@ -55,6 +57,7 @@ $(patsubst %,public/%.html,index about not_found news/index.html): temple/base/h
 # cache invalidation demands that the links be rebuilt
 $(patsubst %,public/%.html,index about not_found news/index.html): $(patsubst %,more/%.css,base ansi main)
 public/news/index.html: more/news.css
+$(addprefix public/news/,index.html 2024-11-09.html): include/NEWS/2024-11-09.txt
 $(addprefix public/news/,index.html 2024-11-10.html): include/NEWS/2024-11-10.txt
 $(addprefix public/news/,index.html 2025-01-03.html): include/NEWS/2025-01-03.txt
 
@@ -72,6 +75,10 @@ archive: $(WAYBACK_TIME:%=public/%)
 public/archive/site/2024-11-%.tar.gz:
 	@mkdir -p $(dir $@)
 	git archive --format=tgz --prefix=public/ 2024-11-$* -- site/ > $@
+
+public/archive/site/2024-11-09.patch:
+	@mkdir -p $(dir $@)
+	git format-patch NEOCITIES..2024-11-09 --stdout > $@
 
 public/archive/site/%.tar.gz:
 	@mkdir -p $(dir $@)
