@@ -2,9 +2,10 @@
     monologue/info dump (doesn't strike as effective anyway).
   &bull; Wrote and put a new rant in about page: the why and what of this
     site. (I don't like the old rant.)
+  &bull; Link dump removed (needs organization). Basic grammar fix in 404.
   &bull; Use VGA font and virtual console colors, with heavy emphasis on the
-    Unix command-line interface.  Font from <a href="https://int10h.org/oldschool-pc-fonts/fontlist/font?ibm_vga_8x16">Oldschool PC Fonts</a> and color
-    RGB from <a href="https://github.com/torvalds/linux/blob/v6.12/drivers/tty/vt/vt.c#L1591">drivers/tty/vt/vt.c</a>.
+    Unix command-line interface.  Font from <a title="IBM VGA 8x16" href="https://int10h.org/oldschool-pc-fonts/fontlist/font?ibm_vga_8x16">Oldschool PC Fonts</a> and color
+    RGB from <a title="The standard 3-bit colors" href="https://github.com/torvalds/linux/blob/v6.12/drivers/tty/vt/vt.c#L1591">drivers/tty/vt/vt.c</a>.
   &bull; New ASCII banner (modified from the actual /etc/issue on my Linux
     laptop :D) with the Neocities cat + new year MOTD
   &bull; Template Toolkit (TT2)!  Been using it for a while now (namely for

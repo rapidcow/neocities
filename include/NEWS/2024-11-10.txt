@@ -1,0 +1,7 @@
+  &bull; Lazy CSS entirely ripped off of the <a href="https://github.com/nginx/nginx/blob/release-1.21.2/docs/html/index.html">default Nginx page</a>
+  &bull; Wrote a giant wall of text in index.html, written solely to prove
+    that this (and rapidcow.org) wasn't an abandoned web site (to who?
+    to ABSOLUTELY no one because no one visits my sites. Plegh! &gt;:c)
+  &bull; Something called ``Links of fame'' in links.html...
+  &bull; 404 easter egg about loss (with egregious grammar mistakes)
+  &bull; Add a very permissive robots.txt (barely bans any AI scraper)

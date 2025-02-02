@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+[% SET title = "refs/tags/2024-11-10" -%]
+[% SET location = "/news/2024-11-10.html" -%]
+<html lang="en">
+[% WRAPPER base/head.html %]
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]ansi.css?v=[% digest ('ansi.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]main.css?v=[% digest ('main.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]news.css?v=[% digest ('news.css') %]">
+[% END -%]
+<body>
+<nav><pre>]--[ prev ]----------------------[ <a href=".">up</a> ]----------------------[ <a href="2025-01-03.html">next</a> ]--[</pre></nav>
+<main><pre>
+
+                             <strong class="release">Tag 2024-11-10</strong>
+                           [<a href="[% location | to_root %]archive/site/2024-11-10.tar.gz">tarball</a>] [<a href="[% location | to_root %]archive/site/2024-11-10.sha256">sha256</a>]
+
+[% INCLUDE "NEWS/2024-11-10.txt" -%]
+
+$ <strong>./diffsite</strong> 2024-11-09.tar.gz 2024-11-10.tar.gz
+ site/index.html     | 196 <span class="add">++++++++++++++++++++++++++++++++++++++++</span><span class="del">----</span>
+ site/links.html     |  63 <span class="add">++++++++++++++</span>
+ site/not_found.html |  17 <span class="add">+++</span><span class="del">-</span>
+ site/robots.txt     |   4 <span class="add">+</span>
+ site/style.css      |  21 <span class="add">+++</span><span class="del">--</span>
+ 5 files changed, 274 insertions(<span class="add">+</span>), 27 deletions(<span class="del">-</span>)
+
+$ <strong>git</strong> rev-list 2024-11-09..2024-11-10 |
+&gt; while <strong>read</strong> -r rev; do
+&gt;   <strong>git</strong> show -s --format='%ai  %s%d' $rev &amp;&amp;
+&gt;   <strong>git</strong> diff --shortstat $rev^1 $rev;
+&gt; done
+[% changelog("2024-11-09..2024-11-10") -%]
+</main>
+</body>
+</html>
