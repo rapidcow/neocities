@@ -50,7 +50,7 @@ $ <strong>./diffsite</strong> 2024-11-10.tar.gz 2025-01-03.tar.gz
 
 $ <strong>git</strong> rev-list 2024-11-10..2025-01-03 |
 &gt; while <strong>read</strong> -r rev; do
-&gt;   <strong>git</strong> show -s --format='%ai  %s%d' $rev &amp;&amp;
+&gt;   <strong>git</strong> show -s --pretty=format:'%ai  %s' $rev &amp;&amp;
 &gt;   <strong>git</strong> diff --shortstat $rev^1 $rev;
 &gt; done
 [% changelog("2024-11-10..2025-01-03") -%]

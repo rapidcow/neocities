@@ -126,7 +126,7 @@ my $htmlify = Poly::Ansi2Html->new(tag => 'strong', no_plain_tag => 1);
 # object, just pass it along and we'll be good)
 my ($revh, $revc) = Git::command_output_pipe (
 	'log', '--color=always',
-	'--format=%h%x09%ai%x09%s%x09%C(auto)%d',
+	'--pretty=format:%h%x09%ai%x09%s%x09%C(auto)%d',
 	shift
 );
 while (<$revh>) {

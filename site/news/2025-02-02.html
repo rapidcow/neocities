@@ -21,7 +21,7 @@ for finding this page, you get a sneak peek of the Git log :)
 
 $ <strong>git</strong> rev-list 2025-01-03..HEAD |
 &gt; while <strong>read</strong> -r rev; do
-&gt;   <strong>git</strong> show -s --format='%ai  %s%d' $rev &amp;&amp;
+&gt;   <strong>git</strong> show -s --pretty=format:'%ai  %s' $rev &amp;&amp;
 &gt;   <strong>git</strong> diff --shortstat $rev^1 $rev;
 &gt; done
 [% changelog("2025-01-03..HEAD") -%]
