@@ -11,7 +11,8 @@ SITE_FILES = \
 	news/index.html \
 	news/2024-11-09.html \
 	news/2024-11-10.html \
-	news/2025-01-03.html
+	news/2025-01-03.html \
+	news/2025-02-02.html
 MORE_FILES = \
 	base.css \
 	main.css \

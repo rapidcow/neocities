@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+[% SET title = "refs/tags/2025-02-02" -%]
+[% SET location = "/news/2025-02-02.html" -%]
+<html lang="en">
+[% WRAPPER base/head.html %]
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]ansi.css?v=[% digest ('ansi.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]main.css?v=[% digest ('main.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]news.css?v=[% digest ('news.css') %]">
+[% END -%]
+<body>
+<nav><pre>]--[ <a href="2025-01-03.html">prev</a> ]----------------------[ <a href=".">up</a> ]----------------------[ next ]--[</pre></nav>
+<main><pre>
+
+                             <strong class="release">Tag 2025-02-02</strong>
+                           [<a href="[% location | to_root %]archive/site/2025-01-03.tar.gz">tarball</a>] [<a href="[% location | to_root %]archive/site/2025-01-03.sha256">sha256</a>]
+
+This is the current version of the web site you are on!
+
+I will write the changelog for this tomorrow... as a reward
+for finding this page, you get a sneak peek of the Git log :)
+
+$ <strong>git</strong> rev-list 2025-01-03..HEAD |
+&gt; while <strong>read</strong> -r rev; do
+&gt;   <strong>git</strong> show -s --format='%ai  %s%d' $rev &amp;&amp;
+&gt;   <strong>git</strong> diff --shortstat $rev^1 $rev;
+&gt; done
+[% changelog("2025-01-03..HEAD") -%]
+</pre></main>
+</body>
+</html>
