@@ -1,2 +1,4 @@
   &bull; Add /news/ directory for changelog
   &bull; Add /archive/site/ directory for site archives
+  &bull; Exclude all the above routes in robots.txt
+    (we don't want archive of archives)
