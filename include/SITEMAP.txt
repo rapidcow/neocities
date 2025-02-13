@@ -3,8 +3,8 @@
         (What people normally               (Change log &
          call an ``about'' page)             time machine)
 [% END -%]
-      # Some goodies I like               # Notes and Manuals
+      # Some goodies I like               # <a href="memo/">Notes and philosophy</a>
 [% FILTER html -%]
-        (Link dump & inspirations)          (Neat references)
+        (Link dump & inspirations)          (Mental powerhouse)
 [% END -%]
 <em>Note</em>: Pages prefixed with a `#' sign are a work in progress.
