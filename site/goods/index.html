@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+[% SET title = "Goodies" -%]
+[% SET location = "/goods/index.html" -%]
+<html lang="en">
+[% WRAPPER base/head.html %]
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]ansi.css?v=[% digest ('ansi.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]main.css?v=[% digest ('main.css') %]">
+[% END -%]
+<body>
+<nav><pre>]--[<a href="[% location | to_root %]">Home</a>]---[<a href="[% to_root %]/about.html">About</a>]---[<a>Goods</a>]--------------------------------------[
+<main><pre>
+</pre>
+</main></body>
+</html>

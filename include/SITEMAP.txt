@@ -3,7 +3,7 @@
         (What people normally               (Change log &
          call an ``about'' page)             time machine)
 [% END -%]
-      # Some goodies I like               # <a href="memo/">Notes and philosophy</a>
+      # <a href="goods/">Some goodies I like</a>               # Notes and philosophy
 [% FILTER html -%]
         (Link dump & inspirations)          (Mental powerhouse)
 [% END -%]
