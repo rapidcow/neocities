@@ -7,7 +7,7 @@ require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(text_wrap);
 
-use List::BisectSearch qw/bisect/;
+use List::Search qw/bisect/;
 
 # set this to 1 to debug
 our $debug = 0;
