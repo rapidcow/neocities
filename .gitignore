@@ -4,3 +4,6 @@
 /tmp/
 /differ/
 /local/
+
+# Carmel is broken; i'm sticking local::lib for now :x
+/perl5/
