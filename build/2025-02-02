@@ -15,7 +15,7 @@ mycpan="$(which cpanm)"
 echo "my perl is '$myperl'"
 echo "my cpanm is '$mycpan'"
 "$mycpan" --installdeps .
-"$mycpan" "${TREE_ROOT}my/project/dist/perl5/List-BisectSearch.git"@v0.01-rc2
+"$mycpan" https://ftp.rapidcow.org/lib/perl5/List-BisectSearch/v0.01-rc2.tar.gz
 
 make site PERL5="'$myperl' -Ilib"
 
