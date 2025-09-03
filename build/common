@@ -3,6 +3,7 @@
 # package $1 $2 is basically tar czvf $2 $1
 # (the tag is an afterthought)
 package () {
+	local tag dir out commitdate
 	tag="$1"
 	shift
 	dir="$1"
