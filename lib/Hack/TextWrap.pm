@@ -7,7 +7,7 @@ require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(text_wrap);
 
-use List::Search qw/bisect/;
+use Sort::Search qw/bisectl/;
 
 # set this to 1 to debug
 our $debug = 0;
@@ -70,7 +70,7 @@ sub text_wrap {
 
 	while ($needle < @words) {
 		# find upper bound for how much we can fit on this line
-		my $stride = bisect { !(
+		my $stride = bisectl { !(
 			# rule for every word but last: plus one to
 			# account for the space in most circumstances
 			# (plus two because of backslash + space.....)
