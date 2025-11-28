@@ -7,7 +7,7 @@
 ----------------------------------------------------------------------
 
    Welcome to the source code of my Neocities site, stored in a
-   Git [1] repository!  In case you haven't heard of Git - it is
+   Git [1] repository!  In case you haven't heard of Git, it is
    essentially a directory content tracker, with fancy metadata
    like the when and why of changes from one state to the next,
    as well as the link between each new state and the old state
