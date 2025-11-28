@@ -8,11 +8,11 @@ die "error: missing algorithm\n" unless defined $algorithm;
 
 my $dig;
 if ($algorithm eq 'sha1') {
-	use Digest::SHA;
+	require Digest::SHA;
 	$dig = Digest::SHA->new(1);
 }
 elsif ($algorithm eq 'sha256') {
-	use Digest::SHA;
+	require Digest::SHA;
 	$dig = Digest::SHA->new(256);
 }
 else {
