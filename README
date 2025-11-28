@@ -1,0 +1,38 @@
+
+
+     ^__^ (‾)
+     (66)  ) )|\__/|         .   rapidcow.NEOCITIES.org   .
+   .-(__) / / | = =|        -;-       << source! >>      -;-
+  /    )  \ ) (  ' )         "                            "
+----------------------------------------------------------------------
+
+   Welcome to the source code of my Neocities site, stored in a
+   Git [1] repository!  In case you haven't heard of Git - it is
+   essentially a directory content tracker, with fancy metadata
+   like the when and why of changes from one state to the next,
+   as well as the link between each new state and the old state
+   it is based on in said directory.  It's a time machine built
+   for files, in other words!  And I love using it for that. =v=
+
+   Currently I am thinking of publishing it via Codeberg:
+
+      https://codeberg.org/rapidcow/neocities      HTTP (web view!)
+      https://codeberg.org/rapidcow/neocities.git  Git clone (HTTP)
+      git@codeberg.org:rapidcow/neocities.git      Git clone (SSH)
+
+   But I may be mirroring it on git.rapidcow.org, once I set it up
+   in a way that the AI scrapers won't try to flood my server again.
+   (Stay tuned for that!)
+
+   All site content can be re-distributed as long as you credit me
+   per CC-BY 4.0! <https://creativecommons.org/licenses/by/4.0/>
+
+   All code can be re-distributed or modified under the same terms
+   as Perl itself: <https://dev.perl.org/licenses/>
+
+   See LICENSE.Copying and LICENSE.perl for those respectively.
+
+   [1] https://www.kernel.org/pub/software/scm/git/docs/git.html
+
+               //        2024-2025, rapidcow       \\
+               \\   May the text files live on...  //
