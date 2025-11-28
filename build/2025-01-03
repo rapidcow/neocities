@@ -10,12 +10,19 @@ git config --bool advice.detachedHead false
 git checkout 2025-01-03
 
 eval $(perl -Mlocal::lib=local)
-myperl="$(which perl)"
-mycpan="$(which cpanm)"
+myperl="$(command -v perl)"
+mycpan="$(command -v cpanm)"
 echo "my perl is '$myperl'"
 echo "my cpanm is '$mycpan'"
+if "$myperl" -mLWP::Protocol::https -e1 >/dev/null 2>&1; then
+	echo "we have LWP::Protocol::https! will be using that :)"
+	proto=https
+else
+	echo "no LWP::Protocol::https? will be using HTTP then..."
+	proto=http
+fi
 "$mycpan" --installdeps .
-"$mycpan" https://ftp.rapidcow.org/pub/lib/perl5/List-BisectSearch/v0.01-rc2.tar.gz
+"$mycpan" $proto://ftp.rapidcow.org/pub/lib/perl5/List-BisectSearch/v0.01-rc2.tar.gz
 
 make site PERL5="'$myperl' -Ilib"
 
