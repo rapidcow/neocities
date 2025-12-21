@@ -22,7 +22,7 @@ else
 	proto=http
 fi
 "$mycpan" --installdeps .
-"$mycpan" $proto://ftp.rapidcow.org/pub/lib/perl5/List-BisectSearch/v0.01-rc2.tar.gz
+"$mycpan" $proto://ftp.rapidcow.org/pub/lib/perl5/List-BisectSearch-v0.01-rc2.tar.gz
 
 make site PERL5="'$myperl' -Ilib"
 
