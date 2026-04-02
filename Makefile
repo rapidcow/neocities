@@ -2,7 +2,7 @@ BASE_URL ?= # the empty string, i.e. "/" is root
 SITE_URL ?= https://rapidcow.neocities.org
 export BASE_URL SITE_URL
 
-PERL5 ?= carmel exec perl -Ilib
+PERL5 ?= perl
 
 SITE_FILES = \
 	index.html \
@@ -41,7 +41,7 @@ WAYBACK_TIME = \
 site: $(SITE_FILES:%=public/%) $(MORE_FILES:%=public/%) $(CONTRIB_FILES:%=public/%)
 public/%: site/% render
 	@mkdir -p $(dir $@)
-	$(PERL5) ./render $* > $@
+	$(PERL5) -Ilib ./render $* > $@
 public/%: more/%
 	@mkdir -p $(dir $@)
 	cp $< $@
