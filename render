@@ -10,6 +10,7 @@ use Digest::SHA;
 # handy guys for templating
 use HTML::Tiny;
 use Time::Piece;
+use Git;
 
 my $BASE_URL = $ENV{BASE_URL}; die "please export BASE_URL\n" unless defined $BASE_URL;
 my $SITE_URL = $ENV{SITE_URL}; die "please export SITE_URL\n" unless defined $SITE_URL;
@@ -17,6 +18,8 @@ my @include = qw( site temple include more );
 
 # relpath command
 sub relpath {
+	my $path = shift;
+	my $root = shift;
 	# Unix paths do not have volume; we also don't care
 	# about the file name, even if there is one.
 	my (undef, $directory, undef) = File::Spec::Unix->splitpath ($path);
@@ -57,7 +60,7 @@ sub to_root {
 		}
 		my $relative = relpath($path, $root);
 		if (substr ($relative, 0, 1) eq "/") {
-			die "abs2rel computed ('$root', '$directory') with an "
+			die "abs2rel computed ('$path', '$root') with an "
 			. "absolute path ('$relative')\n";
 		}
 		return $relative . "/";
@@ -125,7 +128,6 @@ sub changelog {
 use Poly::Ansi2Html;
 use Term::ANSIColor qw( colorstrip );
 use Hack::TextWrap; # unconditional name pollution
-use Git;
 
 my $h = HTML::Tiny->new (mode => 'html');
 my $htmlify = Poly::Ansi2Html->new(tag => 'strong', no_plain_tag => 1);
