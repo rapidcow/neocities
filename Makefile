@@ -3,6 +3,7 @@ SITE_URL ?= https://rapidcow.neocities.org
 export BASE_URL SITE_URL
 
 PERL5 ?= perl
+PERL5OPT = -Ilib -Iext/Sort-Search/lib -Iext/IPC-Unix/lib
 
 SITE_FILES = \
 	index.html \
@@ -41,7 +42,7 @@ WAYBACK_TIME = \
 site: $(SITE_FILES:%=public/%) $(MORE_FILES:%=public/%) $(CONTRIB_FILES:%=public/%)
 public/%: site/% render
 	@mkdir -p $(dir $@)
-	$(PERL5) -Ilib -Iext/Sort-Search/lib -Iext/IPC-Unix/lib ./render $* > $@
+	$(PERL5) $(PERL5OPT) ./render $* > $@
 public/%: more/%
 	@mkdir -p $(dir $@)
 	cp $< $@
