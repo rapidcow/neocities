@@ -10,7 +10,22 @@ use Digest::SHA;
 # handy guys for templating
 use HTML::Tiny;
 use Time::Piece;
-use Git;
+
+use File::Which;
+use IPC::Unix;
+
+my $git_bin = which("git");
+$git_bin or die "error: git not found\n";
+my $Git = IPC::Unix->new( "git" )->file( $git_bin )
+	->setenv( TERM => 'dumb' );
+
+sub pipe_head {
+	$_[0]->dup(">|", my $pipi)->spawn;
+	my $head = <$pipi>;
+	close $pipi;
+	$_[0]->close->wait->ok;
+	return $head;
+}
 
 my $BASE_URL = $ENV{BASE_URL}; die "please export BASE_URL\n" unless defined $BASE_URL;
 my $SITE_URL = $ENV{SITE_URL}; die "please export SITE_URL\n" unless defined $SITE_URL;
@@ -133,11 +148,11 @@ my $h = HTML::Tiny->new (mode => 'html');
 my $htmlify = Poly::Ansi2Html->new(tag => 'strong', no_plain_tag => 1);
 # C escapes don't work T_T thanks Jesper...
 # https://stackoverflow.com/a/1441062
-my ($revh, $revc) = Git::command_output_pipe (
+my $Git_log = $Git->new->set (
 	'log', '--color=always',
 	'--pretty=format:%h%x09%ai%x09%s%x09%C(auto)%d',
 	shift
-);
+)->dup(">|", my $revh, "</dev/null")->spawn;
 while (<$revh>) {
 	chomp; my ($oid, $ai, $s, $d) = split "\t", $_, 4;
 
@@ -145,10 +160,10 @@ while (<$revh>) {
 	# "recurse" instead of "recursive" or "recursion"
 	# ... which makes searching with less pager a little
 	# unsatisfying but oh well :<
-	my ($diffh, $diffc) = Git::command_output_pipe (
+	my $Git_diff = $Git->new->set (
 		# only consider (A)dded (C)opies (D)eleted (M)odified and (R)enamed
 		'diff-tree', '-r', '--diff-filter=ACDMR', $oid . '^1', $oid,
-	);
+	)->dup(">|", my $diffh, "</dev/null")->spawn;
 	my $interesting = 0;
 	while (<$diffh>) {
 		# sanitization
@@ -163,7 +178,7 @@ while (<$revh>) {
 			$dst =~ /(site|more|temple|include|share)\//;
 		$interesting = 1; last;
 	}
-	Git::command_close_pipe ($diffh, $diffc);
+	$Git_diff->close->wait;
 
 	next unless $interesting;
 	print for (
@@ -180,14 +195,14 @@ while (<$revh>) {
 		# warning when there is no diffstat that we can remove
 		# once we're done testing and focus on just the
 		# interesting commits :)
-		(Git::command_oneline('diff', '--shortstat', $oid . '^1', $oid,
-			'--', qw( site more temple include share )) // '')
+		pipe_head($Git->new->set('diff', '--shortstat', $oid . '^1', $oid,
+			'--', qw( site more temple include share ))) // ''
 			=~ s/([+])/@{[$h->tag ('span', { class => 'add' }, $1)]}/r
 			=~ s/([-])/@{[$h->tag ('span', { class => 'del' }, $1)]}/r,
 		"\n",
 	);
 }
-Git::command_close_pipe ($revh, $revc);
+$Git_log->close->wait;
 
 	close $fh;
 	return $output;
