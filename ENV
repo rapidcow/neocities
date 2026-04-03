@@ -1,0 +1,30 @@
+#!/usr/bin/env perl
+
+# mixture of cooper-pwd:ENV.pl and mod/nginx-watch.git:build_systemd_env
+
+use FindBin;
+require local::lib;
+use constant PATH_SEP => ':';
+
+my $PERL_ROOT = File::Spec->catfile($FindBin::Bin, 'local');
+
+my $lib = do {
+	delete local $ENV{PERL5LIB};
+	delete local $ENV{PERL_LOCAL_LIB_ROOT};
+	local::lib->new()->activate( $PERL_ROOT, { always => 1 } );
+};
+
+if (@ARGV) {
+	# Iteration doesn't work on anon HASH's
+	my %setenv = $lib->build_environment_vars();
+	while (my ($K, $V) = each %setenv) {
+		$ENV{$K} = $V;
+	}
+	exec @ARGV;
+	use locale;
+	die "exec $ARGV[0] error: $!\n";
+	eval { require POSIX; POSIX::_exit(255) };
+	exit(255);
+}
+
+print $lib->environment_vars_string();
