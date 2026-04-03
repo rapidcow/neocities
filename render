@@ -196,7 +196,8 @@ while (<$revh>) {
 		# once we're done testing and focus on just the
 		# interesting commits :)
 		pipe_head($Git->new->set('diff', '--shortstat', $oid . '^1', $oid,
-			'--', qw( site more temple include share ))) // ''
+			'--', qw( site more temple include share ))->dup("</dev/null"))
+		// ''
 			=~ s/([+])/@{[$h->tag ('span', { class => 'add' }, $1)]}/r
 			=~ s/([-])/@{[$h->tag ('span', { class => 'del' }, $1)]}/r,
 		"\n",
