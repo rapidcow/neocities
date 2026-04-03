@@ -196,7 +196,8 @@ sub redirect ($env, $code, $location)
 <body><h1>$title_html</h1>
 <p>I have told your browser to redirect you to
 <a href="$link_html">$link_html</a>.
-If your browser, please click the link for me.</p>
+If your browser has trouble doing so, please
+click the link for me.</p>
 </body>
 </html>
 EOM
