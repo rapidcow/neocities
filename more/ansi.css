@@ -2,7 +2,7 @@
 /* emulate colors of linux virtual console
  * (based on: drivers/tty/vt/vt.c). */
 :root {
-  --back: #000; /* background */
+  --back: #222; /* background */
   --rgb-0: #000; /* ... black */
   --rgb-1: #a00; /* R.. red */
   --rgb-2: #0a0; /* .G. green */
