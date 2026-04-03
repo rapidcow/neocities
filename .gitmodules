@@ -1,0 +1,3 @@
+[submodule "ext/Sort-Search"]
+	path = ext/Sort-Search
+	url = https://git.rapidcow.org/pub/lib/perl5/Sort-Search.git
