@@ -11,7 +11,7 @@
 
 set -euEo pipefail
 
-BASE_URL=${BASE_URL:-https://rapidcow.neocities.org/archive/site}
+BASE_URL=https://rapidcow.neocities.org/archive/site
 
 top=$(git rev-parse --show-toplevel)
 out="$top/archive/sha256sum.txt"
