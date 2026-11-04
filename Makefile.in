@@ -16,10 +16,12 @@ ${b}/share/int10h.org/oldschool-pc-fonts/v2.2/index.html \
 	# i think it fits for illustrative purposes.
 	# (Actually I have stupid prefixes for this;
 	# so this has to be explicit XP never mind.)
-		${a}/site/${.TARGET}
+		${a}/site/${.TARGET} \
+		${A}/render ${A}/optenv
 	cd -- ${A:Q} && \
 		# Render doesn't even optparse... stupid >:p
-		${^X} ${perl5opt} render ${a:Q}/${.IMPSRC:Q} \
+		./optenv ${B:Q} \
+			${^X} ${perl5opt} render ${a:Q}/${.TARGET:Q} \
 			> ${B:Q}/${b:Q}/${.TARGET:Q}
 
 ${b}/base.css \
@@ -29,7 +31,7 @@ ${b}/news.css \
 ${b}/robots.txt \
 	: \
 	${a}/more/${.TARGET}
-	cd -- ${A:Q} &&
+	cd -- ${A:Q} && \
 		cp -- ${a:Q}/${.IMPSRC:Q} ${B:Q}/${b:Q}/${.TARGET:Q}
 
 ${b}/share/int10h.org/oldschool-pc-fonts/v2.2/README.TXT \
@@ -38,5 +40,5 @@ ${b}/share/int10h.org/oldschool-pc-fonts/v2.2/Web437_IBM_VGA_8x16.woff \
 	: \
 	# This one is finally implicit, phew...
 
-	cd -- ${A:Q} &&
+	cd -- ${A:Q} && \
 		cp -- ${a:Q}/${.IMPSRC:Q} ${B:Q}/${b:Q}/${.TARGET:Q}
