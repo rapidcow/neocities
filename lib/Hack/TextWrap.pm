@@ -7,7 +7,7 @@ require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(text_wrap);
 
-use Sort::Search qw/bisectl/;
+use RdKw::Algo::BSearch qw/bisectl/;
 
 # set this to 1 to debug
 our $debug = 0;

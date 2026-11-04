@@ -3,7 +3,7 @@ SITE_URL ?= https://rapidcow.neocities.org
 export BASE_URL SITE_URL
 
 PERL5 ?= perl
-PERL5OPT = -Ilib -Iext/Sort-Search/lib -Iext/IPC-Unix/lib
+PERL5OPT = -Ilib -Iext/Algo-BSearch/lib -Iext/IPC-Unix/lib
 
 SITE_FILES = \
 	index.html \

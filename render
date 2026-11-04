@@ -12,11 +12,11 @@ use HTML::Tiny;
 use Time::Piece;
 
 use File::Which;
-use IPC::Unix;
+use RdKw::IPC::Unix;
 
 my $git_bin = which("git");
 $git_bin or die "error: git not found\n";
-my $Git = IPC::Unix->new( "git" )->file( $git_bin )
+my $Git = RdKw::IPC::Unix->new( "git" )->file( $git_bin )
 	->setenv( TERM => 'dumb' );
 
 sub pipe_head {
