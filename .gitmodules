@@ -1,3 +1,6 @@
-[submodule "ext/Sort-Search"]
-	path = ext/Sort-Search
-	url = https://git.rapidcow.org/pub/lib/perl5/Sort-Search.git
+[submodule "ext/Algo-BSearch"]
+	path = ext/Algo-BSearch
+	url = https://git.rapidcow.org/pub/lib/perl5/Algo-BSearch.git
+[submodule "ext/IPC-Unix"]
+	path = ext/IPC-Unix
+	url = https://git.rapidcow.org/pub/lib/perl5/IPC-Unix.git
