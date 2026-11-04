@@ -4,5 +4,6 @@
 /tmp/
 /differ/
 /local/
+MY/
 *.orig
 *.rej

@@ -1,0 +1,16 @@
+${b}/index.html \
+${b}/about.html \
+${b}/not_found.html \
+${b}/news/index.html \
+${b}/news/2024-11-09.html \
+${b}/news/2024-11-10.html \
+${b}/news/2025-01-03.html \
+${b}/news/2025-02-02.html \
+${b}/goods/index.html \
+	: \
+# So this is just explicit... unnecessarily so but
+	# i think it fits for illustrative purposes.
+	# (Actually I have stupid prefixes for this;
+	# so this has to be explicit XP never mind.)
+		${a}/site/${.TARGET}
+	${^X} ${perl5opt} render > ${b:Q}/${.TARGET:Q}

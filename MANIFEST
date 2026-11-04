@@ -1,0 +1,25 @@
+# SITE_FILES = \
+MAKE site
+	NEED index.html
+	NEED about.html
+	NEED not_found.html
+	NEED news/index.html
+	NEED news/2024-11-09.html
+	NEED news/2024-11-10.html
+	NEED news/2025-01-03.html
+	NEED news/2025-02-02.html
+	NEED goods/index.html
+# MORE_FILES = \
+	NEED base.css
+	NEED main.css
+	NEED ansi.css
+	NEED news.css
+	NEED robots.txt
+# CONTRIB_FILES = \
+	NEED share/index.html
+	NEED share/int10h.org/index.html
+	NEED share/int10h.org/oldschool-pc-fonts/index.html
+	NEED share/int10h.org/oldschool-pc-fonts/v2.2/index.html
+	NEED share/int10h.org/oldschool-pc-fonts/v2.2/README.TXT
+	NEED share/int10h.org/oldschool-pc-fonts/v2.2/LICENSE.TXT
+	NEED share/int10h.org/oldschool-pc-fonts/v2.2/Web437_IBM_VGA_8x16.woff
