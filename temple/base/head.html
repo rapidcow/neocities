@@ -14,15 +14,15 @@
   <link rel="canonical" type="text/html" href="[% location | as_link | xml %]">
 [% END -%]
   <!-- The ?v=... invalidates browser cache when the content changes. -->
-  <!-- (for the observant: this base64 string is the Git blob object ID.) -->
+  <!-- (for the observant: this is the URL-safe base64 SHA-1 of the built file.) -->
   <!-- SHA-1 is not "secure", but good enough for a small site like this. -->
 [%# to_root() will be a problem if we don't have a location #-%]
 [%# in that case we just don't even bother figure out how to #-%]
 [%# climb up - we'll just fall straight back to the root. #-%]
 [% IF location -%]
-  <link rel="stylesheet" type="text/css" href="[% location | to_root | xml %]base.css?v=[% digest ('base.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root | xml %]base.css?v=[% get_version('base.css') %]">
 [%- ELSE -%]
-  <link rel="stylesheet" type="text/css" href="[% '/' | as_link(0) | xml %]base.css?v=[% digest ('base.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% '/' | as_link(0) | xml %]base.css?v=[% get_version('base.css') %]">
 [%- END -%]
 [% content -%]
 </head>

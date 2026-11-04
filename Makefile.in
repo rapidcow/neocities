@@ -19,9 +19,8 @@ ${b}/share/int10h.org/oldschool-pc-fonts/v2.2/index.html \
 		${a}/site/${.TARGET} \
 		${A}/render ${A}/optenv
 	cd -- ${A:Q} && \
-		# Render doesn't even optparse... stupid >:p
 		./optenv ${B:Q} \
-			${^X} ${perl5opt} render ${a:Q}/${.TARGET:Q} \
+			${^X} ${perl5opt} render -B ${B:Q} -b ${b:Q} -- ${a:Q}/${.TARGET:Q} \
 			> ${B:Q}/${b:Q}/${.TARGET:Q}
 
 ${b}/base.css \
