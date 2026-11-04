@@ -73,6 +73,20 @@ sub to_json {
 	$h->json_encode ($text);
 }
 
+# html filter as it was in Template 3.102; 3.103 started turning
+# ' into &#39; (cpan-authors/Template2#337), which changes the
+# output on us, so pin it retroactively
+sub html_filter {
+	my $text = shift;
+	for ($text) {
+		s/&/&amp;/g;
+		s/</&lt;/g;
+		s/>/&gt;/g;
+		s/"/&quot;/g;
+	}
+	return $text;
+}
+
 # versioning trick (i don't care about dates,
 # hashing is so much better :)
 sub _digest {
@@ -195,6 +209,7 @@ my $temple = Template->new({
 		to_root => [ \&to_root, 1 ],
 		as_link => [ \&as_link, 1 ],
 		json => \&to_json,
+		html => \&html_filter,
 	},
 }) || die $Template::ERROR, "\n";
 
