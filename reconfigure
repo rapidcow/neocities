@@ -1,2 +1,6 @@
 #!/bin/sh
-siteconf -if -o render:/dev/null -Sa=. -Sb=public -Osite_url=https://rapidcow.neocities.org/ -P web
+siteconf -if -o configure.orig -o render:/dev/null -Sa=. -Sb=public \
+	-Obase_url=/ -Osite_url=https://rapidcow.neocities.org/ -P web \
+	-MHTML::Tiny -MHTML::FromANSI::Tiny -MTemplate \
+	-MRdKw::Algo::BSearch=0.0044 -MRdKw::IPC::Unix \
+	-Dperl5lib='-Ilib -Iext/Algo-BSearch/lib -Iext/IPC-Unix/lib'

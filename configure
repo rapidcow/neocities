@@ -7,7 +7,7 @@
 # patch keeps applying), rather than editing it in place and losing
 # them the next time `siteconf -i' is run.
 #
-# options: -Sa=. -Sb=public -Osite_url=https://rapidcow.neocities.org/ -P web
+# options: -Sa=. -Sb=public -Obase_url=/ -Osite_url=https://rapidcow.neocities.org/ -P web -MHTML::Tiny -MHTML::FromANSI::Tiny -MTemplate -MRdKw::Algo::BSearch=0.0044 -MRdKw::IPC::Unix '-Dperl5lib=-Ilib -Iext/Algo-BSearch/lib -Iext/IPC-Unix/lib'
 #
 use utf8;
 use 5.006;
@@ -21,13 +21,21 @@ use File::Spec;
 use FindBin;
 use Getopt::Long qw( GetOptions );
 
+use lib './lib';
+use lib './ext/Algo-BSearch/lib';
+use lib './ext/IPC-Unix/lib';
+
 # --- what we need: [ module, minimum version ], from `siteconf -i -M',
 # and the preset if any (which comes first, so it can add to the list)
 our @NEED;
 BEGIN {
 	@NEED = (
 		[ 'RdKw::WwW::GenGenLib', 0 ],
-
+		[ "HTML::Tiny", 0 ],
+		[ "HTML::FromANSI::Tiny", 0 ],
+		[ "Template", 0 ],
+		[ "RdKw::Algo::BSearch", "0.0044" ],
+		[ "RdKw::IPC::Unix", 0 ],
 	);
 }
 # The `web' preset: a static site.  It insists on a site_url, and sees
@@ -102,8 +110,10 @@ my %Dd = (
 	c => "public",
 	clean => "clean",
 	e => ".ok",
+	perl5lib => "-Ilib -Iext/Algo-BSearch/lib -Iext/IPC-Unix/lib",
 );
 my %Od = (
+	base_url => "/",
 	site_url => "https://rapidcow.neocities.org/",
 );
 
@@ -126,9 +136,11 @@ The following variables may be defined:
   -DF         Manifest, from current directory (default: $Dd{F})
   -De         Directory marker (default: $Dd{e})
   -Dclean     Clean rule template (default: $Dd{clean})
+  -Dperl5lib  (default: $Dd{perl5lib})
 
 Options with defaults:
 
+  -Obase_url  Host-relative base URL (default: $Od{base_url})
   -Osite_url  Absolute base URL (default: $Od{site_url})
 
 Anything else you may -D or -O goes into MY/config.mk or MY/option.mk

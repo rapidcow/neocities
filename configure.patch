@@ -1,0 +1,13 @@
+--- configure.orig	2026-11-04 02:48:09.623990711 -0600
++++ configure	2026-11-04 02:50:18.634983274 -0600
+@@ -21,6 +21,10 @@
+ use FindBin;
+ use Getopt::Long qw( GetOptions );
+ 
++use lib './lib';
++use lib './ext/Algo-BSearch/lib';
++use lib './ext/IPC-Unix/lib';
++
+ # --- what we need: [ module, minimum version ], from `siteconf -i -M',
+ # and the preset if any (which comes first, so it can add to the list)
+ our @NEED;
