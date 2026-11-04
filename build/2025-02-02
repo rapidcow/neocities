@@ -7,23 +7,20 @@ target="$(realpath -- "$1")"
 2>&1 echo "building site version 2025-02-02 at $tmp"
 cd "$tmp"
 git config --bool advice.detachedHead false
-git checkout 2025-02-02
+# maintenance branch (patched); the tag still dates the archive
+git checkout --detach origin/main/2025-02-02
 
 eval $(perl -Mlocal::lib=local)
 myperl="$(command -v perl)"
 mycpan="$(command -v cpanm)"
 echo "my perl is '$myperl'"
 echo "my cpanm is '$mycpan'"
-if "$myperl" -mLWP::Protocol::https -e1 2>&1 >/dev/null; then
-	echo "we have LWP::Protocol::https! will be using that :)"
-	proto=https
-else
-	echo "no LWP::Protocol::https? will be using HTTP then..."
-	proto=http
-fi
 "$mycpan" --installdeps .
-"$mycpan" $proto://ftp.rapidcow.org/lib/perl5/List-BisectSearch-v0.01-rc2.tar.gz
 
-make site PERL5="'$myperl' -Ilib"
+# under $tmp so that it gets cleaned up with the rest
+bsearch="$tmp/.deps/Algo-BSearch"
+fetch_git "$bsearch" "$ALGO_BSEARCH_COMMIT" "${ALGO_BSEARCH_MIRRORS[@]}"
+
+make site PERL5="'$myperl' -Ilib -I'$bsearch/lib'"
 
 package 2025-02-02 public "$target"

@@ -25,6 +25,37 @@ package () {
 		--mtime=@$commitdate --owner=root --group=root
 }
 
+# fetch_git DEST COMMIT URL... clones the first URL that has
+# COMMIT into DEST, detached at COMMIT.  since we pin the full
+# commit id, it doesn't matter which mirror ends up answering.
+fetch_git () {
+	local dest commit url
+	dest="$1"
+	commit="$2"
+	shift 2
+	for url in "$@"; do
+		rm -rf -- "$dest"
+		if git clone --quiet --no-checkout -- "$url" "$dest" &&
+		   git -C "$dest" -c advice.detachedHead=false \
+			checkout --quiet --detach "$commit" &&
+		   [ "$(git -C "$dest" rev-parse HEAD)" = "$commit" ]; then
+			echo "got $commit from $url"
+			return 0
+		fi
+		>&2 echo "warning: could not get $commit from $url"
+	done
+	rm -rf -- "$dest"
+	>&2 echo "error: none of the mirrors have $commit"
+	return 1
+}
+
+# RdKw::Algo::BSearch v0.00_44 (replaces List::BisectSearch)
+# add more mirrors here; any of them will do
+ALGO_BSEARCH_COMMIT=5e6f1f811461dbfc371a8f7b9414ad3992d60547
+ALGO_BSEARCH_MIRRORS=(
+	https://git.rapidcow.org/pub/lib/perl5/Algo-BSearch.git
+)
+
 # we should be in my/website/neocities/build
 TREE_ROOT="$(realpath "$(dirname ${BASH_SOURCE[0]})"/../../../..)/"
 
