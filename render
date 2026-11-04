@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use Template;
 use File::Spec;
-use File::Spec::Unix;
+use RdKw::WwW::GenLib qw(relapath);
 use Digest::SHA;
 # handy guys for templating
 use HTML::Tiny;
@@ -31,18 +31,6 @@ my $BASE_URL = $ENV{BASE_URL}; die "please export BASE_URL\n" unless defined $BA
 my $SITE_URL = $ENV{SITE_URL}; die "please export SITE_URL\n" unless defined $SITE_URL;
 my @include = qw( site temple include more );
 
-# relpath command
-sub relpath {
-	my $path = shift;
-	my $root = shift;
-	# Unix paths do not have volume; we also don't care
-	# about the file name, even if there is one.
-	my (undef, $directory, undef) = File::Spec::Unix->splitpath ($path);
-	my $relative = File::Spec::Unix->abs2rel ($root, $directory);
-	$relative .= '/' if substr($relative, -1) ne '/';
-	return $relative;
-}
-
 # unused - but when DEFAULT becomes too funky with
 # falsy strings, this should do a better job
 # example: variable | or_else("default")
@@ -58,9 +46,9 @@ sub or_else {
 # (defaults to root) example: location | to_root
 # tip: there isn't much magic going on with this function.
 # if you have a fixed input, you already know its output.
-# e.g. '/' | to_root is always going to be '.', because...
+# e.g. '/' | to_root is always going to be './', because...
 # well, you are the root.  and '/' | to_root('/share') is
-# simply 'share'.  so avoid using to_root in those simple
+# simply 'share/'.  so avoid using to_root in those simple
 # circumstances ^^
 sub to_root {
 	my ($ctx, $root) = @_;
@@ -73,12 +61,14 @@ sub to_root {
 		unless (substr ($path, 0, 1) eq "/") {
 			die "URL location missing a leading slash: $path\n";
 		}
-		my $relative = relpath($path, $root);
+		my $relative = relapath($root, $path);
 		if (substr ($relative, 0, 1) eq "/") {
-			die "abs2rel computed ('$path', '$root') with an "
+			die "relapath computed ('$root', '$path') with an "
 			. "absolute path ('$relative')\n";
 		}
-		return $relative . "/";
+		$relative = '.' unless length $relative;
+		$relative .= '/' unless substr($relative, -1) eq '/';
+		return $relative;
 	}
 }
 
