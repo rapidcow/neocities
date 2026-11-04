@@ -10,3 +10,6 @@
 *.rej
 MY/
 Makefile.inc
+
+# maintenance checkout
+main/
