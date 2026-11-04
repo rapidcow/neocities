@@ -1,2 +1,2 @@
 #!/bin/sh
-siteconf -if -Sa=. -Sb=public -Osite_url=https://rapidcow.neocities.org/ -P web
+siteconf -if -o render:/dev/null -Sa=. -Sb=public -Osite_url=https://rapidcow.neocities.org/ -P web
