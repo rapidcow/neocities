@@ -31,8 +31,7 @@ ${b}/news.css \
 ${b}/robots.txt \
 	: \
 	${a}/more/${.TARGET}
-	cd -- ${A:Q} && \
-		cp -- ${a:Q}/${.IMPSRC:Q} ${B:Q}/${b:Q}/${.TARGET:Q}
+	cd -- ${A:Q} && cp -- ${a:Q}/${.IMPSRC:Q} ${B:Q}/${b:Q}/${.TARGET:Q}
 
 ${b}/share/int10h.org/oldschool-pc-fonts/v2.2/README.TXT \
 ${b}/share/int10h.org/oldschool-pc-fonts/v2.2/LICENSE.TXT \
@@ -40,5 +39,4 @@ ${b}/share/int10h.org/oldschool-pc-fonts/v2.2/Web437_IBM_VGA_8x16.woff \
 	\
 	# This one is finally implicit, phew...
 	:
-	cd -- ${A:Q} && \
-		cp -- ${a:Q}/${.IMPSRC:Q} ${B:Q}/${b:Q}/${.TARGET:Q}
+	cd -- ${A:Q} && cp -- ${a:Q}/${.IMPSRC:Q} ${B:Q}/${b:Q}/${.TARGET:Q}
