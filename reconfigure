@@ -1,0 +1,2 @@
+#!/bin/sh
+siteconf -if -Sa=. -Sb=public -Osite_url=https://rapidcow.neocities.org/ -P web

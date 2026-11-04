@@ -1,0 +1,294 @@
+#!/usr/bin/env perl
+#
+# configure -- written by `siteconf -i' version 0.0201.
+#
+# Keep local changes as a patch on top of this file (it is generated
+# deterministically, so the same arguments give the same text and the
+# patch keeps applying), rather than editing it in place and losing
+# them the next time `siteconf -i' is run.
+#
+# options: -Sa=. -Sb=public -Osite_url=https://rapidcow.neocities.org/ -P web
+#
+use utf8;
+use 5.006;
+use strict;
+use warnings;
+use open ':std', ':encoding(UTF-8)';
+
+use Cwd qw(getcwd abs_path);
+use File::Basename;
+use File::Spec;
+use FindBin;
+use Getopt::Long qw( GetOptions );
+
+# --- what we need: [ module, minimum version ], from `siteconf -i -M',
+# and the preset if any (which comes first, so it can add to the list)
+our @NEED;
+BEGIN {
+	@NEED = (
+		[ 'RdKw::WwW::GenGenLib', 0 ],
+
+	);
+}
+# The `web' preset: a static site.  It insists on a site_url, and sees
+# to it that it and base_url agree (and are in the shape `locate' wants).
+# Template and URI are not core; say so now, not halfway through make.
+BEGIN { push @NEED, [ 'Template', 0 ], [ 'URI', 0 ], [ 'RdKw::WwW::GenLib', 0 ]; }
+
+sub preset_finish
+{
+	my ($D, $O) = @_;
+	$O->{base_url} = '/' unless defined $O->{base_url} && length $O->{base_url};
+	defined $O->{site_url} && length $O->{site_url}
+		or die "E: no site_url; configure with -Osite_url=https://example.org\n";
+	eval { RdKw::WwW::GenLib::parse_base($O); 1 } or do {
+		my $err = $@;
+		$err =~ s/^/E: /mg;
+		die $err;
+	};
+}
+
+# ---
+
+# Look before we load: a missing module is reported by us, all of
+# them at once, and not by the first `use' to trip over it.
+BEGIN {
+	my @bad;
+	for my $need (@NEED) {
+		my ($module, $min) = @$need;
+		(my $file = "$module.pm") =~ s!::!/!g;
+		eval { require $file; 1 }
+			or do { push @bad, "missing $module"; next };
+		$min and !eval { $module->VERSION($min); 1 }
+			and push @bad, "$module: version $min required"
+				. " (this is " . (defined $module->VERSION ? $module->VERSION : '?') . ")";
+	}
+	if (@bad) {
+		print STDERR "E: $_\n" for @bad;
+		die "E: " . scalar(@bad) . " module" . (@bad == 1 ? '' : 's')
+			. " missing.  Looks like you got some work to do...\n";
+	}
+}
+
+use RdKw::WwW::GenGenLib qw(read_make write_make);
+
+#
+# How can ./configure work without siteconf -g afterwards
+# Anyways, let's just port this one function in the (very
+# weird) circumstance where SiteConf.pm is somehow missing.
+#
+sub shell_quote
+{
+	my ($s) = @_;
+	# Nothing in it for the shell to mangle?  Then leave it be.
+	return $s if $s =~ m!\A[A-Za-z0-9_./:@%+=,-]+\z!;
+	# otherwise: single quotes, and ' itself as '\''
+	$s =~ s!'!'\\''!g;
+	"'$s'";
+}
+
+my $prog = basename($0);
+
+# Baked in by `siteconf -i'.
+#   D   definitions, which are filesystem routing and nothing else
+#   O   options, which alter the state of the build
+my %Dd = (
+	A => ".",
+	B => ".",
+	F => "MANIFEST",
+	R => "Makefile.in",
+	a => ".",
+	b => "public",
+	c => "public",
+	clean => "clean",
+	e => ".ok",
+);
+my %Od = (
+	site_url => "https://rapidcow.neocities.org/",
+);
+
+sub isnull
+{
+	!(defined $_[0]) || !(length $_[0]);
+}
+
+my $usage = <<EOM;
+usage: $prog [-Dvar=val ...] [-Ovar=val ...] [--reset] [--mkpath] [-hq]
+
+The following variables may be defined:
+
+  -DA         Project root, seen from current directory (default: $Dd{A})
+  -DB         Build directory, seen from the source tree (default: $Dd{B})
+  -Da         Source directory, seen from the source tree (default: $Dd{a})
+  -Db         Target directory, seen from the build directory (default: $Dd{b})
+  -Dc         Cache directory, seen from the build directory (default: @{[ $Dd{c} ne $Dd{b} ? $Dd{c} : '-Db' ]})
+  -DR         Transformation rules, from current directory (default: $Dd{R})
+  -DF         Manifest, from current directory (default: $Dd{F})
+  -De         Directory marker (default: $Dd{e})
+  -Dclean     Clean rule template (default: $Dd{clean})
+
+Options with defaults:
+
+  -Osite_url  Absolute base URL (default: $Od{site_url})
+
+Anything else you may -D or -O goes into MY/config.mk or MY/option.mk
+respectively, for the rulebook or for the files being transformed.
+
+  -h          This help message (alias: --help, -?)
+  --reset     Clear all configuration at this point
+  -q          Disable tips (alias: --quiet)
+  --mkpath    Create non-leaf build directories
+
+See also `perldoc RdKw::WwW::SiteConf::Configure'.
+EOM
+
+# `use open' covers the standard handles and `use utf8' our source,
+# but not @ARGV: those arrive as raw bytes, and would be encoded a
+# second time on their way into MY/*.mk.  (Anything that is not
+# valid UTF-8 is left alone.)
+utf8::decode($_) for @ARGV;
+
+my (%D, %O, $reset, $shutup, $mkpath);
+
+# -Dname=val, -Oname=val (a lone -Dname is -Dname=)
+sub setter
+{
+	my ($S, $H) = @_;
+	sub {
+		my ($k, $v) = split(/=/, $_[1], 2);
+		length $k or die "$prog: -$S: empty name.\n";
+		$H->{$k} = defined $v ? $v : "";
+	};
+}
+
+Getopt::Long::Configure(qw( bundling no_ignore_case ));
+GetOptions(
+	'h|help|?' => sub { print $usage; exit 0 },
+	'reset'    => sub { %D = (); %O = (); $reset = 1 },
+	'q|quiet'  => \$shutup,
+	'mkpath'   => \$mkpath,
+	'D=s'      => setter(D => \%D),
+	'O=s'      => setter(O => \%O),
+) or die +( split(/^/, $usage, 2) )[0];
+@ARGV and die "$prog: too many arguments\n";
+
+# Store where we were started from: for telling the user what
+# to run after configuring.
+my $start = getcwd();
+
+# We go to the source tree, which is where A says it is,
+# seen from where we have been started (not from this script).
+my $A = isnull($D{A}) ? $Dd{A} : $D{A};
+my $srcdir = abs_path(File::Spec->rel2abs($A, $start));
+defined $srcdir or die "E: cannot find the project root ($A): $!\n";
+chdir $srcdir or die "E: cannot chdir to $srcdir: $!\n";
+
+# -DB is the build directory, seen from the source tree; like
+# `cmake -B' we go there, and make it if it is not there.  Its
+# spelling is kept as is -- absolute or not.  It is a statement about
+# *this* run: nothing about it is ever read back from MY/config.mk,
+# which is the very file it is about to choose.
+my $B = isnull($D{B}) ? $Dd{B} : $D{B};
+unless (-d $B) {
+	# Please don't --mkpath unless you absolutely need to.
+	# This is only a flag if you ABSOLUTELY depend on the
+	# old behavior.  Consider running the mkdir -p equivalent
+	# on your system and setting the approrpiate permission
+	# or ACL bits, and at MOST leave the leaf directory to
+	# us to create it.
+	if ($mkpath) {
+		require File::Path;
+		File::Path::make_path($B, { error => \my $err });
+		if (@$err) {
+			my ($path, $why) = %{ $err->[0] };
+			die "E: cannot create " . (length $path ? $path : $B) . ": $why\n";
+		}
+	} else {
+		mkdir $B or $!{EEXIST}   # Forgive race condition...
+			or die "E: cannot mkdir $B: $!" . ($!{ENOENT}
+			# Provide a plausible explanation for ENOENT.
+			# There might be weirder cases with symlinks,
+			# but I'm not gonna investigate further lol.
+			? " (missing non-leaf components?)\n"
+			: "\n");
+	}
+}
+chdir $B or die "E: cannot chdir to $B: $!\n";
+my $Babs = getcwd();
+
+# Files first, command line over them -- unless --reset said otherwise.
+unless ($reset) {
+	my %Dc = %D;   # cool times
+	my %Oc = %O;   # trade anyone?
+	%D = -f "MY/config.mk" && -r _ ? read_make("MY/config.mk") : ();
+	# A c that was the same as b (as it was last time: no distinction
+	# between build and cache, however it came to be) follows b, if b is
+	# now said to be something else -- unless c is said too.
+	$D{c} = $Dc{b} if !exists $Dc{c} && exists $Dc{b} && !isnull($D{c})
+		&& !isnull($D{b}) && $D{c} eq $D{b};
+	%O = -f "MY/option.mk" && -r _ ? read_make("MY/option.mk") : ();
+	@D{keys %Dc} = values %Dc;
+	@O{keys %Oc} = values %Oc;
+}
+
+# Both are facts about where we are standing right now, so we clobber
+# whatever MY/config.mk said.  They are still written out, so that
+# whatever makes the Makefile need only read MY/*.mk.
+#
+#   A  the source tree, seen from the build dir (`.' in-tree)
+#   B  the build dir, seen from the source tree (`.' in-tree)
+# An absolute A or B is spelled as it was given.
+$D{B} = $B;
+$D{A} = File::Spec->file_name_is_absolute($A) ? $A
+	: File::Spec->abs2rel($srcdir, $Babs);
+
+# What was not said, is the default (even if it was said to be empty).
+# (c is below: if it is b by default, it is whatever b is now)
+for my $k (keys %Dd) {
+	next if $k eq 'c';
+	$D{$k} = $Dd{$k} if isnull($D{$k});
+}
+for my $k (keys %Od) {
+	$O{$k} = $Od{$k} if isnull($O{$k});
+}
+
+defined &preset_finish and preset_finish(\%D, \%O);
+
+for my $k (qw( a b R F )) {
+	$D{$k} =~ s!/+$!!;
+	length $D{$k} or die "E: `$k' may not be empty.\n";
+}
+# b is a directory we create rules under, one parent at a time; that
+# walk only ends at `.', so it must be relative.  (a, on the other
+# hand, is free to be absolute: out-of-tree builds.)
+File::Spec->file_name_is_absolute($D{b})
+	and die "E: `b' prefix must be a relative path.\n";
+# c, the cache: -Dc, or else -Sc (which made it a default above), or
+# else b.  It is always written, so that it is never taken to be b by
+# something that reads MY/config.mk.
+isnull($D{c}) and $D{c} = !isnull($Dd{c}) && $Dd{c} ne $Dd{b} ? $Dd{c} : $D{b};
+$D{c} =~ s!/+$!!;
+length $D{c} or die "E: `c' may not be empty.\n";
+File::Spec->file_name_is_absolute($D{c})
+	and die "E: `c' prefix must be a relative path.\n";
+$D{e} =~ m!/! and die "E: `e' may not contain a slash.\n";
+
+# MY/option.mk first, or this would be circular.
+-d 'MY' or mkdir 'MY' or die "mkdir MY: $!\n";
+for my $f ([ option => \%O ], [ config => \%D ]) {
+	my ($name, $H) = @$f;
+	my $what = write_make("MY/$name.mk", $H, $prog);
+	$what and print STDERR ($what > 1 ? "Writing" : "Updating"),
+		" MY/$name.mk\n" unless $shutup;
+}
+
+# Compute $B for siteconf -g, as seen from the current directory
+# (not from the source tree, which is where -DB is seen from)
+my $Bhere = File::Spec->abs2rel($Babs, $start);
+my $where = $Bhere eq '.' ? '' : " -B " . shell_quote($Bhere);
+unless ($shutup) {
+	print STDERR "Done!\n";
+	print STDERR "To generate build script, run: siteconf -g$where\n";
+}
+
+exit 0;

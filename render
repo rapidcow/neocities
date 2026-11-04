@@ -1,230 +1,99 @@
 #!/usr/bin/env perl
-
-use 5.010;
+# HAVE: render
+# NEED: ${B}/MY/option.mk
+#
+# (Note that we do not "NEED" MY/config.mk; doing so
+# would declare an undesirable dependency edge that
+# undermines the very point of separating these two.
+#
+# We do depend on it to be very clear; it's just that
+# we don't need to re-render stuff when it changes.)
+#
+# render - Template Toolkit webpage renderer
+#
+# To invoke this, add to your Makefile.in (or whatever
+# you set your "R" path to):
+#
+#    resource/location.html: render
+#       cd -- $A && ${^X} render -B $B -- $a/$@ $B/$b/$@
+#
+# (Multiple files are okay!)
+#
+# GenLib is used solely for implementing [% locate PATH %].
+# If you prefer not to use it, simply remove the module
+# import line and exclude it from %v.  The script works
+# fine without it. ;)
+#
+# More information about Template Toolkit here:
+# https://template-toolkit.org/
+#
+use 5.006;
 use strict;
 use warnings;
+
+use Getopt::Std;
+use RdKw::WwW::GenGenLib qw( read_deps load_state );
+use RdKw::WwW::GenLib qw( locate );
 use Template;
-use File::Spec;
-use File::Spec::Unix;
-use Digest::SHA;
-# handy guys for templating
-use HTML::Tiny;
-use Time::Piece;
+use Template::Exception;
 
-use File::Which;
-use IPC::Unix;
+my %o;
+getopts('B:', \%o) or die "usage: $0 [-B BUILDDIR] apath bpath\n";
+my $B = defined $o{B} ? $o{B} : '.';
+@ARGV == 2 or die "$0: need exactly two args\n";
+my ($apath, $bpath) = @ARGV;
 
-my $git_bin = which("git");
-$git_bin or die "error: git not found\n";
-my $Git = IPC::Unix->new( "git" )->file( $git_bin )
-	->setenv( TERM => 'dumb' );
+#
+# Load configuration parameters and build options, so
+# we can expose them to the template.
+#
+my %S = load_state($B);
+my ($D, $O) = @S{qw( config option )};
 
-sub pipe_head {
-	$_[0]->dup(">|", my $pipi)->spawn;
-	my $head = <$pipi>;
-	close $pipi;
-	$_[0]->close->wait->ok;
-	return $head;
-}
+#
+# Find ourselves from the dependency graph declarations.
+# This pattern is purely symbolic, though we also accept
+# literal spelling, since some people like to treat ${a}
+# as a predefined constant (like how ${A} is).
+#
+my %I = read_deps($apath);
+defined $I{HAVE} or die "E: $apath: HAVE declaration not found\n";
+(my $L = $I{HAVE}) =~ s{\A(?:\$(?:\{A\}|A)/)?(?:\$(?:\{a\}|a)|\Q$D->{a}\E)/}{}
+	or $D->{a} eq '.' or die "E: $apath: HAVE `$I{HAVE}' not under \${a} ($D->{a})\n";
 
-my $BASE_URL = $ENV{BASE_URL}; die "please export BASE_URL\n" unless defined $BASE_URL;
-my $SITE_URL = $ENV{SITE_URL}; die "please export SITE_URL\n" unless defined $SITE_URL;
-my @include = qw( site temple include more );
-
-# relpath command
-sub relpath {
-	my $path = shift;
-	my $root = shift;
-	# Unix paths do not have volume; we also don't care
-	# about the file name, even if there is one.
-	my (undef, $directory, undef) = File::Spec::Unix->splitpath ($path);
-	my $relative = File::Spec::Unix->abs2rel ($root, $directory);
-	$relative .= '/' if substr($relative, -1) ne '/';
-	return $relative;
-}
-
-# unused - but when DEFAULT becomes too funky with
-# falsy strings, this should do a better job
-# example: variable | or_else("default")
-sub or_else {
-	my ($ctx, $default) = @_;
-	return sub {
-		my $text = shift;
-		return length $text || !(defined $default) ? $text : $default;
-	}
-}
-
-# to_root(dir): return relative path of how to get to dir
-# (defaults to root) example: location | to_root
-# tip: there isn't much magic going on with this function.
-# if you have a fixed input, you already know its output.
-# e.g. '/' | to_root is always going to be '.', because...
-# well, you are the root.  and '/' | to_root('/share') is
-# simply 'share'.  so avoid using to_root in those simple
-# circumstances ^^
-sub to_root {
-	my ($ctx, $root) = @_;
-	$root //= "/";
-	unless (substr ($root, 0, 1) eq "/") {
-		die "root missing a leading slash: $root\n";
-	}
-	return sub {
-		my $path = shift;
-		unless (substr ($path, 0, 1) eq "/") {
-			die "URL location missing a leading slash: $path\n";
-		}
-		my $relative = relpath($path, $root);
-		if (substr ($relative, 0, 1) eq "/") {
-			die "abs2rel computed ('$path', '$root') with an "
-			. "absolute path ('$relative')\n";
-		}
-		return $relative . "/";
-	}
-}
-
-# as_link(is_abs): return full path, relative (0) or absolute (1)
-# completely equivalent to joining BASE_URL / SITE_URL, except i am
-# seeing if i can avoid passing those variables explicitly now...
-# (to get those two, i guess "/" | to_link(0) or (1) works?)
-sub as_link {
-	my ($ctx, $abs) = @_;
-	$abs //= 1;
-	return $abs
-		? sub { return $SITE_URL . $_[0]; }
-		: sub { return $BASE_URL . $_[0]; };
-}
-
-sub to_json {
-	my ($text) = @_;
-	my $h = HTML::Tiny->new (mode => 'html');
-	$h->json_encode ($text);
-}
-
-# versioning trick (i don't care about dates,
-# hashing is so much better :)
-sub _digest {
-	my ($file) = @_;
-	my $dgst = Digest::SHA->new(1);
-	for my $cat (@include) {
-		my $test = File::Spec->catfile ($cat, $file);
-		if (-r $test) {
-			$file = $test;
-			last;
-		}
-	}
-	my $size = -s $file or die "$!: $file";
-	$dgst->add("blob $size\0");
-	$dgst->addfile($file, 'b');
-	$dgst;
-}
-
-sub digest {
-	my $dgst = _digest (@_);
-	my $hash = $dgst->b64digest;
-	# PHP seems to have strtr for this.... (whereas
-	# in python i recall having str.translate):
-	# https://stackoverflow.com/a/5835352
-	# in perl we have something better ;)
-	$hash =~ tr'+/='-_.';
-	$hash; # hash! what an impactful statement :)
-}
-
-sub hexdigest {
-	my $dgst = _digest (@_);
-	$dgst->hexdigest;
-}
-
-sub changelog {
-	use autodie qw(open);
-	my $output = '';
-	open my $fh, ">", \$output;
-	select $fh;
-
-use Poly::Ansi2Html;
-use Term::ANSIColor qw( colorstrip );
-use Hack::TextWrap; # unconditional name pollution
-
-my $h = HTML::Tiny->new (mode => 'html');
-my $htmlify = Poly::Ansi2Html->new(tag => 'strong', no_plain_tag => 1);
-# C escapes don't work T_T thanks Jesper...
-# https://stackoverflow.com/a/1441062
-my $Git_log = $Git->new->set (
-	'log', '--color=always',
-	'--pretty=format:%h%x09%ai%x09%s%x09%C(auto)%d',
-	shift
-)->dup(">|", my $revh, "</dev/null")->spawn;
-while (<$revh>) {
-	chomp; my ($oid, $ai, $s, $d) = split "\t", $_, 4;
-
-	# for some reason, git-diff-tree(1) uses the word
-	# "recurse" instead of "recursive" or "recursion"
-	# ... which makes searching with less pager a little
-	# unsatisfying but oh well :<
-	my $Git_diff = $Git->new->set (
-		# only consider (A)dded (C)opies (D)eleted (M)odified and (R)enamed
-		'diff-tree', '-r', '--diff-filter=ACDMR', $oid . '^1', $oid,
-	)->dup(">|", my $diffh, "</dev/null")->spawn;
-	my $interesting = 0;
-	while (<$diffh>) {
-		# sanitization
-		chomp; s/^://;
-		# split objects & status from the rest first
-		my ($obs, $src, $dst) = split /\t/;
-		# now split again...
-		my ($srcmod, $dstmod, $srcoid, $dstoid, $status) = split / /, $obs;
-		next unless $srcmod eq 100644;
-		next unless $src =~ /(site|more|temple|include|share)\// ||
-			$status =~ /[CR]/ &&
-			$dst =~ /(site|more|temple|include|share)\//;
-		$interesting = 1; last;
-	}
-	$Git_diff->close->wait;
-
-	next unless $interesting;
-	print for (
-		# nobody really needs to see this
-		# $h->tag ('span', { class => 'oid' }, $oid),
-		# ' ',
-		$h->tag ('em', { class => 'date' }, $ai),
-		"  ",
-		$h->tag ('strong', { class => 'subject' }, $h->entity_encode
-			( text_wrap 72, 27, 0, $s )),
-		# $htmlify->html ($d),
-		"\n",
-		# this is a nasty trick to suppress the "undefined ..."
-		# warning when there is no diffstat that we can remove
-		# once we're done testing and focus on just the
-		# interesting commits :)
-		pipe_head($Git->new->set('diff', '--shortstat', $oid . '^1', $oid,
-			'--', qw( site more temple include share ))->dup("</dev/null"))
-		// ''
-			=~ s/([+])/@{[$h->tag ('span', { class => 'add' }, $1)]}/r
-			=~ s/([-])/@{[$h->tag ('span', { class => 'del' }, $1)]}/r,
-		"\n",
-	);
-}
-$Git_log->close->wait;
-
-	close $fh;
-	return $output;
-}
-
-my $file = shift;
-die "usage: $0 <file>\n" unless defined $file;
-
-my $temple = Template->new({
-	INCLUDE_PATH => \@include,
-	EVAL_PERL => 1,
-	FILTERS => {
-		or_else => [ \&or_else, 1 ],
-		to_root => [ \&to_root, 1 ],
-		as_link => [ \&as_link, 1 ],
-		json => \&to_json,
+#
+# Define Template variables (see also Template::Stash
+# if you want access to these from a plugin/filter).
+#
+my %v = (
+	D => $D,
+	O => $O,
+	locate => sub {
+		@_ == 1 or die Template::Exception->new(usage => "[% locate PATH %]");
+		locate($O, $L, @_);
 	},
-}) || die $Template::ERROR, "\n";
+	location => $L,
+);
 
-$temple->process($file, {
-	digest => \&digest,
-	hexdigest => \&hexdigest,
-	changelog => \&changelog,
-}) || die $temple->error(), "\n";
+#
+# Specify UTF-8 on both ends of Template Toolkit's I/O:
+#
+#   * ENCODING for $apath (input), as well any fetched
+#     files via INCLUDE / INSERT / PROCESS / WRAPPER.
+#   * binmode for $bpath (output).
+#
+# By nature of UTF-8, files should be able to round-trip
+# as opaque octets... but it's nice to have text decoded
+# when you need to do cool stuff with it. ;D
+#
+my $tt = Template->new({
+	ENCODING => 'UTF-8',
+	INCLUDE_PATH => [ '.', $D->{a} ],
+})
+	or die "[TT] ", $Template::ERROR, "\n";
+
+$tt->process($apath, \%v, $bpath,
+	{ binmode => ':encoding(UTF-8)' })
+	or die "[TT] ", $tt->error(), "\n";
+
+exit;  # goodbye!
