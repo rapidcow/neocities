@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # re-derive archive/sha256sum.txt from what neocities serves.
 #
 # for every YYYY-MM-DD tag, download $tag.tar.gz and $tag.sha256 from
@@ -11,9 +11,9 @@
 
 set -euEo pipefail
 
-BASE_URL="${BASE_URL:-https://rapidcow.neocities.org/archive/site}"
+BASE_URL=${BASE_URL:-https://rapidcow.neocities.org/archive/site}
 
-top="$(git rev-parse --show-toplevel)"
+top=$(git rev-parse --show-toplevel)
 out="$top/archive/sha256sum.txt"
 
 tmp="$(mktemp -d)"
