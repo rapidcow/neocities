@@ -136,7 +136,7 @@ The following variables may be defined:
   -DF         Manifest, from current directory (default: $Dd{F})
   -De         Directory marker (default: $Dd{e})
   -Dclean     Clean rule template (default: $Dd{clean})
-  -Dperl5opt  (default: $Dd{perl5opt})
+  -Dperl5opt  Perl interpreter flags (default: $Dd{perl5opt})
 
 Options with defaults:
 
