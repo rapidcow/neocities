@@ -7,10 +7,35 @@ ${b}/news/2024-11-10.html \
 ${b}/news/2025-01-03.html \
 ${b}/news/2025-02-02.html \
 ${b}/goods/index.html \
+${b}/share/index.html \
+${b}/share/int10h.org/index.html \
+${b}/share/int10h.org/oldschool-pc-fonts/index.html \
+${b}/share/int10h.org/oldschool-pc-fonts/v2.2/index.html \
 	: \
 # So this is just explicit... unnecessarily so but
 	# i think it fits for illustrative purposes.
 	# (Actually I have stupid prefixes for this;
 	# so this has to be explicit XP never mind.)
 		${a}/site/${.TARGET}
-	${^X} ${perl5opt} render > ${b:Q}/${.TARGET:Q}
+	cd -- ${A:Q} && \
+		# Render doesn't even optparse... stupid >:p
+		${^X} ${perl5opt} render ${a:Q}/${.IMPSRC:Q} \
+			> ${B:Q}/${b:Q}/${.TARGET:Q}
+
+${b}/base.css \
+${b}/main.css \
+${b}/ansi.css \
+${b}/news.css \
+${b}/robots.txt \
+	: \
+	${a}/more/${.TARGET}
+	cd -- ${A:Q} &&
+		cp -- ${a:Q}/${.IMPSRC:Q} ${B:Q}/${b:Q}/${.TARGET:Q}
+
+${b}/share/int10h.org/oldschool-pc-fonts/v2.2/README.TXT \
+${b}/share/int10h.org/oldschool-pc-fonts/v2.2/LICENSE.TXT \
+${b}/share/int10h.org/oldschool-pc-fonts/v2.2/Web437_IBM_VGA_8x16.woff \
+	:
+	@# This one is finally implicit, phew...
+	cd -- ${A:Q} &&
+		cp -- ${a:Q}/${.IMPSRC:Q} ${B:Q}/${b:Q}/${.TARGET:Q}

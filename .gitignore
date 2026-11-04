@@ -4,6 +4,7 @@
 /tmp/
 /differ/
 /local/
-MY/
 *.orig
 *.rej
+MY/
+Makefile.inc
