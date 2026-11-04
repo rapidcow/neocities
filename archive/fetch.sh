@@ -12,6 +12,7 @@
 set -euEo pipefail
 
 BASE_URL=https://rapidcow.neocities.org/archive/site
+export LC_COLLATE=C
 
 top=$(git rev-parse --show-toplevel)
 out="$top/archive/sha256sum.txt"
