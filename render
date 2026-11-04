@@ -122,7 +122,7 @@ sub get_version {
 	close $fh or die "close $path: $!\n";
 	my $hash = $dgst->b64digest;
 	$hash =~ tr'+/='-_.';
-	return $hash;
+	$hash; # hash! what an impactful statement :)
 }
 
 sub changelog {
