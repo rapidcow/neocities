@@ -59,8 +59,8 @@ sub text_wrap {
 	# line, i am artificially flushing $pre against the 0 marker
 	# ... it's weird i know, but this is for the math to work @_@)
 
-	# IMPORTANT IMPORTANT! if there is any worth in this
-	# code at all, it would be these two arrays.
+	# IMPORTANT!  if there is any worth in this code at all,
+	# it would be these two arrays.
 	#
 	# crucially both of these represent ranges; e.g. char count
 	# is $sizes[$needle] - $sizes[$needle - 1] for $needle >= 1
