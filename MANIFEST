@@ -16,10 +16,6 @@ MAKE site
 	NEED news.css
 	NEED robots.txt
 # CONTRIB_FILES = \
-	NEED share/index.html
-	NEED share/int10h.org/index.html
-	NEED share/int10h.org/oldschool-pc-fonts/index.html
-	NEED share/int10h.org/oldschool-pc-fonts/v2.2/index.html
-	NEED share/int10h.org/oldschool-pc-fonts/v2.2/README.TXT
-	NEED share/int10h.org/oldschool-pc-fonts/v2.2/LICENSE.TXT
-	NEED share/int10h.org/oldschool-pc-fonts/v2.2/Web437_IBM_VGA_8x16.woff
+	NEED vendor/index.html
+	NEED vendor/oldschool-pc-fonts/index.html
+	NEED vendor/oldschool-pc-fonts/Web437_IBM_VGA_8x16.woff

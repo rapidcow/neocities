@@ -1,0 +1,15 @@
+[%
+ # HAVE: ${a}/site/vendor/index.html
+ # NEED: ${a}/temple/minimal/head.html
+-%]
+<!DOCTYPE html>
+<html>
+[% SET title = "Vendor files" -%]
+[% INCLUDE minimal/head.html -%]
+<body>
+  <h1>Vendor files</h1>
+  <p>This directory contains files which I did not create.</p>
+  <ul><li><a href="oldschool-pc-fonts/"><strong>oldschool-pc-fonts</strong></a>:
+  For the IBM font!</li></ul>
+</body>
+</html>

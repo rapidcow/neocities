@@ -7,10 +7,8 @@ ${b}/news/2024-11-10.html \
 ${b}/news/2025-01-03.html \
 ${b}/news/2025-02-02.html \
 ${b}/goods/index.html \
-${b}/share/index.html \
-${b}/share/int10h.org/index.html \
-${b}/share/int10h.org/oldschool-pc-fonts/index.html \
-${b}/share/int10h.org/oldschool-pc-fonts/v2.2/index.html \
+${b}/vendor/index.html \
+${b}/vendor/oldschool-pc-fonts/index.html \
 	: \
 # So this is just explicit... unnecessarily so but
 	# i think it fits for illustrative purposes.
@@ -32,10 +30,5 @@ ${b}/robots.txt \
 	${a}/more/${.TARGET}
 	cd -- ${A:Q} && cp -- ${a:Q}/${.IMPSRC:Q} ${B:Q}/${b:Q}/${.TARGET:Q}
 
-${b}/share/int10h.org/oldschool-pc-fonts/v2.2/README.TXT \
-${b}/share/int10h.org/oldschool-pc-fonts/v2.2/LICENSE.TXT \
-${b}/share/int10h.org/oldschool-pc-fonts/v2.2/Web437_IBM_VGA_8x16.woff \
-	\
-	# This one is finally implicit, phew...
-	:
+${b}/vendor/oldschool-pc-fonts/Web437_IBM_VGA_8x16.woff:
 	cd -- ${A:Q} && cp -- ${a:Q}/${.IMPSRC:Q} ${B:Q}/${b:Q}/${.TARGET:Q}

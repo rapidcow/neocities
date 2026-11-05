@@ -13,4 +13,4 @@ Replace asterisks (*) with hyphens (-).
 (I'm afraid I can't do that here because double hyphen
 is, strictly speaking (e.g. as XHTML)... wrong)
 -->[%#-%]
-        using IBM VGA 8x16 from <a href="https://int10h.org/oldschool-pc-fonts/">Oldschool PC Fonts</a> (see <a href="share/">/share/</a>)
+               font is IBM VGA 8x16 from <a href="https://int10h.org/oldschool-pc-fonts/">Oldschool PC Fonts</a>!
