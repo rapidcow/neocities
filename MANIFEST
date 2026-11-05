@@ -14,11 +14,9 @@ MAKE site
 	NEED main.css
 	NEED ansi.css
 	NEED news.css
-	NEED rose-pine.css
 	NEED robots.txt
 # CONTRIB_FILES = \
 	NEED vendor/index.html
 	NEED vendor/oldschool-pc-fonts/index.html
 	NEED vendor/oldschool-pc-fonts/Web437_IBM_VGA_8x16.woff
 	NEED vendor/gruvbox/base16.css
-	NEED vendor/rose-pine/rose-pine-media.css
