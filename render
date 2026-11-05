@@ -9,6 +9,7 @@ use Getopt::Std;
 use RdKw::WwW::GenGenLib qw(read_deps);
 use RdKw::WwW::GenLib qw(relapath);
 use Digest::SHA;
+use Site::TemplateProvider;
 # handy guys for templating
 use HTML::Tiny;
 use Time::Piece;
@@ -207,8 +208,12 @@ $Git_log->close->wait;
 	return $output;
 }
 
-my $temple = Template->new({
+my $provider = Site::TemplateProvider->new({
+	SOURCE => $file,
 	INCLUDE_PATH => \@include,
+}) || die Site::TemplateProvider->error(), "\n";
+my $temple = Template->new({
+	LOAD_TEMPLATES => [ $provider ],
 	EVAL_PERL => 1,
 	FILTERS => {
 		or_else => [ \&or_else, 1 ],
