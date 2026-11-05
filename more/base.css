@@ -11,9 +11,6 @@
    */
   src: url("share/int10h.org/oldschool-pc-fonts/v2.2/Web437_IBM_VGA_8x16.woff") format("woff");
   font-weight: 400;
-  font-size: normal;
-  font-size: 16px;
-  line-height: 16px;
 }
 /* reset html defaults */
 h1, h2 { font-weight: inherit; font-size: inherit; }
