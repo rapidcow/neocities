@@ -1,0 +1,59 @@
+/*
+ * HAVE: ${a}/vendor/gruvbox/base16.scss
+ * NEED: ${a}/share/github.com/morhetz/gruvbox-contrib/scss/gruvbox.scss
+ *
+ * Gruvbox, wired into the variables of ansi.css.  Load this after
+ * ansi.css; it only overrides the colors.  Built with --load-path=${a}.
+ *
+ * Light yellow is darkened a little: links are yellow, and the stock
+ * one is only 3.3:1 on the pale background.
+ *
+ * (In light mode, gruvbox's "light" colors $gb-lm-light-* are the
+ * darker, faded set -- the ones meant for text on a pale background.)
+ */
+@use "sass:color";
+@use "share/github.com/morhetz/gruvbox-contrib/scss/gruvbox" as *;
+
+:root {
+  --back: #{$gb-dm-bg0};
+  --rgb-0: #{$gb-dm-bg0};
+  --rgb-1: #{$gb-dm-light-red};
+  --rgb-2: #{$gb-dm-dark-green};
+  --rgb-3: #{$gb-dm-dark-yellow};
+  --rgb-4: #{$gb-dm-light-blue};
+  --rgb-5: #{$gb-dm-light-purple};
+  --rgb-6: #{$gb-dm-light-aqua};
+  --rgb-7: #{$gb-dm-fg2};
+  --rgb-hi-0: #{$gb-dm-dark-gray};
+  --rgb-hi-1: #{$gb-dm-light-red};
+  --rgb-hi-2: #{$gb-dm-light-green};
+  --rgb-hi-3: #{$gb-dm-light-yellow};
+  --rgb-hi-4: #{$gb-dm-light-blue};
+  --rgb-hi-5: #{$gb-dm-light-purple};
+  --rgb-hi-6: #{$gb-dm-light-aqua};
+  --rgb-hi-7: #{$gb-dm-fg0};
+}
+
+$lm-yellow: color.scale($gb-lm-light-yellow, $lightness: -22%);
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --back: #{$gb-lm-bg0};
+    --rgb-0: #{$gb-lm-fg0};
+    --rgb-1: #{$gb-lm-light-red};
+    --rgb-2: #{$gb-lm-light-green};
+    --rgb-3: #{$lm-yellow};
+    --rgb-4: #{$gb-lm-light-blue};
+    --rgb-5: #{$gb-lm-light-purple};
+    --rgb-6: #{$gb-lm-light-aqua};
+    --rgb-7: #{$gb-lm-fg1};
+    --rgb-hi-0: #{$gb-lm-fg4};
+    --rgb-hi-1: #{$gb-lm-light-red};
+    --rgb-hi-2: #{$gb-lm-light-green};
+    --rgb-hi-3: #{$lm-yellow};
+    --rgb-hi-4: #{$gb-lm-light-blue};
+    --rgb-hi-5: #{$gb-lm-light-purple};
+    --rgb-hi-6: #{$gb-lm-light-aqua};
+    --rgb-hi-7: #{$gb-lm-fg0};
+  }
+}

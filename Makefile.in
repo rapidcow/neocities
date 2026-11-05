@@ -32,3 +32,9 @@ ${b}/robots.txt \
 
 ${b}/vendor/oldschool-pc-fonts/Web437_IBM_VGA_8x16.woff:
 	cd -- ${A:Q} && cp -- ${a:Q}/${.IMPSRC:Q} ${B:Q}/${b:Q}/${.TARGET:Q}
+
+# Sass.  ${sass} is deliberately not quoted: it may be `pnpm dlx sass'.
+# The stub says what it uses (NEED:), and --load-path lets it find that
+# under ${a}.  (Disabling the source map: https://stackoverflow.com/a/27781149)
+${b}/vendor/gruvbox/base16.css: ${a}/vendor/gruvbox/base16.scss
+	cd -- ${A:Q} && ${sass} --no-source-map --load-path=${a:Q} -- ${.IMPSRC:Q} ${B:Q}/${b:Q}/${.TARGET:Q} </dev/null
