@@ -19,4 +19,4 @@ echo "my cpanm is '$mycpan'"
 
 make site PERL5="'$myperl' -Ilib"
 
-package 2025-01-03 public "$target"
+package -g root:0 2025-01-03 public "$target"

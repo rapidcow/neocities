@@ -1,9 +1,25 @@
 #!bash
 
-# package $1 $2 is basically tar czvf $2 $1
-# (the tag is an afterthought)
+# package [-u OWNER] [-g GROUP] TAG DIR OUT is basically
+# tar czvf OUT DIR (the tag is an afterthought)
+#
+# OWNER and GROUP are NAME:ID as in GNU tar's --owner/--group,
+# so both the name and the number get pinned no matter which
+# machine we are on.  defaults are root:0 and wheel:0; pass
+# -g root:0 to reproduce archives from before then.
 package () {
-	local tag dir out commitdate
+	local tag dir out commitdate owner group opt OPTIND OPTARG
+	owner=root:0
+	group=wheel:0
+	while getopts g:u: opt; do
+		case "$opt" in
+		g) group="$OPTARG" ;;
+		u) owner="$OPTARG" ;;
+		*) >&2 echo "usage: package [-u OWNER] [-g GROUP] TAG DIR OUT"
+		   return 2 ;;
+		esac
+	done
+	shift $((OPTIND - 1))
 	tag="$1"
 	shift
 	dir="$1"
@@ -21,9 +37,30 @@ package () {
 	# also: use commit date intsead of annotated tag date,
 	# because the latter can be (unnecessarily) off
 	find "$dir" -print0 | LC_ALL=C sort -z |
-	tar zcvvf "$out" --no-recursion --null --files-from=- \
-		--mtime=@$commitdate --owner=root --group=root
+	"$GNU_TAR" zcvvf "$out" --no-recursion --null --files-from=- \
+		--mtime=@$commitdate --owner="$owner" --group="$group"
 }
+
+# package relies on GNU tar flags; bsdtar would either reject them
+# or do something different, so find GNU tar up front (homebrew
+# installs it as gtar).  set GNU_TAR to use that one and only that.
+find_gnu_tar () {
+	local cand cands
+	if [ -n "${GNU_TAR:-}" ]; then
+		cands=("$GNU_TAR")
+	else
+		cands=(gtar tar)
+	fi
+	for cand in "${cands[@]}"; do
+		if "$cand" --version 2>/dev/null | head -n 1 | grep -q 'GNU tar'; then
+			GNU_TAR="$(command -v -- "$cand")"
+			return 0
+		fi
+	done
+	>&2 echo "error: GNU tar not found (tried ${cands[*]})"
+	return 1
+}
+find_gnu_tar
 
 # fetch_git DEST COMMIT URL... clones the first URL that has
 # COMMIT into DEST, detached at COMMIT.  since we pin the full

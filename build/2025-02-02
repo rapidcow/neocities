@@ -23,4 +23,4 @@ fetch_git "$bsearch" "$ALGO_BSEARCH_COMMIT" "${ALGO_BSEARCH_MIRRORS[@]}"
 
 make site PERL5="'$myperl' -Ilib -I'$bsearch/lib'"
 
-package 2025-02-02 public "$target"
+package -g root:0 2025-02-02 public "$target"
