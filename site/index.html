@@ -1,10 +1,16 @@
+[%
+ # HAVE: ${a}/site/index.html
+ # NEED: ${B}/${b}/base.css
+ # NEED: ${B}/${b}/ansi.css
+ # NEED: ${B}/${b}/main.css
+-%]
 <!DOCTYPE html>
 [% SET title = 'rapidcow@neocities:~$' -%]
 [% SET location = "/index.html" -%]
 <html lang="en">
 [% WRAPPER base/head.html %]
-  <link rel="stylesheet" type="text/css" href="[% location | to_root %]ansi.css?v=[% digest ('ansi.css') %]">
-  <link rel="stylesheet" type="text/css" href="[% location | to_root %]main.css?v=[% digest ('main.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]ansi.css?v=[% get_version('ansi.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]main.css?v=[% get_version('main.css') %]">
 [% END -%]
 <body>
 <main>

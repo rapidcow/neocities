@@ -1,9 +1,15 @@
+[%
+ # HAVE: ${a}/site/not_found.html
+ # NEED: ${B}/${b}/base.css
+ # NEED: ${B}/${b}/ansi.css
+ # NEED: ${B}/${b}/main.css
+-%]
 <!DOCTYPE html>
 <html lang="en">
 [% SET title = '404 Not Found' -%]
 [% WRAPPER base/head.html %]
-  <link rel="stylesheet" type="text/css" href="[% '/' | as_link(0) | xml %]ansi.css?v=[% digest ('ansi.css') %]">
-  <link rel="stylesheet" type="text/css" href="[% '/' | as_link(0) | xml %]main.css?v=[% digest ('main.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% '/' | as_link(0) | xml %]ansi.css?v=[% get_version('ansi.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% '/' | as_link(0) | xml %]main.css?v=[% get_version('main.css') %]">
 [% END -%]
 <body>
 <main>

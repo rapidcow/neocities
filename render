@@ -5,6 +5,8 @@ use strict;
 use warnings;
 use Template;
 use File::Spec;
+use Getopt::Std;
+use RdKw::WwW::GenGenLib qw(read_deps);
 use RdKw::WwW::GenLib qw(relapath);
 use Digest::SHA;
 # handy guys for templating
@@ -13,6 +15,13 @@ use Time::Piece;
 
 use File::Which;
 use RdKw::IPC::Unix;
+
+my %o;
+getopts('B:b:', \%o) && @ARGV == 1
+	or die "usage: $0 [-B BUILDDIR] [-b OUTPUTDIR] -- <file>\n";
+my $B = $o{B} // '.';
+my $b = $o{b} // 'public';
+my ($file) = @ARGV;
 
 my $git_bin = which("git");
 $git_bin or die "error: git not found\n";
@@ -30,6 +39,16 @@ sub pipe_head {
 my $BASE_URL = $ENV{BASE_URL}; die "please export BASE_URL\n" unless defined $BASE_URL;
 my $SITE_URL = $ENV{SITE_URL}; die "please export SITE_URL\n" unless defined $SITE_URL;
 my @include = qw( site temple include more );
+
+my ($apath) = grep { -f $_ } map { File::Spec->catfile($_, $file) } @include;
+defined $apath or die "template not found: $file\n";
+my %I = read_deps($apath);
+my %versions;
+for my $dep (@{$I{NEED} // []}, @{$I{WANT} // []}) {
+	# Only built resources in this symbolic namespace can be versioned.
+	(my $name = $dep) =~ s{^\$\{B\}/\$\{b\}/}{} or next;
+	$versions{$name} = File::Spec->catfile($B, $b, $name);
+}
 
 # unused - but when DEFAULT becomes too funky with
 # falsy strings, this should do a better job
@@ -90,38 +109,20 @@ sub to_json {
 	$h->json_encode ($text);
 }
 
-# versioning trick (i don't care about dates,
-# hashing is so much better :)
-sub _digest {
-	my ($file) = @_;
+# Version the built bytes, and only resources declared by this page.
+sub get_version {
+	@_ == 1 or die "get_version requires one resource name\n";
+	my ($name) = @_;
+	exists $versions{$name}
+		or die "get_version: $name is not declared as a NEED or WANT in $apath\n";
+	my $path = $versions{$name};
+	open my $fh, '<:raw', $path or die "open $path: $!\n";
 	my $dgst = Digest::SHA->new(1);
-	for my $cat (@include) {
-		my $test = File::Spec->catfile ($cat, $file);
-		if (-r $test) {
-			$file = $test;
-			last;
-		}
-	}
-	my $size = -s $file or die "$!: $file";
-	$dgst->add("blob $size\0");
-	$dgst->addfile($file, 'b');
-	$dgst;
-}
-
-sub digest {
-	my $dgst = _digest (@_);
+	$dgst->addfile($fh);
+	close $fh or die "close $path: $!\n";
 	my $hash = $dgst->b64digest;
-	# PHP seems to have strtr for this.... (whereas
-	# in python i recall having str.translate):
-	# https://stackoverflow.com/a/5835352
-	# in perl we have something better ;)
 	$hash =~ tr'+/='-_.';
 	$hash; # hash! what an impactful statement :)
-}
-
-sub hexdigest {
-	my $dgst = _digest (@_);
-	$dgst->hexdigest;
 }
 
 sub changelog {
@@ -199,9 +200,6 @@ $Git_log->close->wait;
 	return $output;
 }
 
-my $file = shift;
-die "usage: $0 <file>\n" unless defined $file;
-
 my $temple = Template->new({
 	INCLUDE_PATH => \@include,
 	EVAL_PERL => 1,
@@ -214,7 +212,6 @@ my $temple = Template->new({
 }) || die $Template::ERROR, "\n";
 
 $temple->process($file, {
-	digest => \&digest,
-	hexdigest => \&hexdigest,
+	get_version => \&get_version,
 	changelog => \&changelog,
 }) || die $temple->error(), "\n";
