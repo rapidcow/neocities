@@ -1,4 +1,4 @@
-#!/bin/bash
+#!bash
 
 # package $1 $2 is basically tar czvf $2 $1
 # (the tag is an afterthought)
@@ -54,9 +54,18 @@ fetch_git () {
 ALGO_BSEARCH_COMMIT=5e6f1f811461dbfc371a8f7b9414ad3992d60547
 ALGO_BSEARCH_MIRRORS=(
 	https://git.rapidcow.org/pub/lib/perl5/Algo-BSearch.git
+# Popular guys
+	https://github.com/rapidcow/p5-Algo-BSearch.git
+	https://gitlab.com/rapidcow/p5-Algo-BSearch.git
+# Less popular guys
+	https://gitea.com/rapidcow/p5-Algo-BSearch.git
+	https://bitbucket.org/rapidcow/p5-Algo-BSearch.git
+# China
+	https://gitcode.com/rapidcow/p5-Algo-BSearch.git
+	https://gitee.com/rapidcow/p5-Algo-BSearch.git
 )
 
-# we should be in my/website/neocities/build
+# we should be in my/site/neocities/build
 TREE_ROOT="$(realpath "$(dirname ${BASH_SOURCE[0]})"/../../../..)/"
 
 # https://stackoverflow.com/a/687052

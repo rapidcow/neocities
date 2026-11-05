@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -euEo pipefail
-. build/common
+source build/common.bash
 target="$(realpath -- "$1")"
 
 2>&1 echo "building site version 2025-01-03 at $tmp"
