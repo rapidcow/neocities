@@ -10,9 +10,10 @@
  # NEED: ${a}/include/TAGLINE.txt
 -%]
 <!DOCTYPE html>
-[% SET title = 'rapidcow@neocities:~$' -%]
 <html lang="en">
-[% WRAPPER base/head.html %]
+[% WRAPPER base/head.html
+   title = 'rapidcow@neocities:~$'
+-%]
   <link rel="stylesheet" type="text/css" href="[% location | to_root %]ansi.css?v=[% get_version('ansi.css') %]">
   <link rel="stylesheet" type="text/css" href="[% location | to_root %]main.css?v=[% get_version('main.css') %]">
 [% END -%]
@@ -28,10 +29,6 @@ $ <strong>cat</strong> SITEMAP.txt
 $ <strong>cat</strong> EPILOG.txt TAGLINE.txt[%# &amp;&amp; <strong>fortune</strong> %]
 [% INCLUDE EPILOG.txt -%]
 [% INCLUDE TAGLINE.txt -%]
-[%# No fortune for now... :( -%]
-[%#
-                                *  *  *
-[% END -%]
 </pre>
 </main>
 </body>
