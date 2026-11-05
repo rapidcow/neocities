@@ -25,12 +25,14 @@ ${b}/base.css \
 ${b}/main.css \
 ${b}/ansi.css \
 ${b}/news.css \
+${b}/rose-pine.css \
 ${b}/robots.txt \
 	: \
 	${a}/more/${.TARGET}
 	cd -- ${A:Q} && cp -- ${a:Q}/${.IMPSRC:Q} ${B:Q}/${b:Q}/${.TARGET:Q}
 
-${b}/vendor/oldschool-pc-fonts/Web437_IBM_VGA_8x16.woff:
+${b}/vendor/oldschool-pc-fonts/Web437_IBM_VGA_8x16.woff \
+${b}/vendor/rose-pine/rose-pine-media.css:
 	cd -- ${A:Q} && cp -- ${a:Q}/${.IMPSRC:Q} ${B:Q}/${b:Q}/${.TARGET:Q}
 
 # Sass.  ${sass} is deliberately not quoted: it may be `pnpm dlx sass'.

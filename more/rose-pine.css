@@ -1,0 +1,38 @@
+@charset "UTF-8";
+/* Rosé Pine for ansi.css's variables.  Load it after ansi.css and the
+ * palette itself (vendor/rose-pine/rose-pine-media.css, which is Rosé Pine
+ * when dark and Dawn when light).  Dawn's gold, rose and foam are too
+ * faint for text on its own background, so they are darkened there;
+ * Pine, likewise, is lightened in the dark. */
+:root {
+  --back: var(--rp-base);
+  --rgb-0: var(--rp-overlay);
+  --rgb-1: var(--rp-love);
+  --rgb-2: color-mix(in srgb, var(--rp-pine) 75%, #fff);
+  --rgb-3: var(--rp-gold);
+  --rgb-4: var(--rp-iris);
+  --rgb-5: var(--rp-rose);
+  --rgb-6: var(--rp-foam);
+  --rgb-7: var(--rp-text);
+  --rgb-hi-0: var(--rp-subtle);
+  --rgb-hi-1: var(--rgb-1);
+  --rgb-hi-2: var(--rgb-2);
+  --rgb-hi-3: var(--rgb-3);
+  --rgb-hi-4: var(--rgb-4);
+  --rgb-hi-5: var(--rgb-5);
+  --rgb-hi-6: var(--rgb-6);
+  --rgb-hi-7: color-mix(in srgb, var(--rp-text) 70%, #fff);
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --rgb-0: var(--rp-text);
+    --rgb-1: color-mix(in srgb, var(--rp-love) 80%, #000);
+    --rgb-2: var(--rp-pine);
+    --rgb-3: color-mix(in srgb, var(--rp-gold) 60%, #000);
+    --rgb-4: color-mix(in srgb, var(--rp-iris) 80%, #000);
+    --rgb-5: color-mix(in srgb, var(--rp-rose) 70%, #000);
+    --rgb-6: color-mix(in srgb, var(--rp-foam) 80%, #000);
+    --rgb-hi-0: color-mix(in srgb, var(--rp-subtle) 80%, #000);
+    --rgb-hi-7: color-mix(in srgb, var(--rp-text) 60%, #000);
+  }
+}
