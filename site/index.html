@@ -7,7 +7,6 @@
  # NEED: ${a}/include/WELCOME.txt
  # NEED: ${a}/include/SITEMAP.txt
  # NEED: ${a}/include/EPILOG.txt
- # NEED: ${a}/include/TAGLINE.txt
 -%]
 <!DOCTYPE html>
 <html lang="en">
@@ -26,9 +25,8 @@ $ <strong>cat</strong> WELCOME.txt
 $ <strong>cat</strong> SITEMAP.txt
 [% INCLUDE SITEMAP.txt -%]
 
-$ <strong>cat</strong> EPILOG.txt TAGLINE.txt[%# &amp;&amp; <strong>fortune</strong> %]
+$ <strong>cat</strong> EPILOG.txt[%# TAGLINE.txt &amp;&amp; <strong>fortune</strong> %]
 [% INCLUDE EPILOG.txt -%]
-[% INCLUDE TAGLINE.txt -%]
 </pre>
 </main>
 </body>
