@@ -7,7 +7,7 @@
 # patch keeps applying), rather than editing it in place and losing
 # them the next time `siteconf -i' is run.
 #
-# options: -Sa=. -Sb=public -Obase_url=/ -Osite_url=https://rapidcow.neocities.org/ -P web -MHTML::Tiny -MHTML::FromANSI::Tiny -MTemplate -MRdKw::Algo::BSearch=0.0044 -MRdKw::IPC::Unix '-Dperl5opt=-Ilib -Iext/Algo-BSearch/lib -Iext/IPC-Unix/lib'
+# options: -Sa=. -Sb=public '-Dclean=&' -Obase_url=/ -Osite_url=https://rapidcow.neocities.org/ -P web -MHTML::Tiny -MHTML::FromANSI::Tiny -MTemplate -MRdKw::Algo::BSearch=0.0044 -MRdKw::IPC::Unix '-Dperl5opt=-Ilib -Iext/Algo-BSearch/lib -Iext/IPC-Unix/lib'
 #
 use utf8;
 use 5.006;
@@ -108,7 +108,7 @@ my %Dd = (
 	a => ".",
 	b => "public",
 	c => "public",
-	clean => "clean",
+	clean => "&",
 	e => ".ok",
 	perl5opt => "-Ilib -Iext/Algo-BSearch/lib -Iext/IPC-Unix/lib",
 );
