@@ -43,6 +43,13 @@ my @include = qw( site temple include more );
 my ($apath) = grep { -f $_ } map { File::Spec->catfile($_, $file) } @include;
 defined $apath or die "template not found: $file\n";
 my %I = read_deps($apath);
+# location: where the page lives on the site, derived from HAVE
+# (e.g. ${a}/site/news/index.html => /news/index.html)
+my $location;
+if (defined $I{HAVE}) {
+	($location = $I{HAVE}) =~ s{^\$\{a\}/site(?=/)}{}
+		or die "$apath: HAVE '$I{HAVE}' is not under \${a}/site\n";
+}
 my %versions;
 for my $dep (@{$I{NEED} // []}, @{$I{WANT} // []}) {
 	# Only built resources in this symbolic namespace can be versioned.
@@ -212,6 +219,7 @@ my $temple = Template->new({
 }) || die $Template::ERROR, "\n";
 
 $temple->process($file, {
+	(defined $location ? (location => $location) : ()),
 	get_version => \&get_version,
 	changelog => \&changelog,
 }) || die $temple->error(), "\n";
