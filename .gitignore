@@ -6,7 +6,6 @@
 /tmp/
 /differ/
 /local/
-/node_modules/
 *.orig
 *.rej
 MY/

@@ -79,7 +79,6 @@ BEGIN {
 }
 
 use RdKw::WwW::GenGenLib qw(read_make write_make);
-use File::Which qw(which);
 
 #
 # How can ./configure work without siteconf -g afterwards
@@ -123,74 +122,6 @@ sub isnull
 	!(defined $_[0]) || !(length $_[0]);
 }
 
-# --- local: tools (see configure.patch)
-
-# Candidates for running Sass, best first: what is already installed
-# (the project's, then PATH's), then what pnpm/npx can run without
-# fetching anything, and only then a download (pnpm dlx).  None of them
-# may stop and ask, nor read the terminal (the probe and the make
-# recipe both close stdin).  The first that reports a version wins.
-sub sass_candidates
-{
-	my ($srcdir) = @_;
-	my @c;
-	-x "$srcdir/node_modules/.bin/sass" and push @c, "$srcdir/node_modules/.bin/sass";
-	if (my $sass = which('sass')) {
-		push @c, $sass;
-	}
-	if (my $pnpm = which('pnpm')) {
-		push @c, "$pnpm exec sass";
-	}
-	if (my $npx = which('npx')) {
-		# the `--' keeps npx from eating sass's --version
-		push @c, "$npx --no -- sass";
-	}
-	if (my $pnpm = which('pnpm')) {
-		push @c, "$pnpm dlx sass";
-	}
-	@c;
-}
-
-# Run it and see.  A fetcher prints its own chatter around the version
-# ("+ sass 1.2.3", progress, ...), so do not trust the first line; the
-# version is the line that *starts* with one.  Returns (version) or
-# (undef, what it said).
-sub sass_version
-{
-	my ($cmd) = @_;
-	my $out = `$cmd --version 2>&1 </dev/null`;
-	defined $out or return (undef, "could not run: $!\n");
-	for (split /\n/, $out) {
-		return $1 if /^(\d+\.\d+\.\d+\S*)/;
-	}
-	return (undef, $out);
-}
-
-# What the tools are is a definition (filesystem routing), not an
-# option.  Looked for only when not yet known; run once, since a
-# fetcher can take a while, and a known one is trusted afterwards.
-sub site_finish
-{
-	my ($D, $srcdir, $shutup) = @_;
-	return unless isnull($D->{sass});
-	my $why = '';
-	for my $cmd (sass_candidates($srcdir)) {
-		my ($v, $said) = sass_version($cmd);
-		unless (defined $v) {
-			$said =~ s/^/E:   /mg;
-			$why .= "E: \`$cmd --version' printed no sass version:\n$said"
-				. ($said =~ /\n\z/ ? '' : "\n");
-			next;
-		}
-		$D->{sass} = $cmd;
-		print STDERR "Using sass $v (\`$cmd')\n" unless $shutup;
-		return;
-	}
-	die $why . "E: sass not found.  Install it, or set -Dsass='...'.\n";
-}
-
-# ---
-
 my $usage = <<EOM;
 usage: $prog [-Dvar=val ...] [-Ovar=val ...] [--reset] [--mkpath] [-hq]
 
@@ -206,7 +137,6 @@ The following variables may be defined:
   -De         Directory marker (default: $Dd{e})
   -Dclean     Clean rule template (default: $Dd{clean})
   -Dperl5opt  Perl interpreter flags (default: $Dd{perl5opt})
-  -Dsass      How to run Sass (default: node_modules, PATH, pnpm exec, npx, pnpm dlx)
 
 Options with defaults:
 
@@ -335,7 +265,6 @@ for my $k (keys %Od) {
 }
 
 defined &preset_finish and preset_finish(\%D, \%O);
-site_finish(\%D, $srcdir, $shutup);
 
 for my $k (qw( a b R F )) {
 	$D{$k} =~ s!/+$!!;
