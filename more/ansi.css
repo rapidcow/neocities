@@ -18,7 +18,7 @@
   --rgb-hi-4: #8dbbf5;
   --rgb-hi-5: #d3a6f2;
   --rgb-hi-6: #7fd6e0;
-  --rgb-hi-7: #f2f2f2;
+  --rgb-hi-7: #f7f7f7;
 }
 /* light mode: the same hues, darkened for a pale background.  "white"
  * is the default foreground, so it turns dark (as in a light terminal) */
