@@ -13,8 +13,8 @@ package () {
 	group=wheel:0
 	while getopts g:u: opt; do
 		case "$opt" in
-		g) group="$OPTARG" ;;
-		u) owner="$OPTARG" ;;
+		g) group=$OPTARG ;;
+		u) owner=$OPTARG ;;
 		*) >&2 echo "usage: package [-u OWNER] [-g GROUP] TAG DIR OUT"
 		   return 2 ;;
 		esac
@@ -53,7 +53,7 @@ find_gnu_tar () {
 	fi
 	for cand in "${cands[@]}"; do
 		if "$cand" --version 2>/dev/null | head -n 1 | grep -q 'GNU tar'; then
-			GNU_TAR="$(command -v -- "$cand")"
+			GNU_TAR=$(command -v -- "$cand")
 			return 0
 		fi
 	done
@@ -73,9 +73,10 @@ fetch_git () {
 	for url in "$@"; do
 		rm -rf -- "$dest"
 		if git clone --quiet --no-checkout -- "$url" "$dest" &&
-		   git -C "$dest" -c advice.detachedHead=false \
-			checkout --quiet --detach "$commit" &&
-		   [ "$(git -C "$dest" rev-parse HEAD)" = "$commit" ]; then
+			git -C "$dest" -c advice.detachedHead=false \
+				checkout --quiet --detach "$commit" &&
+			[ "$(git -C "$dest" rev-parse HEAD)" = "$commit" ]
+		then
 			echo "got $commit from $url"
 			return 0
 		fi
