@@ -45,7 +45,7 @@ package () {
 	#
 	# also: use commit date intsead of annotated tag date,
 	# because the latter can be (unnecessarily) off
-	find "$dir" -print0 | LC_ALL=C sort -z |
+	find "$dir" -print0 | LC_COLLATE=C sort -z |
 	"$GNU_TAR" cvvf - --no-recursion --null --files-from=- \
 		--mtime=@$commitdate --owner="$owner" --group="$group" |
 	"$compressor" -n > "$out"
