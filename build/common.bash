@@ -9,16 +9,6 @@
 # -g root:0 to reproduce archives from before then.
 package () {
 	local tag dir out commitdate owner group opt OPTIND OPTARG
-	local compressor=gzip
-	if [ "$(uname -s)" = Darwin ]; then
-		# GNU tar's -z can otherwise pick Apple's gzip, which produces
-		# different bytes. Homebrew provides GNU gzip via `brew install gzip`.
-		compressor=${GNU_GZIP:-gzip}
-		if ! "$compressor" --version 2>/dev/null | grep -q 'Free Software Foundation'; then
-			>&2 echo 'error: package requires GNU gzip on macOS; install it with brew install gzip, or set GNU_GZIP'
-			return 1
-		fi
-	fi
 	owner=root:0
 	group=wheel:0
 	while getopts g:u: opt; do
@@ -46,9 +36,9 @@ package () {
 	# also: use commit date intsead of annotated tag date,
 	# because the latter can be (unnecessarily) off
 	find "$dir" -print0 | LC_COLLATE=C sort -z |
-	"$GNU_TAR" cvvf - --no-recursion --null --files-from=- \
+	$GNU_TAR cvvf - --no-recursion --null --files-from=- \
 		--mtime=@$commitdate --owner="$owner" --group="$group" |
-	"$compressor" -n > "$out"
+	$GNU_GZIP -n > "$out"
 }
 
 # Older builds require GNU make.
@@ -90,6 +80,34 @@ find_gnu_tar () {
 	return 1
 }
 find_gnu_tar
+
+find_gnu_gzip () {
+	local compressor=${GNU_GZIP:-gzip}
+	local OS=$(uname -s)
+	case "$OS" in
+	Darwin|FreeBSD)
+		# GNU tar's -z can otherwise pick Apple's gzip, which produces
+		# different bytes. Homebrew provides GNU gzip via `brew install gzip'.
+		# FreeBSD has GNU gzip `pkg install archivers/gzip'.
+		if ! $compressor --version 2>/dev/null | grep -q 'Free Software Foundation'; then
+			>&2 echo "error: package requires GNU gzip on ${OS}."
+			>&2 echo "error: If you have one, set GNU_GZIP to its path."
+			case "$OS" in
+			Darwin)
+				# My sincerest apologies to the MacPorts users. :(
+				>&2 echo "error: You may install it with: brew install gzip"
+				;;
+			FreeBSD)
+				>&2 echo "error: You may install it with: pkg install gzip"
+				>&2 echo "error: Then: env GNU_GZIP=/usr/local/bin/gzip"
+				;;
+			esac
+			return 1
+		fi
+	esac
+	GNU_GZIP=$compressor
+}
+find_gnu_gzip
 
 # fetch_git DEST COMMIT URL... clones the first URL that has
 # COMMIT into DEST, detached at COMMIT.  since we pin the full
