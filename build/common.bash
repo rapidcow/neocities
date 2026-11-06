@@ -120,7 +120,7 @@ TREE_ROOT="$(realpath "$(dirname ${BASH_SOURCE[0]})"/../../../..)/"
 tmp="$(mktemp -d)"
 trap 'rm -rf -- "$tmp"' EXIT
 
-target="$(realpath -- "$1")"
+target="${PWD}/$1"
 
 git clone --shared "$(git rev-parse --git-dir)" "$tmp"
 
