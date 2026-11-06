@@ -35,13 +35,22 @@
    See LICENSE.Creative and LICENSE.Perl5 for those respectively.
 
 BUILD INSTRUCTIONS
-   Building this site depends on siteconf 0.0202, GenLib.pm, and
+   Building this site depends on siteconf 0.0202, any GenLib, and
    GenGenLib 0.0002.  And of course, a reasonably modern Perl 5.
 
    You also need Algo-BSearch and IPC-Unix, which you can clone
    with `git submodule init' followed by `git submodule update'.
+   You can find more information of my stuff at [2][3][4].
 
-   You can find more up-to-date information at [2][3][4].
+   In many nasty places I took the shortcut of assuming that we
+   are on a Unix-like environment (Linux, FreeBSD, OSX/macOS to
+   name a few.)  Things may break outside of that assumption...
+   (e.g. Windows users may consider WSL.)  To name a few things,
+   you need make(1) that runs command in a POSIX shell, with
+   shell utilities like cp(1).  Also symlinks should be a thing.
+
+   If you are building the archives you also need GNU tar!
+   (But at that point you probably know what you're doing. :)
 
    [1] https://www.kernel.org/pub/software/scm/git/docs/git.html
    [2] https://foss.rapidcow.org/project/siteconf/
