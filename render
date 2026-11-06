@@ -40,7 +40,13 @@ sub pipe_head {
 
 my $BASE_URL = $ENV{BASE_URL}; die "please export BASE_URL\n" unless defined $BASE_URL;
 my $SITE_URL = $ENV{SITE_URL}; die "please export SITE_URL\n" unless defined $SITE_URL;
-my @include = qw( site temple include );
+my %S = load_state($B);
+my $D = $S{config};
+my @include = map {
+	defined (my $Dv = $D->{$_})
+		or die "error: missing \$D->{$_} from MY/config.mk\n";
+	$Dv;
+} qw( a tem inc );
 
 my ($apath) = grep { -f $_ } map { File::Spec->catfile($_, $file) } @include;
 defined $apath or die "template not found: $file\n";
@@ -54,8 +60,6 @@ if (defined $I{HAVE}) {
 }
 # The configuration (A a B b c), for spelling paths: symbolically, or written
 # out as the variables expand (the template gets D, so "${D.B}/${D.b}/x" works).
-my %S = load_state($B);
-my $D = $S{config};
 my %G;	# what each header said, so no file is read twice
 my %allowed = map { norm_path($D, $_) => 1 } walk_deps($D, $apath, \%G);
 my $built = File::Spec->canonpath("$D->{B}/$D->{b}");
@@ -200,7 +204,7 @@ while (<$revh>) {
 		# once we're done testing and focus on just the
 		# interesting commits :)
 		pipe_head($Git->new->set('diff', '--shortstat', $oid . '^1', $oid,
-			'--', qw( site more temple include share ))->dup("</dev/null"))
+			'--', qw( site more template temple include share ))->dup("</dev/null"))
 		// ''
 			=~ s/([+])/@{[$h->tag ('span', { class => 'add' }, $1)]}/r
 			=~ s/([-])/@{[$h->tag ('span', { class => 'del' }, $1)]}/r,

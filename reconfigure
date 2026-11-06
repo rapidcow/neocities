@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 siteconf -if -o configure.orig -o render:/dev/null -Sa=site -Sb=public -Dclean='&' \
-	-Dinc=include -Dtem=temple -Obase_url=/ -Osite_url=https://rapidcow.neocities.org/ \
+	-Dinc=include -Dtem=template -Obase_url=/ -Osite_url=https://rapidcow.neocities.org/ \
 	-P web \
 	-MRdKw::WwW::GenGenLib=0.0002 \
 	-MHTML::Tiny -MHTML::FromANSI::Tiny -MTemplate \
