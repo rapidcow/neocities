@@ -24,6 +24,7 @@ sub write_file {
 sub provider {
 	Site::TemplateProvider->new({
 		SOURCE => 'entry', INCLUDE_PATH => [qw(site temple include)],
+		D => { A => '.', a => '.', B => '.', b => 'public', c => '.cache' },
 	});
 }
 
@@ -70,7 +71,7 @@ is($out, 'secret', 'nested template rendered');
 ok($ok, 'built NEED and unused WANT are allowed');
 
 eval { render(" # NEED: ../include/allowed\n", 'x') };
-like($@, qr/invalid NEED\/WANT path/, 'dot components rejected in declarations');
+like($@, qr/invalid path .*bad component/, 'dot components rejected in declarations');
 
 write_file('site/entry', "[%\n # HAVE: wrong\n-%]\n");
 eval { provider() };
@@ -80,7 +81,7 @@ write_file('site/entry', "[%\n # HAVE: \${a}/site/entry\n # NEED: \${a}/include/
 my $p = provider();
 my ($data, $status) = $p->fetch('allowed');
 ok(!$status, 'initial fetch succeeds');
-delete $p->{ALLOWED}{'${a}/include/allowed'};
+delete $p->{ALLOWED}{'include/allowed'};
 ($data, $status) = $p->fetch('allowed');
 is($status, STATUS_ERROR, 'cached fetch still checks authorization');
 for my $name ('../include/allowed', "$dir/include/allowed", './allowed') {

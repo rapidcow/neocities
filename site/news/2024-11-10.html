@@ -11,9 +11,9 @@
 [% SET title = "refs/tags/2024-11-10" -%]
 <html lang="en">
 [% WRAPPER base/head.html %]
-  <link rel="stylesheet" type="text/css" href="[% location | to_root %]ansi.css?v=[% get_version('ansi.css') %]">
-  <link rel="stylesheet" type="text/css" href="[% location | to_root %]main.css?v=[% get_version('main.css') %]">
-  <link rel="stylesheet" type="text/css" href="[% location | to_root %]news.css?v=[% get_version('news.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]ansi.css?v=[% get_version('${B}/${b}/ansi.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]main.css?v=[% get_version('${B}/${b}/main.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]news.css?v=[% get_version('${B}/${b}/news.css') %]">
 [% END -%]
 <body>
 <nav><pre>]--[ <a href="2024-11-09.html">prev</a> ]----------------------[ <a href=".">up</a> ]----------------------[ <a href="2025-01-03.html">next</a> ]--[</pre></nav>

@@ -6,59 +6,32 @@ use parent 'Template::Provider';
 use Cwd qw(abs_path);
 use Template::Constants qw(STATUS_ERROR);
 use RdKw::WwW::GenGenLib qw(read_deps);
-use Exporter 'import';
-our @EXPORT_OK = qw(inherited_deps);
+use Site::Deps qw(norm_path walk_deps);
 
-# One provider per render. The entry source declares the complete set of
-# files the render may read, including files loaded by nested templates.
-# Declared paths are kept exactly as written (e.g. ${a}/include/EPILOG.txt),
-# just as siteconf reads them; a template found as DIR/NAME in INCLUDE_PATH
-# is looked up as ${a}/DIR/NAME.
+# One provider per render.  The entry source declares the complete set of
+# files the render may read, and Site::Deps adds what the templates it names
+# declare in turn.  Declarations are compared as normalized paths (norm_path),
+# so ${a}/include/NAME and include/NAME are the same file; a template found as
+# DIR/NAME in INCLUDE_PATH is looked up as that path.  D is config.mk.
 sub new {
 	my ($class, $args) = @_;
+	my $D = $args->{D} or die "render: D (the configuration) is required\n";
 	my $self = $class->SUPER::new({ %$args, ABSOLUTE => 1 });
 	return unless $self;
 	my $source = $self->_resolve($args->{SOURCE});
 	die "render: source `$args->{SOURCE}' not found\n" unless defined $source;
-	my $have = _symbolic($source);
 	my %deps = read_deps($source);
-	die "render: $source must declare HAVE: $have\n"
-		unless defined $deps{HAVE} && $deps{HAVE} eq $have;
+	$self->{D} = $D;
+	die "render: $source must declare HAVE: @{[ $self->_spell(norm_path($D, $source)) ]}\n"
+		unless defined $deps{HAVE}
+			&& eval { norm_path($D, $deps{HAVE}) eq norm_path($D, $source) };
 	$self->{ENTRY} = $source;
-	my ($need, $want) = inherited_deps($source);
-	$self->{ALLOWED} = { $have => 1 };
-	for my $path (@$need, @$want) {
-		die "render: $source: invalid NEED/WANT path `$path'; "
-			. "use literal paths such as \${a}/include/NAME\n"
-			unless _safe_dep($path);
-		$self->{ALLOWED}{$path} = 1;
-	}
+	$self->{ALLOWED} = { norm_path($D, $source) => 1 };
+	$self->{ALLOWED}{ norm_path($D, $_) } = 1
+		for eval { walk_deps($D, $source, $args->{GRAPH}) };
+	die "render: $source: $@" if $@;
 	return $self;
 }
-
-# The NEEDs and WANTs of a source, and of every ${a}/... file they name,
-# and so on (as siteconf does): ([ NEED ... ], [ WANT ... ]), in the
-# symbolic spelling.  Built files (${B}/...) are not read.
-sub inherited_deps {
-	my ($source) = @_;
-	my (%seen, @need, @want);
-	my $walk; $walk = sub {
-		my ($file, $soft) = @_;
-		my %d = read_deps($file);
-		for my $kind (qw(NEED WANT)) {
-			for my $path (@{ $d{$kind} || [] }) {
-				push @{ $soft || $kind eq 'WANT' ? \@want : \@need }, $path
-					unless $seen{$path}++;
-				(my $rel = $path) =~ s{\A\$\{a\}/}{} or next;
-				$walk->($rel, $soft || $kind eq 'WANT') if _safe_name($rel) && -f $rel;
-			}
-		}
-	};
-	$walk->($source, 0);
-	return (\@need, \@want);
-}
-
-sub _symbolic { '${a}/' . $_[0] }
 
 # Template names are plain relative paths.
 sub _safe_name {
@@ -66,15 +39,6 @@ sub _safe_name {
 	return defined($name) && !ref($name)
 		&& $name =~ m{\A[\w.-]+(?:/[\w.-]+)*\z}
 		&& $name !~ m{(?:\A|/)\.{1,2}(?:/|\z)};
-}
-
-# Declared paths: like names, but the first segment may be a ${x} variable
-# (and ${B}/${b}/... has two).  Dot components are never allowed.
-sub _safe_dep {
-	my ($path) = @_;
-	return defined($path) && !ref($path)
-		&& $path =~ m{\A(?:\$\{\w+\}|[\w.-]+)(?:/(?:\$\{\w+\}|[\w.-]+))*\z}
-		&& $path !~ m{(?:\A|/)\.{1,2}(?:/|\z)};
 }
 
 # Use the normal search order, then authorize that exact file. Do not skip
@@ -89,13 +53,23 @@ sub _resolve {
 	return;
 }
 
+# A path as a header would say it: under ${a}, symbolically.
+sub _spell {
+	my ($self, $path) = @_;
+	my $a = $self->{D}{a};
+	return "\${a}/$path" if $a eq '.';
+	return "\${a}/" . substr($path, length($a) + 1) if index($path, "$a/") == 0;
+	return $path;
+}
+
 sub _authorized {
 	my ($self, $name) = @_;
 	return (undef, "invalid template name") unless _safe_name($name);
 	my $path = $self->_resolve($name);
 	return (undef, "template not found") unless defined $path;
-	my $dep = _symbolic($path);
-	return (undef, "undeclared dependency `$dep'; add NEED: $dep to $self->{ENTRY}")
+	my $dep = norm_path($self->{D}, $path);
+	my $spelt = $self->_spell($dep);
+	return (undef, "undeclared dependency `$spelt'; add NEED: $spelt to $self->{ENTRY}")
 		unless $self->{ALLOWED}{$dep};
 	return (abs_path($path), undef);
 }

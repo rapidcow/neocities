@@ -9,8 +9,8 @@
 <html lang="en">
 [% SET title = '404 Not Found' -%]
 [% WRAPPER base/head.html %]
-  <link rel="stylesheet" type="text/css" href="[% '/' | as_link(0) | xml %]ansi.css?v=[% get_version('ansi.css') %]">
-  <link rel="stylesheet" type="text/css" href="[% '/' | as_link(0) | xml %]main.css?v=[% get_version('main.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% '/' | as_link(0) | xml %]ansi.css?v=[% get_version('${B}/${b}/ansi.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% '/' | as_link(0) | xml %]main.css?v=[% get_version('${B}/${b}/main.css') %]">
 [% END -%]
 <body>
 <main>

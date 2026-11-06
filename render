@@ -6,10 +6,11 @@ use warnings;
 use Template;
 use File::Spec;
 use Getopt::Std;
-use RdKw::WwW::GenGenLib qw(read_deps);
+use RdKw::WwW::GenGenLib qw(read_deps load_state);
 use RdKw::WwW::GenLib qw(relapath);
 use Digest::SHA;
-use Site::TemplateProvider qw(inherited_deps);
+use Site::Deps qw(norm_path walk_deps);
+use Site::TemplateProvider;
 # handy guys for templating
 use HTML::Tiny;
 use Time::Piece;
@@ -51,13 +52,13 @@ if (defined $I{HAVE}) {
 	($location = $I{HAVE}) =~ s{^\$\{a\}/site(?=/)}{}
 		or die "$apath: HAVE '$I{HAVE}' is not under \${a}/site\n";
 }
-my %versions;
-my ($inh_need, $inh_want) = inherited_deps($apath);
-for my $dep (@$inh_need, @$inh_want) {
-	# Only built resources in this symbolic namespace can be versioned.
-	(my $name = $dep) =~ s{^\$\{B\}/\$\{b\}/}{} or next;
-	$versions{$name} = File::Spec->catfile($B, $b, $name);
-}
+# The configuration (A a B b c), for spelling paths: symbolically, or written
+# out as the variables expand (the template gets D, so "${D.B}/${D.b}/x" works).
+my %S = load_state($B);
+my $D = $S{config};
+my %G;	# what each header said, so no file is read twice
+my %allowed = map { norm_path($D, $_) => 1 } walk_deps($D, $apath, \%G);
+my $built = File::Spec->canonpath("$D->{B}/$D->{b}");
 
 # unused - but when DEFAULT becomes too funky with
 # falsy strings, this should do a better job
@@ -118,13 +119,16 @@ sub to_json {
 	$h->json_encode ($text);
 }
 
-# Version the built bytes, and only resources declared by this page.
+# Version the built bytes, and only resources declared by this page (or by
+# what it names, as in the head template): ${B}/${b}/x.css or as written out.
 sub get_version {
 	@_ == 1 or die "get_version requires one resource name\n";
 	my ($name) = @_;
-	exists $versions{$name}
+	my $path = norm_path($D, $name);
+	$built eq '.' || index($path, "$built/") == 0
+		or die "get_version: $name is not built (not under \${B}/\${b})\n";
+	$allowed{$path}
 		or die "get_version: $name is not declared as a NEED or WANT in $apath\n";
-	my $path = $versions{$name};
 	open my $fh, '<:raw', $path or die "open $path: $!\n";
 	my $dgst = Digest::SHA->new(1);
 	$dgst->addfile($fh);
@@ -212,6 +216,8 @@ $Git_log->close->wait;
 my $provider = Site::TemplateProvider->new({
 	SOURCE => $file,
 	INCLUDE_PATH => \@include,
+	D => $D,
+	GRAPH => \%G,
 }) || die Site::TemplateProvider->error(), "\n";
 my $temple = Template->new({
 	LOAD_TEMPLATES => [ $provider ],
@@ -226,6 +232,7 @@ my $temple = Template->new({
 
 $temple->process($file, {
 	(defined $location ? (location => $location) : ()),
+	D => $D,
 	get_version => \&get_version,
 	changelog => \&changelog,
 }) || die $temple->error(), "\n";

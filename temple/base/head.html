@@ -25,9 +25,9 @@
 [%# in that case we just don't even bother figure out how to #-%]
 [%# climb up - we'll just fall straight back to the root. #-%]
 [% IF location -%]
-  <link rel="stylesheet" type="text/css" href="[% location | to_root | xml %]base.css?v=[% get_version('base.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root | xml %]base.css?v=[% get_version('${B}/${b}/base.css') %]">
 [%- ELSE -%]
-  <link rel="stylesheet" type="text/css" href="[% '/' | as_link(0) | xml %]base.css?v=[% get_version('base.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% '/' | as_link(0) | xml %]base.css?v=[% get_version('${B}/${b}/base.css') %]">
 [%- END -%]
 [% content -%]
 </head>

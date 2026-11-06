@@ -5,13 +5,13 @@
  # NEED: ${B}/${b}/ansi.css
  # NEED: ${B}/${b}/main.css
 -%]
-[%# base.css is NEEDed because base/head.html itself calls get_version('base.css') -%]
+[%# base.css is NEEDed because base/head.html itself calls get_version('${B}/${b}/base.css') -%]
 <html lang="en">
 [% WRAPPER base/head.html
    title = 'rapidcow@neocities:~$'
 -%]
-  <link rel="stylesheet" type="text/css" href="[% location | to_root %]ansi.css?v=[% get_version('ansi.css') %]">
-  <link rel="stylesheet" type="text/css" href="[% location | to_root %]main.css?v=[% get_version('main.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]ansi.css?v=[% get_version('${B}/${b}/ansi.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]main.css?v=[% get_version('${B}/${b}/main.css') %]">
 [% END -%]
 <body>
   <body>
