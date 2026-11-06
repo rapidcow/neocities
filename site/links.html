@@ -1,63 +1,73 @@
 <!DOCTYPE html>
+[%
+ # HAVE: ${a}/site/links.html
+ # NEED: ${a}/temple/base/head.html
+ # NEED: ${B}/${b}/ansi.css
+ # NEED: ${B}/${b}/base.css
+ # NEED: ${B}/${b}/main.css
+-%]
+[%# XXX: Why do we need to declare dep on base.css??? -%]
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="author" content="rapidcow">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>link page</title>
-    <meta name="author" content="rapidcow">
-    <link rel="canonical" type="text/html" href="https://rapidcow.neocities.org/">
-    <link rel="stylesheet" type="text/css" href="/style.css">
-  </head>
+[% WRAPPER base/head.html
+   title = 'rapidcow@neocities:~$'
+-%]
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]ansi.css?v=[% get_version('ansi.css') %]">
+  <link rel="stylesheet" type="text/css" href="[% location | to_root %]main.css?v=[% get_version('main.css') %]">
+[% END -%]
+<body>
   <body>
-    <h1>==== Links of Fame ====</h1>
-    <p>(<a href="/">go back</a>)</p>
-    <p>The Melon King once said that
-    <a target="_blank" href="https://thoughts.melonking.net/thoughts/every-site-needs-a-links-page-why-linking-matters">every good website has a link page</a>.
-    Well&hellip; here's that. :)</p>
-    <p><b>Disclaimer</b>: not everything in the sites i link are
-    ideas that i endorse. that would make me go insane with just
-    how little i can link. also, i don't understand everything
-    there is to know about each page. please don't count on me
-    too much to know what they mean.</p>
+    <h1>Links</h1>
+    <p>things I like in no particular order</p>
     <ul>
-      <li><a target="_blank" href="https://melonking.net/">MelonLand</a>:
-      I don't really know the site or Melon much. I just think it's cool
-      (and ridiculously chill).  Oh, and he just so happens to have
-      <a href="https://melonking.net/melon?z=/thoughts/manifesto"><em>the</em>
-        most based manifesto</a> I've ever read &mdash; not posing itself
-      as an antagonist of social media; just that it can be done.</li>
-      <li>Also, you should totally <a target="_blank" rel="noopener"
-        href="https://vimeo.com/719578661#t=187">listen to him giving a talk</a>
-        &mdash; it's poetry to the craft of Web.
-        (I can't say much about Melon's zine, but I'm sure it's good too)</li>
-      <li>Priver's <a target="_blank" rel="noopener"
-        href="https://youtu.be/qyKl0zv4z9k">I am Créu cat</a> (YouTube):
-        not your typical hollowly optimistic and cheerful cat :)
-      but well that is one answer to the Internet today&hellip;</li>
-      <li>
-        DeadlyComics (with one of my favorites <a target="_blank" rel="noopener"
-        href="https://youtu.be/wH4QsKQPYKQ">here</a>):
-        <a href="http://www.deadlycomics.com/">there is no reason for his
-        site to be this chill.</a>
+      <li>Grieg's Lyric Pieces Op.54 No.4 ``Notturno''
+        [<a href="https://www.youtube.com/watch?v=mkoyF21A9YE">*</a>]
+        <ul><li>The other lyric piece titled ``Homesickness''
+          [<a href="https://www.youtube.com/watch?v=QHQl_gR016c">*</a>]
+          is the final song of my first(?) piano CD.
+          So I decided to learn more of his lyric pieces...</li>
+        </ul>
       </li>
-      <li>
-        <a href="https://youtu.be/hVJXZR5ahYA">OMORI Nintendo Switch trailer</a>:
-        I literally don't have a better name for it.
-        But it's the only OMORI trailer I like.
+      <li>Ravel ``Forlane'' [<a href="https://www.youtube.com/watch?v=3p5nVJNTmNc">*</a>]</li>
+      <li>Scriabin Prelude Op.11 No.5
+        [<a href="https://www.youtube.com/watch?v=cUhXy7qvyw4">*</a>]
+        Etude Op.8 No.8 [<a href="https://www.youtube.com/watch?v=VMe8lY6oziU&t=752">*</a>],
+        Prelude Op.16 No.5 [<a href="https://www.youtube.com/watch?v=pmIDevUoPpE&t=496">*</a>],
+        and obviously Sonata 4 and the famous ones (Op.8 No.12, Op.42 No.5, Fantasy in B minor)
+        <ul><li>I have not listened to his Mazurkas but I like a lot of them very much :]</li></ul>
       </li>
-      <li>
-        Oh and speaking of OMORI&hellip; I <em>have</em> to include
-        <a href="https://youtu.be/k1aLfQz_vdo">this</a>.
-      </li>
-      <li>
-        SrGrafo's <a href="https://srgrafo.com/series/RimworldTales/12">Rimworld Tales</a>:
-        perfect for when you are sad (and of course, i know nothing
-        about Rimworld the game &mdash; but I loved the story! (minus the
-        gore *cough cough* oh yeah content warning if you navigate to
-        virtually any other panel *cough cough*)
-      </li>
+      <li>Chopin Nocturne Op.15 No.2 [<a href="https://www.youtube.com/watch?v=cnnSeChY--M">*</a>]
+        Op.48 (C minor, F-sharp minor), Op.62 (B major, E major) [<a href="https://www.youtube.com/watch?v=Kyga0Dmuv5w">*</a>, Ballade 2
+        ([<a href="https://www.youtube.com/watch?v=NZfNAVQ6H4o">Zimmermann</a>)</li>
+      <li>Totally random but Mozart's String Quartet No.19 KV 465
+        is not what you'd expect Mozart would write (not that he
+        couldn't, but man is it dark. (and the last place you'd
+        expect to hear the DSCH motif (a teacher once told me
+        they listen to Mozart because it's uplifting unlike Chopin,
+        oh boy do I have news for her :] ...)))</li>
+      <li>Liszt S.541 [<a href="https://www.youtube.com/watch?v=7ZPilpoCFKo">*</a>]
+        (all of them, especially the second -- not just the third!)
+        and more lyrical Liszt I cannot recall at the moment.
+        (Consolations? dunno lol...)</li>
+      <li>Rachmaninoff (-nov?): Vocalise Op.34 No.14, but the piano
+        arrangement and not the singing [<a href="https://www.youtube.com/watch?v=VPZBTyRCzgY">*</a>]
+        and before you ask me, yes, I (obviously) like Rach 1,2,3,
+        AND Sonata 2, to some extent... &gt;_&gt;
+        <li>crap I forgot to mention Op.23 No.4!!! I was just
+          reminded <a href="https://www.youtube.com/watch?v=1KzpKyJ7HLY">this video</a>.
+          (Op.23 No.5 was the first Rachmaninoff piece I ever heard too,
+          but No.4 is something else.)</li></li>
+      <li>Fauré (whose name I kept misspelling) Op.23 No.1, ``<span lang="fr">Les berceuax</span>''
+        (specifically cello not vocal either! like <a href="https://www.youtube.com/watch?v=BYtolN6lLz0">Mischa Maisky</a>) --
+        also Barcarolle 1 [<a href="https://www.youtube.com/watch?v=Z0-SOATtK6c">*</a>]</li>
+      <li>Maybe some Mendolssohn (Songs without Words [<a title="Op.19 No.1, i think this might just be his first song without words..." href="https://www.youtube.com/watch?v=RIU70B6K7Ls">*</a>), Brahams, i can't remember...</li>
+      <li>Schubert Träumerei (also from my CD; <a href="https://www.youtube.com/watch?v=_RmuTuVWXy4">Horowitz</a>), Impromptus Op.90 (<a href="https://www.youtube.com/watch?v=bRjKo0QEIuI">Zimmermann</a>), D.946 No.2
+        [<a href="https://www.youtube.com/watch?v=0cKhM9gZ9Cc">*</a>] (the A-flat minor middle section was something I never knew I could hear again...
+        there is definitely more Schubert I've heard than I knew by name! :P)</li>
+      <li><a href="https://www.youtube.com/watch?v=RifIzx5YvFI">RAZOR</a></li>
+      <li><a href="https://www.youtube.com/watch?v=y7B6Z-_-Bcc">Telephone</a> (just recently found :o)</li>
+      <li><a href="https://www.youtube.com/watch?v=u5CVsCnxyXg">No Surprises</a></li>
+      <li>Other than <a href="https://melonking.net/">Melon King</a>, I should also mention <a href="https://vidapon.net/">Vidapon</a>.  Also Stupeid (recently became a <a href="https://stupied.net//">domain</a>?  Good for them I guess :)</li>
     </ul>
+    <p><a href="/">Go back</a></p>
   </body>
 </html>
