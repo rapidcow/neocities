@@ -49,8 +49,8 @@ my %I = read_deps($apath);
 # (e.g. ${a}/site/news/index.html => /news/index.html)
 my $location;
 if (defined $I{HAVE}) {
-	($location = $I{HAVE}) =~ s{^\$\{a\}/site(?=/)}{}
-		or die "$apath: HAVE '$I{HAVE}' is not under \${a}/site\n";
+	($location = $I{HAVE}) =~ s{^\$\{a\}(?=/)}{}
+		or die "$apath: HAVE '$I{HAVE}' is not under \${a}\n";
 }
 # The configuration (A a B b c), for spelling paths: symbolically, or written
 # out as the variables expand (the template gets D, so "${D.B}/${D.b}/x" works).
