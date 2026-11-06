@@ -26,10 +26,12 @@ sub new {
 		unless defined $deps{HAVE}
 			&& eval { norm_path($D, $deps{HAVE}) eq norm_path($D, $source) };
 	$self->{ENTRY} = $source;
-	$self->{ALLOWED} = { norm_path($D, $source) => 1 };
-	$self->{ALLOWED}{ norm_path($D, $_) } = 1
-		for eval { walk_deps($D, $source, $args->{GRAPH}) };
-	die "render: $source: $@" if $@;
+	my %allowed = ( norm_path($D, $source) => 1 );
+	eval {
+		$allowed{ norm_path($D, $_) } = 1 for walk_deps($D, $source, $args->{GRAPH});
+		1;
+	} or die "render: $source: $@";
+	$self->{ALLOWED} = \%allowed;
 	return $self;
 }
 
