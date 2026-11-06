@@ -20,6 +20,6 @@ echo "my cpanm is '$mycpan'"
 bsearch="$tmp/.deps/Algo-BSearch"
 fetch_git "$bsearch" "$ALGO_BSEARCH_COMMIT" "${ALGO_BSEARCH_MIRRORS[@]}"
 
-make site PERL5="'$myperl' -Ilib -I'$bsearch/lib'"
+${GNU_MAKE} site PERL5="'$myperl' -Ilib -I'$bsearch/lib'"
 
 package -g root:0 2025-02-02 public "$target"

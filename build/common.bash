@@ -51,6 +51,25 @@ package () {
 	"$compressor" -n > "$out"
 }
 
+# Older builds require GNU make.
+find_gnu_make () {
+	local cand cands
+	if [ -n "${GNU_MAKE:-}" ]; then
+		cands=("$GNU_MAKE")
+	else
+		cands=(gmake make)
+	fi
+	for cand in "${cands[@]}"; do
+		if "$cand" --version 2>/dev/null | head -n 1 | grep -q 'GNU Make'; then
+			GNU_MAKE=$(command -v -- "$cand")
+			return 0
+		fi
+	done
+	>&2 echo "error: GNU Make not found (tried ${cands[*]})"
+	return 1
+}
+find_gnu_make
+
 # package relies on GNU tar flags; bsdtar would either reject them
 # or do something different, so find GNU tar up front (homebrew
 # installs it as gtar).  set GNU_TAR to use that one and only that.

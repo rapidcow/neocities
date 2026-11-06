@@ -16,6 +16,6 @@ echo "my perl is '$myperl'"
 echo "my cpanm is '$mycpan'"
 "$mycpan" --installdeps .
 
-make site PERL5="'$myperl' -Ilib"
+${GNU_MAKE} site PERL5="'$myperl' -Ilib"
 
 package -g root:0 2025-01-03 public "$target"
