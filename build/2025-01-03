@@ -2,7 +2,7 @@
 
 set -euEo pipefail
 source build/common.bash
-target="$(realpath -- "$1")"
+target="${PWD}/$1"
 
 2>&1 echo "building site version 2025-01-03 at $tmp"
 cd "$tmp"
