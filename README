@@ -14,15 +14,17 @@
    it is based on in said directory.  It's a time machine built
    for files, in other words!  And I love using it for that. =v=
 
-   Currently I am thinking of publishing it via Codeberg:
+   We are now on GitHub.  Due to help with coding from Claude
+   I have exiled myself out of Codeberg.
 
-      https://codeberg.org/rapidcow/neocities      HTTP (web view!)
-      https://codeberg.org/rapidcow/neocities.git  Git clone (HTTP)
-      git@codeberg.org:rapidcow/neocities.git      Git clone (SSH)
+      https://github.com/rapidcow/neocities        HTTP (Web view!)
+      https://github.com/rapidcow/neocities.git    Git clone (HTTP)
+      git@github.com:rapidcow/neocities.git        Git clone (SSH)
 
-   But I may be mirroring it on git.rapidcow.org, once I set it up
-   in a way that the AI scrapers won't try to flood my server again.
-   (Stay tuned for that!)
+   You can also get it from me!  though I don't provide a Web view. :(
+
+      https://git.rapidcow.org/pub/www/site/neocities.git
+                                                   Git clone only!
 
    All site content can be re-distributed as long as you credit me
    per CC-BY 4.0! <https://creativecommons.org/licenses/by/4.0/>
@@ -32,7 +34,19 @@
 
    See LICENSE.Creative and LICENSE.Perl5 for those respectively.
 
+BUILD INSTRUCTIONS
+   Building this site depends on siteconf 0.0202, GenLib.pm, and
+   GenGenLib 0.0002.  And of course, a reasonably modern Perl 5.
+
+   You also need Algo-BSearch and IPC-Unix, which you can clone
+   with `git submodule init' followed by `git submodule update'.
+
+   You can find more up-to-date information at [2][3][4].
+
    [1] https://www.kernel.org/pub/software/scm/git/docs/git.html
+   [2] https://foss.rapidcow.org/project/siteconf/
+   [3] https://foss.rapidcow.org/lib/perl5/Algo-BSearch/
+   [4] https://foss.rapidcow.org/lib/perl5/IPC-Unix/
 
                //        2024-2026, rapidcow       \\
                \\   May the text files live on...  //
