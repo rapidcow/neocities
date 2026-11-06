@@ -15,7 +15,7 @@ ${b}/vendor/oldschool-pc-fonts/index.html \
 		${a}/${.TARGET} ${A}/render
 	cd -- ${A:Q} && \
 		./optenv ${B:Q} \
-			${^X} ${perl5opt} render -B ${B:Q} -b ${b:Q} -- ${a:Q}/${.TARGET:Q} \
+			${^X} ${perl5opt} render -B ${B:Q} -b ${b:Q} -- ${.TARGET:Q} \
 			> ${B:Q}/${b:Q}/${.TARGET:Q}
 
 ${b}/base.css \

@@ -40,7 +40,7 @@ sub pipe_head {
 
 my $BASE_URL = $ENV{BASE_URL}; die "please export BASE_URL\n" unless defined $BASE_URL;
 my $SITE_URL = $ENV{SITE_URL}; die "please export SITE_URL\n" unless defined $SITE_URL;
-my @include = qw( site temple include more );
+my @include = qw( site temple include );
 
 my ($apath) = grep { -f $_ } map { File::Spec->catfile($_, $file) } @include;
 defined $apath or die "template not found: $file\n";
