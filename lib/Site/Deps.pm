@@ -4,7 +4,6 @@ use strict;
 use warnings;
 use Exporter 'import';
 use File::Spec;
-use RdKw::WwW::GenGenLib ();
 use RdKw::WwW::GenGenLib qw(split_dep subs_deps);
 
 our @EXPORT_OK = qw(norm_path walk_deps);
