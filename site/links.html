@@ -6,7 +6,7 @@
  # NEED: ${B}/${b}/base.css
  # NEED: ${B}/${b}/main.css
 -%]
-[%# XXX: Why do we need to declare dep on base.css??? -%]
+[%# base.css is NEEDed because base/head.html itself calls get_version('base.css') -%]
 <html lang="en">
 [% WRAPPER base/head.html
    title = 'rapidcow@neocities:~$'

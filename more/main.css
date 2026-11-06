@@ -39,3 +39,8 @@ blink {
 }
 /* to emulate lynx.... */
 h1, h2 { text-align: center; }
+/* lists: a one-character bullet, a one-character gap, and wrapped
+ * lines hanging under the text (1ch is exactly one VGA cell) */
+ul { list-style: none; margin: 0; padding: 0; }
+li { padding-left: 2ch; text-indent: -2ch; }
+li::before { content: "\2022"; display: inline-block; width: 2ch; text-indent: 0; }
