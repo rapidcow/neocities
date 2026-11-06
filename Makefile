@@ -63,8 +63,8 @@ temple/redirect.html: temple/minimal/head.html
 public/base.css: more/base.css patch/base.css.patch
 	@mkdir -p $(dir $@)
 	cp $< $@
-	@echo 'patch -d public < patch/base.css.patch'
-	@patch -d public < patch/base.css.patch | sed 's/^/# /'
+	@echo 'patch -V none -d public < patch/base.css.patch'
+	@patch -V none -d public < patch/base.css.patch | sed 's/^/# /'
 public/base.css.patch: patch/base.css.patch
 	@mkdir -p $(dir $@)
 	cp $< $@
