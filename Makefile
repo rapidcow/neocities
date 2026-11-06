@@ -1,14 +1,23 @@
-WAYBACK_TIME = \
-	archive/site/2024-11-09.patch
+archive = \
+	public/archive/site/2024-11-09.patch
 
-site:
+site: ${archive}
 	./bootstrap
 	${MAKE} -f Makefile.inc site
 
-archive: public/archive/site/2024-11-09.patch
+public/.ok:
+	[ -d public ] || mkdir -- public
+	@> public/.ok
 
-public/archive/site/2024-11-09.patch:
-	@mkdir -p $(dir $@)
+public/archive/.ok: public/.ok
+	[ -d public/archive ] || mkdir -- public/archive
+	@> public/archive/.ok
+
+public/archive/site/.ok: public/archive/.ok
+	[ -d public/archive/site ] || mkdir -- public/archive/site
+	@> public/archive/site/.ok
+
+public/archive/site/2024-11-09.patch: public/archive/site/.ok
 	git format-patch NEOCITIES..2024-11-09 --stdout > $@
 
 clean:

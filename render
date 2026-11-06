@@ -138,6 +138,45 @@ sub to_json {
 	$h->json_encode ($text);
 }
 
+sub archive_dist
+{
+	my ($tag) = @_;
+	# Check if this tag exists?
+	archive_hash('sha256', $tag);
+	"https://github.com/rapidcow/neocities/releases/download/$tag/site.tar.gz";
+}
+
+my %sum;
+
+sub archive_hash
+{
+	my ($type, $tag) = @_;
+	$sum{$type} ||= load_sum("archive/${type}sum.txt");
+	exists $sum{$type}->{$tag} or die "Tag ${tag} not found\n";
+	$sum{$type}->{$tag};
+}
+
+sub load_sum
+{
+	my ($file) = @_;
+	open my $fh, '<', $file or die "load_sum: open <$file: $!\n";
+	my %hash_map;
+	while (<$fh>) {
+		chomp;
+		my ($hash, $ball) = split " ", $_, 2;
+		($ball =~ s/\.tar\.gz$//) or die <<EUGH;
+load_sum: $file line $.: tarball does not end in .tar.gz
+EUGH
+		exists $hash_map{$ball} and die <<EUGH;
+load_sum: $file line $.: duplicate check sums found for $ball.tar.gz
+EUGH
+		$hash_map{$ball} = $hash;
+	}
+	$fh->error() and die "load_sum: read <$file: $!\n";
+	close $fh;
+	\%hash_map;
+}
+
 # Version the built bytes, and only resources declared by this page (or by
 # what it names, as in the head template): ${B}/${b}/x.css or as written out.
 sub get_version {
@@ -252,6 +291,8 @@ my $temple = Template->new({
 $temple->process($file, {
 	(defined $location ? (location => $location) : ()),
 	D => $D,
+	archive_dist => \&archive_dist,
+	archive_hash => \&archive_hash,
 	get_version => \&get_version,
 	changelog => \&changelog,
 	locate => \&locate,
