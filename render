@@ -1,5 +1,8 @@
 #!/usr/bin/env perl
-
+#
+# HAVE: render
+# NEED: ${B}/MY/option.mk
+#
 use 5.010;
 use strict;
 use warnings;
@@ -37,11 +40,13 @@ sub pipe_head {
 	$_[0]->close->wait->ok;
 	return $head;
 }
+# such a variable is said to be.... "present"
+sub gift { (defined $_[0] && length $_[0]) }
 
-my $BASE_URL = $ENV{BASE_URL}; die "please export BASE_URL\n" unless defined $BASE_URL;
-my $SITE_URL = $ENV{SITE_URL}; die "please export SITE_URL\n" unless defined $SITE_URL;
 my %S = load_state($B);
-my $D = $S{config};
+my ($D, $O) = @S{qw( config option )};
+gift (my $BASE_URL = $O->{base_url}) or die "error: missing \$O->{base_url} from MY/option.mk\n";
+gift (my $SITE_URL = $O->{site_url}) or die "error: missing \$O->{site_url} from MY/option.mk\n";
 my @include = map {
 	defined (my $Dv = $D->{$_})
 		or die "error: missing \$D->{$_} from MY/config.mk\n";
