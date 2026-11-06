@@ -14,4 +14,7 @@ public/archive/site/2024-11-09.patch:
 clean:
 	rm -rf public
 
-.PHONY: site archive clean
+test:
+	prove t/*.t
+
+.PHONY: site archive clean test
