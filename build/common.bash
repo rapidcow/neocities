@@ -9,6 +9,16 @@
 # -g root:0 to reproduce archives from before then.
 package () {
 	local tag dir out commitdate owner group opt OPTIND OPTARG
+	local compressor=gzip
+	if [ "$(uname -s)" = Darwin ]; then
+		# GNU tar's -z can otherwise pick Apple's gzip, which produces
+		# different bytes. Homebrew provides GNU gzip via `brew install gzip`.
+		compressor=${GNU_GZIP:-gzip}
+		if ! "$compressor" --version 2>/dev/null | grep -q 'Free Software Foundation'; then
+			>&2 echo 'error: package requires GNU gzip on macOS; install it with brew install gzip, or set GNU_GZIP'
+			return 1
+		fi
+	fi
 	owner=root:0
 	group=wheel:0
 	while getopts g:u: opt; do
@@ -31,14 +41,14 @@ package () {
 	# comment migrated from Makefile:
 	# https://reproducible-builds.org/docs/archives/
 	# https://stackoverflow.com/a/58141664
-	# gzip'd tarball is inherently undetermistic, but try
-	# to make the content consistent anyways.
+	# Pin archive metadata and suppress gzip's filename and timestamp.
 	#
 	# also: use commit date intsead of annotated tag date,
 	# because the latter can be (unnecessarily) off
 	find "$dir" -print0 | LC_ALL=C sort -z |
-	"$GNU_TAR" zcvvf "$out" --no-recursion --null --files-from=- \
-		--mtime=@$commitdate --owner="$owner" --group="$group"
+	"$GNU_TAR" cvvf - --no-recursion --null --files-from=- \
+		--mtime=@$commitdate --owner="$owner" --group="$group" |
+	"$compressor" -n > "$out"
 }
 
 # package relies on GNU tar flags; bsdtar would either reject them
