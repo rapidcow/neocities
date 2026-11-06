@@ -20,7 +20,7 @@ our @EXPORT_OK = qw(norm_path walk_deps);
 
 sub _vars {
 	my ($D) = @_;
-	return (A => '.', map { $_ => $D->{$_} } grep { defined $D->{$_} } qw(a B b c));
+	return (map { $_ => $D->{$_} } grep { defined $D->{$_} } keys %$D), A => '.';
 }
 
 sub _literal_ok {
