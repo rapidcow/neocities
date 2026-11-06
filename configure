@@ -7,7 +7,7 @@
 # patch keeps applying), rather than editing it in place and losing
 # them the next time `siteconf -i' is run.
 #
-# options: -Sa=site -Sb=public '-Dclean=&' -Obase_url=/ -Osite_url=https://rapidcow.neocities.org/ -P web -MHTML::Tiny -MHTML::FromANSI::Tiny -MTemplate -MRdKw::Algo::BSearch=0.0044 -MRdKw::IPC::Unix '-Dperl5opt=-Ilib -Iext/Algo-BSearch/lib -Iext/IPC-Unix/lib'
+# options: -Sa=site -Sb=public '-Dclean=&' -Dinc=include -Dtem=temple -Obase_url=/ -Osite_url=https://rapidcow.neocities.org/ -P web -MHTML::Tiny -MHTML::FromANSI::Tiny -MTemplate -MRdKw::Algo::BSearch=0.0044 -MRdKw::IPC::Unix '-Dperl5opt=-Ilib -Iext/Algo-BSearch/lib -Iext/IPC-Unix/lib'
 #
 use utf8;
 use 5.006;
@@ -110,7 +110,9 @@ my %Dd = (
 	c => "public",
 	clean => "&",
 	e => ".ok",
+	inc => "include",
 	perl5opt => "-Ilib -Iext/Algo-BSearch/lib -Iext/IPC-Unix/lib",
+	tem => "temple",
 );
 my %Od = (
 	base_url => "/",
@@ -136,7 +138,9 @@ The following variables may be defined:
   -DF         Manifest, from current directory (default: $Dd{F})
   -De         Directory marker (default: $Dd{e})
   -Dclean     Clean rule template (default: $Dd{clean})
+  -Dinc       Include directory (default: $Dd{inc})
   -Dperl5opt  Perl interpreter flags (default: $Dd{perl5opt})
+  -Dtem       Template directory (default: $Dd{tem})
 
 Options with defaults:
 

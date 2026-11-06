@@ -1,7 +1,8 @@
 #!/bin/sh
 set -e
 siteconf -if -o configure.orig -o render:/dev/null -Sa=site -Sb=public -Dclean='&' \
-	-Obase_url=/ -Osite_url=https://rapidcow.neocities.org/ -P web \
+	-Dinc=include -Dtem=temple -Obase_url=/ -Osite_url=https://rapidcow.neocities.org/ \
+	-P web \
 	-MHTML::Tiny -MHTML::FromANSI::Tiny -MTemplate \
 	-MRdKw::Algo::BSearch=0.0044 -MRdKw::IPC::Unix \
 	-Dperl5opt='-Ilib -Iext/Algo-BSearch/lib -Iext/IPC-Unix/lib'
