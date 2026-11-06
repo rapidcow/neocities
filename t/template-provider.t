@@ -70,7 +70,7 @@ is($out, 'secret', 'nested template rendered');
 ok($ok, 'built NEED and unused WANT are allowed');
 
 eval { render(" # NEED: ../include/allowed\n", 'x') };
-like($@, qr/invalid NEED path/, 'dot components rejected in declarations');
+like($@, qr/invalid NEED\/WANT path/, 'dot components rejected in declarations');
 
 write_file('site/entry', "[%\n # HAVE: wrong\n-%]\n");
 eval { provider() };
