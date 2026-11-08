@@ -1,5 +1,5 @@
---- configure.orig	2026-11-07 20:11:55.448150000 -0600
-+++ configure	2026-11-07 20:11:55.451099000 -0600
+--- configure.orig	2026-11-07 21:27:29.060636000 -0600
++++ configure	2026-11-07 21:27:29.063619000 -0600
 @@ -21,6 +21,10 @@
  use FindBin;
  use Getopt::Long qw( GetOptions );
@@ -11,7 +11,7 @@
  # --- what we need: [ module, minimum version ], from `siteconf -i -M',
  # and the preset if any (which comes first, so it can add to the list)
  our @NEED;
-@@ -135,9 +139,9 @@
+@@ -134,9 +138,9 @@
    -DF         Manifest, from current directory (default: $Dd{F})
    -De         Directory marker (default: $Dd{e})
    -Dclean     Clean rule template (default: $Dd{clean})
