@@ -147,7 +147,10 @@ sub as_link {
 # locate(spec) is the unified more modern
 # version of to_link and as_link.
 # (It originated from cooper-www.)
-sub locate { locate($O, $location, @_); }
+sub locate {
+	(my $target = $location) =~ s/\A\///;
+	RdKw::WwW::GenLib::locate($O, $target, @_);
+}
 
 sub to_json {
 	my ($text) = @_;
