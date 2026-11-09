@@ -10,8 +10,10 @@ use Template;
 use Template::Exception;
 use File::Spec;
 use Getopt::Std;
-use RdKw::WwW::GenGenLib qw(read_deps load_state);
-use RdKw::WwW::GenLib qw(relapath);
+use RdKw::WwW::GenGenLib 0.0002 qw(
+	read_deps load_state
+	norm_dep subs_dep uproot );
+use RdKw::WwW::GenLib 0.0203 qw(relapath);
 use Digest::SHA;
 use Site::Deps qw(norm_path walk_deps);
 use Site::TemplateProvider;
@@ -59,11 +61,30 @@ defined $apath or die "template not found: $file\n";
 my %I = read_deps($apath);
 # location: where the page lives on the site, derived from HAVE
 # (e.g. ${a}/site/news/index.html => /news/index.html)
-my $location;
-if (defined $I{HAVE}) {
-	($location = $I{HAVE}) =~ s{^\$\{a\}(?=/)}{}
-		or die "$apath: HAVE '$I{HAVE}' is not under \${a}\n";
-}
+#
+# relapath doesn't do well with the leading slash,
+# though people may have a habit of including it...
+# (oh wait, i think i was talking about us... :p)
+(my $location = do {
+	my ($name, $norm, $real);
+	# Try symbolic prefix
+	if (defined ($name = uproot('${a}',
+		$norm = norm_dep($I{HAVE}))))
+	{
+		subs_dep($D, $name);
+	}
+	# Try literal prefix
+	elsif (defined ($name = uproot($D->{a},
+		$real = subs_dep($D, $norm))))
+	{
+		$name;
+	}
+	else {
+		my $aka = $real eq $I{HAVE} ? "" : " (which is `$real')";
+		die "E: $apath: HAVE `$I{HAVE}'$aka not "
+			. "under \${a} (which is `$D->{a}')\n";
+	}
+}) =~ s/\A\/*/\//;
 # The configuration (A a B b c), for spelling paths: symbolically, or written
 # out as the variables expand (the template gets D, so "${D.B}/${D.b}/x" works).
 my %G;	# what each header said, so no file is read twice
@@ -102,8 +123,8 @@ sub to_root {
 		}
 		my $relative = relapath($root, $path);
 		if (substr ($relative, 0, 1) eq "/") {
-			die "relapath computed ('$root', '$path') with an "
-			. "absolute path ('$relative')\n";
+			die "relapath computed (`$root', `$path') with an "
+			. "absolute path (`$relative')\n";
 		}
 		$relative = '.' unless length $relative;
 		$relative .= '/' unless substr($relative, -1) eq '/';
@@ -126,11 +147,7 @@ sub as_link {
 # locate(spec) is the unified more modern
 # version of to_link and as_link.
 # (It originated from cooper-www.)
-sub locate
-{
-	@_ == 1 or die Template::Exception->new("usage", "[% locate PATH %]");
-	locate($O, $location, @_);
-}
+sub locate { locate($O, $location, @_); }
 
 sub to_json {
 	my ($text) = @_;
