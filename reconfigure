@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-siteconf -if -o configure.orig -o render:/dev/null -Sa=site -Sb=public -Dclean='&' \
+siteconf -if -o configure.new -o render:/dev/null -Sa=site -Sb=public -Dclean='&' \
 	-Dinc=include -Dtem=template -Obase_url=/ -Osite_url=https://rapidcow.neocities.org/ \
 	-P web \
 	-MRdKw::WwW::GenGenLib=0.0002 \
@@ -8,6 +8,6 @@ siteconf -if -o configure.orig -o render:/dev/null -Sa=site -Sb=public -Dclean='
 	-MRdKw::Algo::BSearch=0.0044 -MRdKw::IPC::Unix \
 	-Dperl5opt='-Ilib -Iext/Algo-BSearch/lib -Iext/IPC-Unix/lib'
 set -x
-cp configure.orig configure
+cp configure.new configure
 patch < configure.patch
-diff -u configure.orig configure > configure.patch
+diff -u configure.new configure > configure.patch

@@ -1,5 +1,5 @@
---- configure.orig	2026-11-08 12:33:13.675960168 -0600
-+++ configure	2026-11-08 12:33:13.679864446 -0600
+--- configure.new	2026-11-09 15:25:06
++++ configure	2026-11-09 15:25:06
 @@ -21,6 +21,10 @@
  use FindBin;
  use Getopt::Long qw( GetOptions );

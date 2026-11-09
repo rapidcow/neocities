@@ -9,6 +9,7 @@ node_modules
 /local/
 *.orig
 *.rej
+*.new
 MY/
 Makefile.inc
 
