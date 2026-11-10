@@ -71,7 +71,7 @@ is($out, 'secret', 'nested template rendered');
 ($ok, $out) = render(" # NEED: \${B}/\${b}/built.css\n # WANT: \${a}/include/absent\n", 'optional');
 ok($ok, 'built NEED and unused WANT are allowed');
 
-# (Site::Deps refuses it first, in render; the provider refuses to load it)
+# (the provider refuses to declare it, and so to load it)
 ($ok, $out, $err) = render(" # NEED: ../include/allowed\n", q{[% INCLUDE '../include/allowed' %]});
 like("$err", qr/`\.\.\/include\/allowed' is declared, but forbidden because RELATIVE_DEPS is unset/,
 	'dot components rejected in declarations');
