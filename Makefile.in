@@ -13,9 +13,14 @@ ${b}/vendor/oldschool-pc-fonts/index.html \
 # So this is just explicit... unnecessarily so but
 	# i think it fits for illustrative purposes.
 		${a}/${.TARGET} ${A}/render
-	cd -- ${A:Q} && \
+	file=${B:Q}/${b:Q}/${.TARGET:Q}; \
+		trap 'rm -f -- "$$$$file.tmp" "$$$$file"' 0; \
+		trap 'exit 1' HUP INT PIPE TERM; \
+		cd -- ${A:Q} && \
 		${^X} ${perl5opt} render -B ${B:Q} -b ${b:Q} -- ${.TARGET:Q} \
-		> ${B:Q}/${b:Q}/${.TARGET:Q}
+		> "$$$$file.tmp" && \
+		mv -f -- "$$$$file.tmp" "$$$$file" && \
+		trap - 0
 
 ${b}/base.css \
 ${b}/main.css \
