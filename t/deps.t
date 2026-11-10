@@ -61,14 +61,14 @@ w('public/base.css', hdr(NEED => 'must-not-be-read'));
 		'the entry first, then through templates; cycles stop');
 	is_deeply([ map { norm_path(\%E, $_) } @d ],
 		[qw(site/index.html temple/head.html include/part.html leaf site/index.html public/base.css site/gone.html)], 'all normalize');
-	ok(!exists $G{'${B}/${b}/base.css'}, 'built is not read');
+	ok(!defined $G{'${B}/${b}/base.css'}, 'built is not read');
 }
 for my $evil ('../secret', '${a}/../secret', '${tem}/x/../../../secret', "$top/secret",
 		'/etc/passwd', '${A}//etc/passwd', '${B}/${b}/../../../secret', '${other}/x') {
 	w('site/evil.html', hdr(NEED => $evil));
 	my %G;
 	my @d = walk_deps(\%E, 'site/evil.html', \%G);
-	ok(!exists $G{$evil}, "never read: $evil");
+	ok(!defined $G{$evil}, "never read: $evil");
 	ok(!(grep { $_ eq 'leaked' } @d), "leads nowhere: $evil");
 	ok(!defined eval { norm_path(\%E, $_) }, "and norm_path refuses it: $evil") for $evil;
 }

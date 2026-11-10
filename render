@@ -16,7 +16,7 @@ use RdKw::WwW::GenGenLib 0.0002 qw(
 use RdKw::WwW::GenLib 0.0203 qw(relapath);
 use Digest::SHA;
 use Site::Deps qw(norm_path walk_deps);
-use Site::TemplateProvider;
+use RdKw::WwW::GenGenLib::Template::Provider;
 # handy guys for templating
 use HTML::Tiny;
 use Time::Piece;
@@ -291,12 +291,16 @@ $Git_log->close->wait;
 	return $output;
 }
 
-my $provider = Site::TemplateProvider->new({
+# Load only what the page declares (and what that declares, and so on;
+# the graph is the one get_version knows), and have it HAVE itself
+my $provider = RdKw::WwW::GenGenLib::Template::Provider->new({
 	SOURCE => $file,
 	INCLUDE_PATH => \@include,
 	D => $D,
 	GRAPH => \%G,
-}) || die Site::TemplateProvider->error(), "\n";
+	CHECK_DEPS => 1,
+	CHECK_HAVE => 1,
+}) || die RdKw::WwW::GenGenLib::Template::Provider->error(), "\n";
 my $temple = Template->new({
 	LOAD_TEMPLATES => [ $provider ],
 	EVAL_PERL => 1,

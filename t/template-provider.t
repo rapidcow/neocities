@@ -6,7 +6,7 @@ use Cwd qw(getcwd);
 use FindBin;
 use lib "$FindBin::Bin/../lib";
 use Template;
-use Site::TemplateProvider;
+use RdKw::WwW::GenGenLib::Template::Provider;
 use Template::Constants qw(STATUS_ERROR);
 
 my $cwd = getcwd();
@@ -22,7 +22,8 @@ sub write_file {
 }
 
 sub provider {
-	Site::TemplateProvider->new({
+	RdKw::WwW::GenGenLib::Template::Provider->new({
+		CHECK_DEPS => 1, CHECK_HAVE => 1,
 		SOURCE => 'entry', INCLUDE_PATH => [qw(site temple include)],
 		D => { A => '.', a => '.', B => '.', b => 'public', c => '.cache' },
 	});
@@ -70,18 +71,20 @@ is($out, 'secret', 'nested template rendered');
 ($ok, $out) = render(" # NEED: \${B}/\${b}/built.css\n # WANT: \${a}/include/absent\n", 'optional');
 ok($ok, 'built NEED and unused WANT are allowed');
 
-eval { render(" # NEED: ../include/allowed\n", 'x') };
-like($@, qr/invalid path .*is not allowed|leaves its root/, 'dot components rejected in declarations');
+# (Site::Deps refuses it first, in render; the provider refuses to load it)
+($ok, $out, $err) = render(" # NEED: ../include/allowed\n", q{[% INCLUDE '../include/allowed' %]});
+like("$err", qr/`\.\.\/include\/allowed' is declared, but forbidden because RELATIVE_DEPS is unset/,
+	'dot components rejected in declarations');
 
 write_file('site/entry', "[%\n # HAVE: wrong\n-%]\n");
 eval { provider() };
-like($@, qr{must declare HAVE: \$\{a\}/site/entry}, 'HAVE must identify actual source');
+like($@, qr{HAVE `wrong', but it is `\$\{a\}/site/entry'}, 'HAVE must identify actual source');
 
 write_file('site/entry', "[%\n # HAVE: \${a}/site/entry\n # NEED: \${a}/include/allowed\n-%]\n");
 my $p = provider();
 my ($data, $status) = $p->fetch('allowed');
 ok(!$status, 'initial fetch succeeds');
-delete $p->{ALLOWED}{'include/allowed'};
+delete $p->{DECLARED}{'include/allowed'};
 ($data, $status) = $p->fetch('allowed');
 is($status, STATUS_ERROR, 'cached fetch still checks authorization');
 for my $name ('../include/allowed', "$dir/include/allowed", './allowed') {
