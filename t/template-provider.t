@@ -49,7 +49,7 @@ for my $directive (qw(INCLUDE PROCESS WRAPPER INSERT)) {
 	$body .= '[% END %]' if $directive eq 'WRAPPER';
 	($ok, $out, $err) = render('', $body);
 	ok(!$ok, "$directive rejects undeclared file");
-	like("$err", qr{undeclared dependency: `include/secret' \(\$\{a\}/include/secret\)}, 'error names dependency');
+	like("$err", qr{undeclared dependency: `include/secret' \(aka `\$\{a\}/include/secret'\)}, 'error names dependency');
 }
 
 ($ok, $out) = render('', '[% BLOCK local %]local[% END %][% INCLUDE local %]');
@@ -96,7 +96,7 @@ write_file('site/allowed', 'shadow');
 $p = provider();
 ($data, $status) = $p->fetch('allowed');
 is($status, STATUS_ERROR, 'earlier undeclared namesake cannot bypass allowlist');
-like($data, qr{undeclared dependency: `site/allowed' \(\$\{a\}/site/allowed\)}, 'shadow error identifies actual resolved path');
+like($data, qr{undeclared dependency: `site/allowed' \(aka `\$\{a\}/site/allowed'\)}, 'shadow error identifies actual resolved path');
 
 chdir $cwd or die $!;
 done_testing;

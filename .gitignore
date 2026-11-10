@@ -1,5 +1,6 @@
 .DS_Store
 ._*
+*.sw[a-p]
 /.carmel
 node_modules
 /vendor/cache
