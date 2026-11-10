@@ -3,8 +3,9 @@ set -e
 siteconf -if -o configure.new -o render:/dev/null -Sa=site -Sb=public -Dclean='&' \
 	-Dinc=include -Dtem=template -Obase_url=/ -Osite_url=https://rapidcow.neocities.org/ \
 	-P web \
-	-MRdKw::WwW::GenGenLib=0.0002 \
+	-MRdKw::WwW::GenGenLib=0.0100 \
 	-MRdKw::WwW::GenLib=0.0203 \
+	-MRdKw::WwW::GenGenLib::Template::Toolkit \
 	-MHTML::Tiny -MHTML::FromANSI::Tiny -MTemplate \
 	-MRdKw::Algo::BSearch=0.0044 -MRdKw::IPC::Unix \
 	-Dperl5opt='-Ilib -Iext/Algo-BSearch/lib -Iext/IPC-Unix/lib'
