@@ -78,7 +78,7 @@ like("$err", qr/`\.\.\/include\/allowed' is declared, but forbidden because RELA
 
 write_file('site/entry', "[%\n # HAVE: wrong\n-%]\n");
 eval { provider() };
-like($@, qr{HAVE `wrong', but it is `site/entry' \(\$\{a\}/site/entry\)}, 'HAVE must identify actual source');
+like($@, qr{You HAVE `wrong', but it is actually `site/entry' \(aka `\$\{a\}/site/entry'\)}, 'HAVE must identify actual source');
 
 write_file('site/entry', "[%\n # HAVE: \${a}/site/entry\n # NEED: \${a}/include/allowed\n-%]\n");
 my $p = provider();
