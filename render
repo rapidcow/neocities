@@ -296,7 +296,8 @@ $Git_log->close->wait;
 my $provider = RdKw::WwW::GenGenLib::Template::Provider->new({
 	SOURCE => $file,
 	INCLUDE_PATH => \@include,
-	D => $D,
+	DEFINITION => $D,
+	PREFIXES => [ qw( ${a} ${B}/${b} ${B}/${c} ${tem} ${inc} ) ],
 	GRAPH => \%G,
 	CHECK_DEPS => 1,
 	CHECK_HAVE => 1,

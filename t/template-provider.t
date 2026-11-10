@@ -25,7 +25,7 @@ sub provider {
 	RdKw::WwW::GenGenLib::Template::Provider->new({
 		CHECK_DEPS => 1, CHECK_HAVE => 1,
 		SOURCE => 'entry', INCLUDE_PATH => [qw(site temple include)],
-		D => { A => '.', a => '.', B => '.', b => 'public', c => '.cache' },
+		DEFINITION => { A => '.', a => '.', B => '.', b => 'public', c => '.cache' },
 	});
 }
 
@@ -49,7 +49,7 @@ for my $directive (qw(INCLUDE PROCESS WRAPPER INSERT)) {
 	$body .= '[% END %]' if $directive eq 'WRAPPER';
 	($ok, $out, $err) = render('', $body);
 	ok(!$ok, "$directive rejects undeclared file");
-	like("$err", qr{undeclared dependency `\$\{a\}/include/secret'}, 'error names dependency');
+	like("$err", qr{undeclared dependency: `include/secret' \(\$\{a\}/include/secret\)}, 'error names dependency');
 }
 
 ($ok, $out) = render('', '[% BLOCK local %]local[% END %][% INCLUDE local %]');
@@ -78,7 +78,7 @@ like("$err", qr/`\.\.\/include\/allowed' is declared, but forbidden because RELA
 
 write_file('site/entry', "[%\n # HAVE: wrong\n-%]\n");
 eval { provider() };
-like($@, qr{HAVE `wrong', but it is `\$\{a\}/site/entry'}, 'HAVE must identify actual source');
+like($@, qr{HAVE `wrong', but it is `site/entry' \(\$\{a\}/site/entry\)}, 'HAVE must identify actual source');
 
 write_file('site/entry', "[%\n # HAVE: \${a}/site/entry\n # NEED: \${a}/include/allowed\n-%]\n");
 my $p = provider();
@@ -96,7 +96,7 @@ write_file('site/allowed', 'shadow');
 $p = provider();
 ($data, $status) = $p->fetch('allowed');
 is($status, STATUS_ERROR, 'earlier undeclared namesake cannot bypass allowlist');
-like($data, qr{undeclared dependency `\$\{a\}/site/allowed'}, 'shadow error identifies actual resolved path');
+like($data, qr{undeclared dependency: `site/allowed' \(\$\{a\}/site/allowed\)}, 'shadow error identifies actual resolved path');
 
 chdir $cwd or die $!;
 done_testing;
