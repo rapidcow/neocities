@@ -4,9 +4,9 @@
 :root {
   --back: #1e1e22; /* background */
   --rgb-0: #000; /* ... black */
-  --rgb-1: #dc5e69; /* R.. red */
+  --rgb-1: #f00; /* R.. red */
   --rgb-2: #8cc578; /* .G. green */
-  --rgb-3: #c9a54d; /* RG. yellow */
+  --rgb-3: #ff0; /* RG. yellow */
   --rgb-4: #6a9fe0; /* ..B blue */
   --rgb-5: #b987dc; /* R.B magenta */
   --rgb-6: #58b8c4; /* .GB cyan */
