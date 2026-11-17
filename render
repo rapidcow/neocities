@@ -15,7 +15,6 @@ use RdKw::WwW::GenGenLib 0.0002 qw(
 	norm_dep subs_dep uproot );
 use RdKw::WwW::GenLib 0.0203 qw(relapath);
 use Digest::SHA;
-use Site::Deps qw(norm_path walk_deps);
 use RdKw::WwW::GenGenLib::Template::Provider;
 # handy guys for templating
 use HTML::Tiny;
@@ -88,8 +87,19 @@ my %I = read_deps($apath);
 # The configuration (A a B b c), for spelling paths: symbolically, or written
 # out as the variables expand (the template gets D, so "${D.B}/${D.b}/x" works).
 my %G;	# what each header said, so no file is read twice
-my %allowed = map { norm_path($D, $_) => 1 } walk_deps($D, $apath, \%G);
 my $built = File::Spec->canonpath("$D->{B}/$D->{b}");
+
+# Load only what the page declares (and what that declares, and so on;
+# get_version asks it too), and have it HAVE itself
+my $provider = RdKw::WwW::GenGenLib::Template::Provider->new({
+	SOURCE => $file,
+	INCLUDE_PATH => \@include,
+	DEFINITION => $D,
+	PREFIXES => [ qw( ${a} ${B}/${b} ${B}/${c} ${tem} ${inc} ) ],
+	GRAPH => \%G,
+	CHECK_DEPS => 1,
+	CHECK_HAVE => 1,
+}) || die RdKw::WwW::GenGenLib::Template::Provider->error(), "\n";
 
 # unused - but when DEFAULT becomes too funky with
 # falsy strings, this should do a better job
@@ -202,11 +212,15 @@ EUGH
 sub get_version {
 	@_ == 1 or die "get_version requires one resource name\n";
 	my ($name) = @_;
-	my $path = norm_path($D, $name);
+	my $path = File::Spec->canonpath(subs_dep($D, $name));
 	$built eq '.' || index($path, "$built/") == 0
 		or die "get_version: $name is not built (not under \${B}/\${b})\n";
-	$allowed{$path}
-		or die "get_version: $name is not declared as a NEED or WANT in $apath\n";
+	# (as it is, not looked for in INCLUDE_PATH)
+	my $error;
+	($path, $error) = $provider->access(
+		File::Spec->file_name_is_absolute($path) ? $path : "./$path");
+	defined $error and die "get_version: $error\n";
+	defined $path or die "get_version: $name is not there\n";
 	open my $fh, '<:raw', $path or die "open $path: $!\n";
 	my $dgst = Digest::SHA->new(1);
 	$dgst->addfile($fh);
@@ -291,17 +305,6 @@ $Git_log->close->wait;
 	return $output;
 }
 
-# Load only what the page declares (and what that declares, and so on;
-# the graph is the one get_version knows), and have it HAVE itself
-my $provider = RdKw::WwW::GenGenLib::Template::Provider->new({
-	SOURCE => $file,
-	INCLUDE_PATH => \@include,
-	DEFINITION => $D,
-	PREFIXES => [ qw( ${a} ${B}/${b} ${B}/${c} ${tem} ${inc} ) ],
-	GRAPH => \%G,
-	CHECK_DEPS => 1,
-	CHECK_HAVE => 1,
-}) || die RdKw::WwW::GenGenLib::Template::Provider->error(), "\n";
 my $temple = Template->new({
 	LOAD_TEMPLATES => [ $provider ],
 	EVAL_PERL => 1,

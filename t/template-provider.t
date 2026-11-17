@@ -49,7 +49,7 @@ for my $directive (qw(INCLUDE PROCESS WRAPPER INSERT)) {
 	$body .= '[% END %]' if $directive eq 'WRAPPER';
 	($ok, $out, $err) = render('', $body);
 	ok(!$ok, "$directive rejects undeclared file");
-	like("$err", qr{undeclared dependency: `include/secret' \(\$\{a\}/include/secret\)}, 'error names dependency');
+	like("$err", qr{undeclared dependency: `include/secret' \(aka `\$\{a\}/include/secret'\)}, 'error names dependency');
 }
 
 ($ok, $out) = render('', '[% BLOCK local %]local[% END %][% INCLUDE local %]');
@@ -71,14 +71,14 @@ is($out, 'secret', 'nested template rendered');
 ($ok, $out) = render(" # NEED: \${B}/\${b}/built.css\n # WANT: \${a}/include/absent\n", 'optional');
 ok($ok, 'built NEED and unused WANT are allowed');
 
-# (Site::Deps refuses it first, in render; the provider refuses to load it)
+# (the provider refuses to declare it, and so to load it)
 ($ok, $out, $err) = render(" # NEED: ../include/allowed\n", q{[% INCLUDE '../include/allowed' %]});
 like("$err", qr/`\.\.\/include\/allowed' is declared, but forbidden because RELATIVE_DEPS is unset/,
 	'dot components rejected in declarations');
 
 write_file('site/entry', "[%\n # HAVE: wrong\n-%]\n");
 eval { provider() };
-like($@, qr{HAVE `wrong', but it is `site/entry' \(\$\{a\}/site/entry\)}, 'HAVE must identify actual source');
+like($@, qr{You HAVE `wrong', but it is actually `site/entry' \(aka `\$\{a\}/site/entry'\)}, 'HAVE must identify actual source');
 
 write_file('site/entry', "[%\n # HAVE: \${a}/site/entry\n # NEED: \${a}/include/allowed\n-%]\n");
 my $p = provider();
@@ -96,7 +96,7 @@ write_file('site/allowed', 'shadow');
 $p = provider();
 ($data, $status) = $p->fetch('allowed');
 is($status, STATUS_ERROR, 'earlier undeclared namesake cannot bypass allowlist');
-like($data, qr{undeclared dependency: `site/allowed' \(\$\{a\}/site/allowed\)}, 'shadow error identifies actual resolved path');
+like($data, qr{undeclared dependency: `site/allowed' \(aka `\$\{a\}/site/allowed'\)}, 'shadow error identifies actual resolved path');
 
 chdir $cwd or die $!;
 done_testing;
