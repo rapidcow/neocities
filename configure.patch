@@ -1,6 +1,6 @@
---- configure.new	2026-11-10 06:10:39
-+++ configure	2026-11-10 06:10:39
-@@ -20,6 +20,10 @@
+--- configure.new	2026-11-17 04:43:51.734627087 -0600
++++ configure	2026-11-17 04:44:39.964469609 -0600
+@@ -17,6 +17,10 @@
  use FindBin;
  use Getopt::Long qw( GetOptions );
  
@@ -8,19 +8,19 @@
 +use lib './ext/Algo-BSearch/lib';
 +use lib './ext/IPC-Unix/lib';
 +
- # --- what we need: [ module, minimum version ], from `siteconf -i -M',
- # and the preset if any (which comes first, so it can add to the list)
- our @NEED;
-@@ -189,9 +193,9 @@
-   -DF         Manifest, from current directory (default: $Dd{F})
-   -De         Directory marker (default: $Dd{e})
-   -Dclean     Clean rule template (default: $Dd{clean})
--  -Dinc       (default: $Dd{inc})
--  -Dperl5opt  (default: $Dd{perl5opt})
--  -Dtem       (default: $Dd{tem})
-+  -Dinc       Include directory (default: $Dd{inc})
-+  -Dperl5opt  Perl interpreter flags (default: $Dd{perl5opt})
-+  -Dtem       Template directory (default: $Dd{tem})
- 
- Options with defaults:
- 
+ # Pin GenGenLib 0.01 and its Unicode
+ # dependency modules transitively.
+ use RdKw::WwW::GenGenLib 0.01 qw( read_make write_make unescape_vars );
+@@ -209,9 +213,9 @@
+ 	[ '-DF', N__('Manifest, from current directory'), sub { $Dd{F} } ],
+ 	[ '-De', N__('Directory marker'), sub { $Dd{e} } ],
+ 	[ '-Dclean', N__('Clean rule template'), sub { $Dd{clean} } ],
+-	[ "-Dinc", "", sub { $Dd{inc} } ],
+-	[ "-Dperl5opt", "", sub { $Dd{perl5opt} } ],
+-	[ "-Dtem", "", sub { $Dd{tem} } ],
++	[ "-Dinc", "Include directory", sub { $Dd{inc} } ],
++	[ "-Dperl5opt", "Perl interpreter flags", sub { $Dd{perl5opt} } ],
++	[ "-Dtem", "Template directory", sub { $Dd{tem} } ],
+ );
+ our @OPTHELP = (
+ 	[ "-Obase_url", N__("Host-relative base URL"), sub { $Od{base_url} } ],
