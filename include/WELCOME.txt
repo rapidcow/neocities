@@ -3,7 +3,7 @@
 |           \\\\\  = Web site hosted by <span class="setaf-3">Neocities</span>! =  /////           |
 |                                                                     |
 |         ^__^  .------------------------------------.  |\_/'|        |
-|  %  __.-(&gt;o)  | Lynx visitors:  please ensure that |  |o o |--._    |
+|  %  __.-(oo)  | Lynx visitors:  please ensure that |  |o o |--._    |
 |   \/    (__)  | your console has at least <em>72</em> cols! |  =___='    \*  |
 |   (______)_/  `------------------------------------'    (_______)   |
 +=====================================================================+
