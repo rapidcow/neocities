@@ -85,7 +85,6 @@ sub preset_finish
 		or die $cs->tagmsg(E => $@);
 }
 
-
 BEGIN {
 	my @bad;
 	foreach my $need (@NEED) {
