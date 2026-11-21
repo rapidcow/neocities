@@ -2,7 +2,7 @@
 #
 # configure -- written by `siteconf -i' version 0.03_00.
 #
-# options: -Sa=site -Sb=public '-Dclean=&' -Dinc=include -Dtem=template -Obase_url=/ -Osite_url=https://rapidcow.neocities.org/ -P web -MRdKw::WwW::GenGenLib=0.0100 -MRdKw::WwW::GenLib=0.0203 -MRdKw::WwW::GenGenLib::Template::Provider -MHTML::Tiny -MHTML::FromANSI::Tiny -MTemplate -MRdKw::Algo::BSearch=0.0044 -MRdKw::IPC::Unix '-Dperl5opt=-Ilib -Iext/Algo-BSearch/lib -Iext/IPC-Unix/lib'
+# options: -Sa=site -Sb=public '-Dclean=&' -Dinc=include -Dtem=template -Obase_url=/ -Osite_url=https://rapidcow.neocities.org/ -P web -MRdKw::WwW::GenGenLib=0.0100 -MRdKw::WwW::GenLib=0.0300 -MRdKw::WwW::GenGenLib::Template::Provider -MHTML::Tiny -MHTML::FromANSI::Tiny -MTemplate -MRdKw::Algo::BSearch=0.0044 -MRdKw::IPC::Unix '-Dperl5opt=-Ilib -Iext/Algo-BSearch/lib -Iext/IPC-Unix/lib'
 #
 
 use utf8;
@@ -52,7 +52,7 @@ BEGIN {
 		[ "RdKw::IPC::Unix", 0 ],
 		[ "RdKw::WwW::GenGenLib", "0.0100" ],
 		[ "RdKw::WwW::GenGenLib::Template::Provider", 0 ],
-		[ "RdKw::WwW::GenLib", "0.0203" ],
+		[ "RdKw::WwW::GenLib", "0.0300" ],
 		[ "Template", 0 ],
 	);
 }

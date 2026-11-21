@@ -35,8 +35,9 @@
    See LICENSE.Creative and LICENSE.Perl5 for those respectively.
 
 BUILD INSTRUCTIONS
-   Building this site depends on siteconf 0.0202, any GenLib, and
-   GenGenLib 0.0002.  And of course, a reasonably modern Perl 5.
+   Building this site depends on siteconf 0.0300, GenLib 0.0300,
+   and GenGenLib 0.0100 (I have been re-tagging a lot so make sure
+   you use the LATEST version from git).  Perl v5.8 is required.
 
    You also need Algo-BSearch and IPC-Unix, which you can clone
    with `git submodule init' followed by `git submodule update'.
