@@ -33,3 +33,6 @@ ${b}/robots.txt \
 
 ${b}/vendor/oldschool-pc-fonts/Web437_IBM_VGA_8x16.woff:
 	cd -- ${A:Q} && cp -- ${a:Q}/${.IMPSRC:Q} ${B:Q}/${b:Q}/${.TARGET:Q}
+
+${b}/archive/site/2024-11-09.patch: ${a}
+	git format-patch NEOCITIES..2024-11-09 --stdout > ${B:Q}/${b:Q}/${@:Q}
